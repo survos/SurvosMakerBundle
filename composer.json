@@ -7,15 +7,27 @@
         "php": ">= 8.0",
         "symfony/config": ">= 5.4",
         "symfony/console": "^6.0",
-        "symfony/maker-bundle": "^1.36",
         "symfony/options-resolver": ">= 5.4",
         "symfony/process": ">= 5.4",
-        "symfony/string": ">= 5.4",
-        "symfony/twig-bundle": ">= 5.4",
-        "twig/twig": "^3.3"
+        "twig/twig": "^2.0|^3.0",
+        "symfony/string": ">= 5.4"
     },
     "require-dev": {
+        "doctrine/doctrine-bundle": "^1.12.3|^2.0",
+        "doctrine/orm": "^2.3",
         "phpstan/phpstan": "^1.4",
+        "sensio/framework-extra-bundle": "^6.2",
+        "symfony/form": ">= 5.4",
+        "symfony/http-client": "^4.4|^5.0|^6.0",
+        "symfony/maker-bundle": "^1.36",
+        "symfony/phpunit-bridge": "^4.4|^5.0|^6.0",
+        "symfony/polyfill-php80": "^1.16.0",
+        "symfony/process": "^4.4|^5.0|^6.0",
+        "symfony/security-core": "^4.4|^5.0|^6.0",
+        "symfony/security-csrf": "^6.0",
+        "symfony/twig-bundle": ">= 5.4",
+        "symfony/validator": ">= 5.4",
+        "symfony/yaml": "^4.4|^5.0|^6.0"
     },
     "scripts": {
         "test": "vendor/bin/phpunit",

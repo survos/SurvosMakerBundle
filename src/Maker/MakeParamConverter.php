@@ -1,9 +1,9 @@
 <?php
 
-namespace Symfony\Bundle\MakerBundle;;
+namespace Survos\Bundle\MakerBundle\Maker;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
-use Survos\BaseBundle\Renderer\ParamConverterRenderer;
+use Survos\Bundle\MakerBundle\Renderer\ParamConverterRenderer;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
 use Symfony\Bundle\MakerBundle\DependencyBuilder;
 use Symfony\Bundle\MakerBundle\Doctrine\DoctrineHelper;
@@ -30,15 +30,10 @@ final class MakeParamConverter extends AbstractMaker implements MakerInterface
 {
     private $entityHelper;
     private $formTypeRenderer; // , FormTypeRenderer $formTypeRenderer, see this for example
-    /**
-     * @var ParamConverterRenderer
-     */
-    private $paramConverterRenderer;
 
-    public function __construct(DoctrineHelper $entityHelper, ParamConverterRenderer $paramConverterRenderer)
+    public function __construct(DoctrineHelper $entityHelper, private ParamConverterRenderer $paramConverterRenderer)
     {
         $this->entityHelper = $entityHelper;
-        $this->paramConverterRenderer = $paramConverterRenderer;
     }
 
     public static function getCommandName(): string
