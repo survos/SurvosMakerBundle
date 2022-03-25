@@ -1,6 +1,6 @@
 <?php
 
-namespace Survos\BaseBundle\Maker;
+namespace Survos\Bundle\MakerBundle\Maker;
 
 use Symfony\Bundle\MakerBundle\Generator as SymfonyGenerator;
 

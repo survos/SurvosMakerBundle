@@ -1,7 +1,6 @@
 <?php
 
-namespace Survos\BaseBundle\Command;
-
+namespace Survos\Bundle\MakerBundle\Command;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;

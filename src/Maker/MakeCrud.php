@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Survos\BaseBundle\Maker;
+namespace Survos\Bundle\MakerBundle\Maker;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Symfony\Component\String\Inflector\EnglishInflector;

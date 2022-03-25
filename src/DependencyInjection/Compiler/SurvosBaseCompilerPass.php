@@ -1,6 +1,6 @@
 <?php
 
-namespace Survos\BaseBundle\DependencyInjection\Compiler;
+namespace Survos\Bundle\MakerBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

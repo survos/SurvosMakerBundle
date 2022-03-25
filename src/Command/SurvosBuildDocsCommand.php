@@ -1,6 +1,6 @@
 <?php
 
-namespace Survos\BaseBundle\Command;
+namespace Survos\Bundle\MakerBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

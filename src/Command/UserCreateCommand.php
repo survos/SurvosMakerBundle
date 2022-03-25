@@ -1,6 +1,6 @@
 <?php
 
-namespace Survos\BaseBundle\Command;
+namespace Survos\Bundle\MakerBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Survos\BaseBundle\BaseService;

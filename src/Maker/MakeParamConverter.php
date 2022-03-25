@@ -1,6 +1,6 @@
 <?php
 
-namespace Survos\BaseBundle\Maker;
+namespace Symfony\Bundle\MakerBundle;;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Survos\BaseBundle\Renderer\ParamConverterRenderer;

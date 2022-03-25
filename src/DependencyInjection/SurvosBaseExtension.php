@@ -1,6 +1,6 @@
 <?php
 
-namespace Survos\BaseBundle\DependencyInjection;
+namespace Survos\Bundle\MakerBundle\DependencyInjection;
 
 use Survos\BaseBundle\Configuration\SurvosBaseConfiguration;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
