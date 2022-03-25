@@ -1,0 +1,141 @@
+{% extends '@KnpMenu/menu.html.twig' %}
+{% set debug = options['debug']|default(false) %}
+{% block root %}
+    {% set listAttributes = item.childrenAttributes %}
+    {{ block('list') -}}
+{% endblock %}
+
+{% block list %}
+    {% set depth = depth is defined ? depth + 1 : 0 %}
+    {% if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
+        {% import "knp_menu.html.twig" as macros %}
+
+        {% if matcher.isAncestor(item) %}
+            {%- set listAttributes = listAttributes|merge({class: (listAttributes.class|default(''))|trim}) -%}
+        {% endif %}
+        {% if item.isRoot %}
+            {%- set listAttributes = item.isRoot
+                ? options['rootAttributes']
+                : (listAttributes|merge({class: (listAttributes.class|default('') ~ ' nav-treeviewXX')}))
+            |trim -%}
+        {% endif %}
+        <ul{{ macros.attributes(listAttributes) }}>
+            {{ block('children') }}
+        </ul>
+        {% set depth = depth - 1 %}
+    {% endif %}
+{% endblock %}
+
+{% block linkElement %}
+    {% import "knp_menu.html.twig" as macros %}
+    {% import _self as ownmacro %}
+{#    {{ ownmacro.setCssClassAttribute(item, 'LinkAttribute', 'nav-link depth-' ~ item.level ) }}#}
+
+    {%- set classes = item.attribute('class') is not empty ? [item.attribute('class'), 'nav-item'] : ['nav-item'] %}
+    <!-- linkElement -->
+
+    {%- set attributes = item.linkAttributes %}
+    {% if matcher.isCurrent(item) %}
+        {%- set classes = classes|default([])|merge([options.currentClass]) %}
+        {% set attributes = attributes|merge({ 'class': attributes.class|default([])|join(' ') ~ ' ' ~ options.currentClass} ) %}
+    {% endif %}
+
+    {# there's probably a way to pass this in via render_sidebar.html.twig, but not sure how! #}
+    {% set attributes = attributes|merge({ 'class': attributes.class|default([])|join(' ') ~ ' ' ~ options.link_class} ) %}
+
+    <a href="{{ item.uri }}" {{ macros.attributes(attributes) }}>
+        {% if item.attribute('data-icon') is not empty  %}
+            <span class="{{ item.attribute('data-icon') }}"></span>
+        {% endif %}
+        {{ block('label') }}
+    </a>
+{% endblock %}
+
+{% block item %}
+
+    {% if item.displayed %}
+        {# building the class of the item #}
+        {%- set classes = item.attribute('class') is not empty ? [item.attribute('class')] : [] %}
+        {%- if matcher.isCurrent(item) %}
+            {%- set classes = classes|merge([options.currentClass]) %}
+        {%- elseif matcher.isAncestor(item, options.matchingDepth) %}
+            {%- set classes = classes|merge([options.ancestorClass]) %}
+        {%- endif %}
+        {%- if item.actsLikeFirst %}
+            {%- set classes = classes|merge([options.firstClass]) %}
+        {%- endif %}
+        {%- if item.actsLikeLast %}
+            {%- set classes = classes|merge([options.lastClass]) %}
+        {%- endif %}
+
+        {# Mark item as "leaf" (no children) or as "branch" (has children that are displayed) #}
+        {% if item.hasChildren and options.depth is not same as(0) %}
+            {% if options.branch_class is not empty and item.displayChildren %}
+                <!-- branch, has leaves ({{  matcher.isAncestor(item, options.matchingDepth) ? 'open' : 'closed' }}) -->
+                {% set classes = classes|merge([options.branch_class]) %}
+            {% endif %}
+        {% elseif options.leaf_class is not empty %}
+            <!-- has leaf_class -->
+            {%- set classes = classes|merge([options.leaf_class]) %}
+        {%- endif %}
+
+        {%- set attributes = item.attributes %}
+        {%- if classes is not empty %}
+            {%- set attributes = attributes|merge({'class': classes|join(' ')}) %}
+        {%- endif %}
+        {# displaying the item #}
+        {% import _self as knp_menu %}
+        <li{{ knp_menu.attributes(attributes) }}>
+            {# if uri is set, it must be a leaf. #}
+            {%- if item.uri is not empty and (not matcher.isCurrent(item) or options.currentAsLink) %}
+                {{ block('linkElement') }}
+            {%- else %}
+                {% if item.hasChildren %}
+                <!-- collapsible {{  matcher.isAncestor(item, options.matchingDepth) ? 'ancestor' : 'not ancestor' }}-->
+                <a class=" nav-link {{ matcher.isAncestor(item, options.matchingDepth)? ' active' }}">
+                    <!-- icon -->
+                    <span class="nav-icon {{ item.attribute('data-icon') is not empty ? item.attribute('data-icon') : 'fas fa-circle' }}"></span>
+
+                    <p>
+                        {{ block('spanElement') }}
+                        <span class="end fas fa-angle-left"></span>
+                    </p>
+                </a>
+                {% else %}
+                    {{ block('spanElement') }}
+                {% endif %}
+
+            {%- endif %}
+            {# render the list of children#}
+            {%- set childrenClasses = item.childrenAttribute('class') is not empty ? [item.childrenAttribute('class')] : [] %}
+            {%- set childrenClasses = childrenClasses|merge(['nav-treeview menu_level_' ~ item.level]) %}
+{#            {%- set childrenClasses = childrenClasses|merge(['nav-treeview']) %}#}
+            {%- set listAttributes = item.childrenAttributes|merge({'class': childrenClasses|join(' ') }) %}
+            {{ block('list') }}
+        </li>
+    {% endif %}
+{% endblock %}
+
+
+{% block spanElement %}{% import _self as knp_menu %}
+    <!-- spanElement, includes label -->
+    <span{{ knp_menu.attributes(item.labelAttributes) }}>{{ block('label') }}</span>
+{% endblock %}
+
+{% block label %}{% if options.allow_safe_labels and item.getExtra('safe_label', false) %}{{ item.label|raw }}{% else %}{{ item.label }}{% endif %} {% endblock %}
+
+
+{% macro badges(item) %}
+    {% import _self as selfMacros %}
+    {% if item.getExtra('badge') is not null %}
+        {{ selfMacros.badge(item.getExtra('badge')) }}
+    {% elseif item.getExtra('badges') is not null %}
+        {% for badge in item.getExtra('badges') %}
+            {{ selfMacros.badge(badge) }}
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
+
+{% macro badge(badge) %}
+    <div class="mm-counter"><span class="badge badge-{{ badge.color|default('success') }}">{{ badge.value }}</span></div>
+{% endmacro %}

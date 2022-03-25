@@ -1,0 +1,71 @@
+    <nav class="navbar navbar-expand navbar-light navbar-bg sticky-top d-print-none">
+
+        <a class="sidebar-toggle js-sidebar-toggle">
+            <i class="hamburger align-self-center"></i>
+        </a>
+
+        <div class="{{ admin.containerClass }}">
+
+
+            {% block breadcrumb_wrapper %}
+                <nav aria-label="breadcrumb float-end">
+                    <ol class="breadcrumb navbar-nav ms-auto mb-2 mb-lg-0">
+                        {% block breadcrumbs %}
+                            {{ breadcrumb('home'|trans, path('app_homepage')) }}
+                            {#                                        <li class="breadcrumb-item"><a href="{{ path('app_homepage') }}">Home</a></li>#}
+                            {#  this is more the page title. #}
+                        {% endblock %}
+                        {#                                    | {{ render_breadcrumb(admin_menu) }}#}
+                    </ol>
+                </nav>
+            {% endblock %}
+
+            <div class="navbar-collapse collapse">
+                <ul class="navbar-nav navbar-align">
+                    {% if admin.notificationEnable() %}
+                        {% include "@UmbrellaAdmin/Notification/widget.html.twig" %}
+                    {% endif %}
+
+                    {% block top_bar_navbar_items %}
+                        {#                                    <li class="nav-item">#}
+                        {#                                        projects#}
+                        {#                                    </li>#}
+                    {% endblock %}
+
+                    <li class="nav-item">
+                        {% block navbar_search %}
+                            {#                                    <input type="search" width="30"/>#}
+                        {% endblock %}
+                    </li>
+
+
+
+                    {#                                <li class="nav-item">#}
+                    {#                                    <a class="nav-icon js-fullscreen d-none d-lg-block" href="#" is="umbrella-fullscreen-toggler">#}
+                    {#                                        <i class="uil uil-focus"></i>#}
+                    {#                                    </a>#}
+                    {#                                </li>#}
+
+                    {#                                <li class="nav-item">#}
+                    {#                                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Settings</button>#}
+                    {#                                </li>#}
+
+                    {% if not is_granted('ROLE_USER') %}
+                        <li>
+                            <a href="{{ path('app_login') }}" class="dropdown-item">
+                                <span>{{ 'label.sign_in' | trans }}</span>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% block navbar_profile_items %}
+                    {% embed '@UmbrellaAdmin/_userinfo.html.twig' %}
+                    {% endembed  %}
+                    {% endblock %}
+
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+

@@ -1,0 +1,56 @@
+{% extends '@SurvosBase/knp_menu.html.twig' %}
+
+{% macro setCssClassAttribute(item, type, add) %}
+    {% set getter = 'get' ~ type %}
+    {% set setter = 'set' ~ type %}
+    {% set value = attribute(item, getter, ['class']) %}
+    {% if value is iterable %}
+        {% set value = value|join(' ') %}
+    {% endif %}
+    {% do attribute(item, setter, ['class', value ~ ' ' ~ add]) %}
+{% endmacro %}
+
+{% block item %}
+    <h1>Item</h1>
+{% endblock %}
+
+{% block list %}
+    {% if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
+
+        <div class="row">
+        {% for item in item.children %}
+                <!-- /.col-md-4 -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h2 class="card-title">
+                                {{ block('label') }}
+                            </h2>
+                            <p class="card-text">
+                                {{  item.extras.description|default("%s.description"|format(item.name)|trans) }}</p>
+                            <ul>
+                                {% for i in item.children %}
+                                    <li>
+                                        <a href="{{ i.uri }}" class="">
+                                            {% if i.attributes.icon|default(false) %}
+                                                <span class="{{ i.attributes.icon }}"></span>
+                                            {% endif %}
+                                            {{ i.label|trans }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="card-footer">
+                            {{ block('linkElement') }}
+                            <a href="{{ item.uri }}" class="btn btn-primary">Go</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col-md-4 -->
+        {% endfor %}
+
+            </div>
+
+    {% endif %}
+{% endblock %}

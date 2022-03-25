@@ -1,0 +1,38 @@
+<li class="nav-item dropdown user-menu">
+    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+{#        <img src="./assets/img/user2-160x160.jpg" class="user-image img-circle shadow" alt="User Image">#}
+        <span class="d-none d-md-inline">{{ app.user.email }}</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+        <!-- User image -->
+        <li class="user-header bg-primary">
+{#            <img src="./assets/img/user2-160x160.jpg" class="img-circle shadow" alt="User Image">#}
+
+            <p>
+                {{ app.user.email }}
+                <small>Member</small>
+            </p>
+        </li>
+
+        <!-- Menu Body -->
+        <li class="user-body">
+            <section class="row">
+                <div class="col-4 text-center">
+                    <a href="#">Projects</a>
+                </div>
+                <div class="col-4 text-center">
+                    <a href="#">Bookmarks</a>
+                </div>
+                <div class="col-4 text-center">
+                    <a href="#">Suggestions</a>
+                </div>
+            </section>
+            <!-- /.row -->
+        </li>
+        <!-- Menu Footer-->
+        <li class="user-footer">
+            <a href="{{ path('app_profile') }}" class="btn btn-default btn-flat">Profile</a>
+            <a href="{{ path('app_logout') }}" class="btn btn-default btn-flat float-end">Sign out</a>
+        </li>
+    </ul>
+</li>

@@ -1,0 +1,9 @@
+The <info>%command.name%</info> command generates crud controller with templates for selected entity.
+
+The entity must define a unique identifiers method (e.g. id, slug), which is used for the ParamConverter.
+
+Templates extend a base specific to the entity.
+
+<info>php %command.full_name% BlogPost</info>
+
+If the argument is missing, the command will ask for the entity class name interactively.

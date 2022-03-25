@@ -1,0 +1,34 @@
+{% extends '@KnpMenu/menu.html.twig' %}
+
+
+{% block linkElement %}
+    {% import _self as knp_menu %}
+    <a href="{{ item.uri }}"{{ knp_menu.attributes(item.linkAttributes) }}>{{ block('label') }}</a>{% endblock %}
+
+{% block spanElement %}{% import _self as knp_menu %}
+    <span{{ knp_menu.attributes(item.labelAttributes) }}>{{ block('label') }}</span>{% endblock %}
+
+{% block label %}
+    {% import '@SurvosBase/adminlte/knp_menu.html.twig' as adminLteMenuMacros %}
+    {% if item.attributes.icon|default(false) %}
+        <span class="{{ item.attributes.icon }}"></span>
+    {% endif %}
+
+    {% if item.uri %}
+        {{ item.label|raw }}
+        {% if app.request.get('debug') %}
+        <small>{{ item.uri }}</small>
+            {% endif %}
+        {% if item.getExtra('badge') %}
+            {{ adminLteMenuMacros.badges(item) }}
+            {% endif %}
+        {% if item.children %}
+            <span class="mm-counter">{{ item.children|length }}</span>
+        {% endif %}
+    {% else %}
+        <span class="{{ item.attributes.style|default('') == 'heading' ? 'mm-divider' }}">
+            {{ item.label|raw }}
+        </span>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="Survos\Command\SurvosSetupHerokuCommand" class="Survos\Command\SurvosSetupHerokuCommand" public="false">
+            <tag name="console.command" />
+        </service>
+
+        <service id="Survos\BaseBundle\Command\SurvosBuildDocsCommand" class="Survos\BaseBundle\Command\SurvosBuildDocsCommand" public="false">
+            <argument type="service" id="twig"/>
+            <tag name="console.command" />
+        </service>
+
+        <!-- this is used by the Survos Workflow bundle -->
+        <service id="maker.param_converter" class="Survos\BaseBundle\Renderer\ParamConverterRenderer" public="true">
+            <argument type="service" id="maker.generator"/>
+        </service>
+
+        <service id="Survos\BaseBundle\Maker\MakeParamConverter"
+                 class="Survos\BaseBundle\Maker\MakeParamConverter" public="false">
+            <argument type="service" id="maker.doctrine_helper" />
+            <argument type="service" id="maker.param_converter" />
+            <tag name="maker.command" />
+        </service>
+
+        <service id="Survos\BaseBundle\Maker\MakeCrud"
+                 class="Survos\BaseBundle\Maker\MakeCrud" public="false">
+            <argument type="service" id="maker.doctrine_helper" />
+            <argument type="service" id="maker.renderer.form_type_renderer" />
+            <tag name="maker.command" />
+        </service>
+
+        <service id="Survos\BaseBundle\Command\SurvosSetupCommand" class="Survos\BaseBundle\Command\SurvosSetupCommand" public="false">
+            <argument type="service" id="kernel" />
+            <argument type="service" id="doctrine.orm.entity_manager.abstract" />
+            <argument type="service" id="twig" />
+            <tag name="console.command" />
+        </service>
+
+        <service id="Survos\BaseBundle\Command\SurvosInitCommand" class="Survos\BaseBundle\Command\SurvosInitCommand" public="false">
+            <argument type="service" id="kernel" />
+            <argument type="service" id="doctrine.orm.entity_manager.abstract" />
+            <argument type="service" id="parameter_bag" />
+            <argument type="service" id="twig" />
+            <tag name="console.command" />
+        </service>
+
+    </services>
+</container>

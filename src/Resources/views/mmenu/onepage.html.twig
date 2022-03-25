@@ -1,0 +1,116 @@
+{% extends '@SurvosBase/mmenu/base.html.twig' %}
+
+{% block stylesheets %}
+{{ parent() }}
+<!-- for the one page layout -->
+<style type="text/css">
+    section
+    {
+        border-top: 1px solid #ccc;
+        padding: 150px 0 200px;
+    }
+    section:first-child
+    {
+        border-top: none;
+        padding-top: 0;
+    }
+</style>
+
+<!-- for the fixed header -->
+<style type="text/css">
+    .header,
+    .footer
+    {
+        position: fixed;
+        left: 0;
+        right: 0;
+    }
+    .header
+    {
+        top: 0;
+    }
+    .footer
+    {
+        bottom: 0;
+    }
+    @media (min-width: 800px) {
+        .header a
+        {
+            display: none;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div id="page">
+    <div class="header Fixed">
+        <a href="#menu"><span></span></a>
+        Demo
+    </div>
+    <div class="content" id="content">
+        <section id="intro">
+            <p><strong>This is a demo</strong><br />
+                Click the menu icon to open the menu.</p>
+            <p>Some of the links in the menu link to a section on this page.</p>
+        </section>
+        <section id="widescreen">
+            <p><strong>Widescreen extension</strong><br />
+                On wider screens, the menu will always be opened.</p>
+            <p><a href="#menu">Open the menu.</a></p>
+        </section>
+        <section id="drag">
+            <p><strong>Drag add-on</strong><br />
+                You can also drag the page to the right to open the menu.</p>
+            <p><a href="#menu">Open the menu.</a></p>
+        </section>
+        <section id="fixed">
+            <p><strong>Fixed elements</strong><br />
+                Notice how the fixed header and footer slide out along with the page.</p>
+            <p><a href="#menu">Open the menu.</a></p>
+        </section>
+    </div>
+    <div class="footer Fixed">
+        Fixed footer :-)
+    </div>
+    <nav id="menu">
+        <ul>
+            <li><a href="#content">Introduction</a></li>
+            <li><a href="#widescreen">Widescreen extension</a></li>
+            <li><a href="#drag">Drag add-on</a></li>
+            <li><a href="#fixed">Fixed elements</a></li>
+
+            <li class="Divider">Other demos</li>
+            <li><a href="default.html">Default demo</a></li>
+            <li><a href="{{ path('mmenu_page', {page: 'advanced'}) }}">Advanced demo</a></li>
+        </ul>
+    </nav>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+    new Mmenu(
+        document.querySelector( '#menu' ),
+        {
+            drag 		: true,
+            pageScroll 	: {
+                scroll 		: true,
+                update		: true
+            },
+            sidebar 	: {
+                expanded 	: 800
+            }
+        }
+    );
+
+    document.addEventListener( 'click', function( evnt ) {
+        var anchor = evnt.target.closest( 'a[href^="#/"]' );
+        if ( anchor ) {
+            alert('Thank you for clicking, but that\'s a demo link.');
+            evnt.preventDefault();
+        }
+    });
+</script>
+{% endblock %}

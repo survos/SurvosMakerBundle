@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -e
+DEV_BRANCH=$(git symbolic-ref --short HEAD)
+# BETA_BRANCH='7.0'
+# git checkout $BETA_BRANCH
+git pull
+git merge origin/master
+# grunt bump
+git push --follow-tags
+git checkout $DEV_BRANCH
+# git merge $BETA_BRANCH
+git push
+
+# https://www.barrykooij.com/create-github-releases-via-command-line/
+git tag -a 2.0.1 -m "Release of version 2.0.0"
+git push --tags
+

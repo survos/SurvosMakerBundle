@@ -1,0 +1,2 @@
+Creates a ParamConverter that will allow any controller to inject an object based on some key besides the unique identifier.
+

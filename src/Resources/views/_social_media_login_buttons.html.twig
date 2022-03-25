@@ -1,0 +1,33 @@
+
+{% if app.environment == 'dev' %}
+    <a class="btn btn-warning" href="{{ path('oauth_providers') }}"><i class="fas fa-cogs"></i> Configure OAuth</a>
+{% endif %}
+<hr />
+
+{% for clientKey in clientKeys|default([]) %}
+<button>
+    <a xxclass="btn btn-lg" href="{{ path('oauth_connect_start', {clientKey: clientKey}) }}"><i class="fab fa-{{clientKey}}"></i>{{ clientKey|title }}</a>
+</button>
+{% endfor %}
+
+{#
+<div class="login-social-set text-center">
+    <span>Sign in with:</span>
+    <a title="Login with GitHub" href="https://symfonycasts.com/login/github"><i class="fab fa-github knp-color-light-black"></i></a>
+
+    <a title="Login with Twitter" href="https://symfonycasts.com/login/twitter"><i class="fab fa-twitter-square"></i></a>
+
+    <a title="Login with Facebook" href="https://symfonycasts.com/login/facebook"><i class="fab fa-facebook-square"></i></a>
+    <a title="Login with Google" href="https://symfonycasts.com/login/facebook"><i class="fab fa-google-plus"></i></a>
+</div>
+#}
+
+{#
+<button>
+    <a class="btn" href="{{ path('connect_github_start', {clientCode: 'github'}) }}"><i class="fab fa-github fa-3x"></i> Login with Github, using AUTH</a>
+</button>
+
+<button>
+    <a class="btn" href="{{ path('connect_google_start') }}"><i class="fab fa-google fa-3x"></i> Login with Google</a>
+</button>
+#}

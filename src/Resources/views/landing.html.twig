@@ -1,0 +1,155 @@
+{% extends ['base.html.twig', "SurvosBaseBundle::base.html.twig"] %}
+
+{# from https://getbootstrap.com/docs/4.3/examples/jumbotron/ #}
+{% block title "home.title"|trans %}
+
+{% block test_navbar %}
+    {% set menuHtml %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    {{ knp_menu_render('base_menu', {'currentClass': 'active', 'template': '@SurvosBase/knp_menu.html.twig'}) }}
+    {{ knp_menu_render('auth_menu', {'currentClass': 'active', 'template': '@SurvosBase/knp_menu.html.twig'}) }}
+    </div>
+</nav>
+    {% endset %}
+
+    <div class="row">
+        <div class="col-md-6">
+            {{ menuHtml }}
+            <pre>
+    {{ menuHtml|e }}
+    </pre>
+        </div>
+        <div class="col-md-6">
+            {% include "@SurvosBase/navbar.html.twig" %}
+            {% set workingMenuHtml = source('@SurvosBase/navbar.html.twig') %}
+            <pre>
+    {{ workingMenuHtml|e }}
+    </pre>
+        </div>
+    </div>
+{% endblock %}
+
+{% block oldnavbar %}
+    <i class="fas fa-check"></i>
+    TEST
+
+    <!-- Navigation -->
+<xnav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">{{ app.request.baseUrl }}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsivex">
+            Test menu??
+        {{ knp_menu_render('test_menu', {'currentClass': 'active', 'template': 'knp_menu.html.twig'}) }}
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+
+
+            <ul class="nav navbar-nav ml-auto">
+
+
+                {{ 0 ? knp_menu_render('base_menu', {'currentClass': 'active', 'template': 'knp_menu.html.twig'}) }}
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('logout') }}">Logout {{ app.user.originUsername }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('profile') }}"><i class="fa fa-pencil">Edit</i> </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('profile') }}">Profile</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_login') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_register') }}">Register</a>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</xnav>
+{% endblock %}
+
+{% block body %}
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Heading Row -->
+        {% block jumbotron %}
+        <div class="row my-4">
+            <div class="col-lg-8">
+                {#
+                <img src="{{ asset('logo.png')}}" width="300" alt="{{ 'home.title'|trans }} Logo"/>
+                @todo: use SVG!
+                <img class="img-fluid rounded" src="//placehold.it/600x200?text={{ 'home.title'|trans }}" alt="">
+                #}
+                <img class="img-fluid rounded" src="/android-chrome-192x192.png" alt="">
+            </div>
+            <!-- /.col-lg-8 -->
+            <div class="col-lg-4">
+                <h1>{{ 'home.title'|trans }}</h1>
+                <p>{{ 'home.description'|trans|markdown|raw }}</p>
+                {% if 'home.call-to-action'|markdown|trans != 'home.call-to-action' %}
+                <a class="btn btn-primary btn-lg" href="#">{{ 'home.call-to-action'|trans }} </a>
+                {% endif %}
+            </div>
+
+            <!-- /.col-md-4 -->
+        </div>
+        {% endblock %}
+        <!-- /.row -->
+
+        <!-- Intro Header -->
+        {% block content %}
+        <div class="card text-white bg-secondary my-4 text-center">
+            <div class="card-body text-danger">
+                <p class="text-white m-0">{{ 'home.intro'|trans|raw }}</p>
+            </div>
+        </div>
+
+        {# no try/catch, so this is now REQUIRED!  Might be better to set this as an option in survos_base.yaml
+        {{ knp_menu_render(base_content_menu_route, {currentClass: 'active', template: '@SurvosBase/base_menu_blocks.html.twig'}) }}
+        #}
+        {% endblock %}
+
+    </div>
+    <!-- /.container -->
+
+    {{ block('footer') }}
+
+
+{% endblock %}
+
+{% block footer %}
+
+<!-- Footer -->
+<footer class="py-2 bg-dark">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; {{ "now"|date('Y') }}</p>
+    </div>
+    <!-- /.container -->
+</footer>
+
+{% endblock %}

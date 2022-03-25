@@ -1,0 +1,223 @@
+{#  \Survos\BaseBundle\SurvosBaseBundle base.html.twig #}
+{#
+Copied from '@SurvosBaseBundle/layout/default-layout.html.twig' and adjusted for Survos
+
+#}
+<!DOCTYPE html{% block html_start %}{% endblock %}>
+<html lang="{{ app.request.locale }}">
+<head>
+    {% block head %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    {% endblock %}
+    <title>{% block title %}{{ block('page_title') }}{% endblock %}</title>
+
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+
+{#        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">#}
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-16x16.png') }}">
+        <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+
+
+</head>
+{#
+Apply one of the following classes for the skin:
+skin-blue, skin-black, skin-purple, skin-yellow, skin-red, skin-green
+
+Apply one or more of the following classes for the layout options:
+fixed, layout-boxed, layout-top-nav, sidebar-collapse, sidebar-mini
+
+#}
+{% block body_start_tag %}
+<body {% block body_start %}{% endblock %} class="{{ admin_lte_context.skin|default("") }} ">
+{% endblock %}
+{% block after_body_start %}{% endblock %}
+<div class="wrapper">
+
+
+    {% block navbar %}
+        <nav class="main-header navbar navbar-expand fixed-top navbar-dark">
+            <ul class="navbar-nav">
+                {% block navbar_toggle %}
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="pushmenu" href="#">
+                            <i class="fas fa-bars"></i>
+                            <span class="sr-only">{{ 'Toggle navigation'|trans({}, 'AdminLTEBundle')  }}</span>
+                        </a>
+                    </li>
+                {% endblock %}
+
+                {% block navbar_links %}
+                    {# TODO document me #}
+                    {#
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="../../index3.html" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="#" class="nav-link">Contact</a>
+                    </li>
+                    #}
+                {% endblock %}
+            </ul>
+
+            {% block navbar_search %}
+                {% block sidebar_search %}
+
+                    {{ 0 and render(controller('KevinPapst\\AdminLTEBundle\\Controller\\SidebarController::searchFormAction')) }}
+                {% endblock %}
+            {% endblock %}
+
+
+            <ul class="navbar-nav ml-auto">
+
+                {% block navbar_start %}{% endblock %}
+
+                {#
+                @todo: refactor navbar
+
+                {% block navbar_actions %}
+                    Use HInclude here!
+                    {#
+                {% block navbar_messages %}
+                    {{ render(control`ler('KevinPapst\\AdminLTEBundle\\Controller\\NavbarController::messagesAction')) }}
+                {% endblock %}
+                {% block navbar_notifications %}
+                    {{ render(controller('KevinPapst\\AdminLTEBundle\\Controller\\NavbarController::notificationsAction')) }}
+                {% endblock %}
+                {% block navbar_tasks %}
+                    {{ render(controller('KevinPapst\\AdminLTEBundle\\Controller\\NavbarController::tasksAction')) }}
+                {% endblock %}
+                #}
+
+                {% block navbar_user %}
+                    {% if not is_granted('ROLE_USER') %}
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <a href="{{ path('app_login') }}">Login</a>
+                            </li>
+                        </ul>
+                    {% endif %}
+{#                    {{ render(controller('KevinPapst\\AdminLTEBundle\\Controller\\NavbarController::userAction')) }}#}
+                {% endblock %}
+
+                {% block navbar_end %}{% endblock %}
+
+                {% block navbar_control_sidebar_toggle %}
+                    {% if admin_lte_context.control_sidebar is defined and admin_lte_context.control_sidebar is not empty %}
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-widget="control-sidebar" data-slide="true"><i class="fas fa-th-large"></i></a>
+                        </li>
+                    {% endif %}
+                {% endblock %}
+            </ul>
+        </nav>
+    {% endblock %}
+
+    {% block sidebar %}
+        <aside class="main-sidebar sidebar-dark-primary elevation-4 d-print-none">
+            <a href="{% block logo_path %}{{ path('app_homepage'|route_alias) }}{% endblock %}" class="brand-link ">
+                {% block logo_mini %}
+                    <img src="{{ asset('favicon-32x32.png')  }}" alt="Logo" class="brand-image elevation-3" >
+                    <span class="brand-text font-weight-light">{{ logo_mini|default('home.title'|trans)}}</span>
+                {% endblock %}
+                {% block logo_large %} {{ logo_large|default('home.title'|trans)}} {% endblock %}
+            </a>
+
+            <div class="sidebar">
+                {% block sidebar_user %}
+                    {% if app.user is not null and is_granted('IS_AUTHENTICATED_FULLY') %}
+{#                         render(controller('KevinPapst\\AdminLTEBundle\\Controller\\SidebarController::userPanelAction'))#}
+                    {% endif %}
+                {% endblock %}
+
+{#                {% block sidebar_user '@todo: user info' %}#}
+
+
+                {% block sidebar_nav %}
+BASE
+                    {% include '@SurvosBase/render_sidebar_menu.html.twig' with {menuCode: 'survos_sidebar_menu'} %}
+                {% endblock %}
+            </div>
+        </aside>
+    {% endblock %}
+
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-9">
+                        <h1 class="m-0 text-dark">
+                            {% block back_link %}{% endblock %}
+                            {% block page_title 'home.title'|trans %}
+                        </h1>
+                        {% if block('page_subtitle') is defined %}<small>{{ block('page_subtitle') }}</small>{% endif %}
+                    </div>
+                    <div class="col-sm-3">
+                        {% block breadcrumb %}
+                            breadcrumbs here
+                             include '@SurvosBaseBundle/Breadcrumb/knp-breadcrumb.html.twig'
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% block page_content_before %}
+            {% block page_navigation %}
+                Page menu..
+                {# emit page events populated by the top menu subscriber #}
+                {% include '@SurvosBase/render_page_menu.html.twig' with {page_title: block('page_title')} %}
+            {% endblock %}
+        {% endblock %}
+
+        <section class="{% block page_content_class %}content{% endblock %}">
+            <div class="container-fluid">
+                {% block page_content_start %}
+                    {{ include('@SurvosBase/Partials/_flash_messages.html.twig') }}
+                {% endblock %}
+
+                {% block page_content %}
+                    {{ block('body') }}
+                {% endblock %}
+
+                {% block page_content_end %}{% endblock %}
+            </div>
+        </section>
+
+        {% block page_content_after %}{% endblock %}
+    </div>
+
+    {% block footer %}
+         {% include '@SurvosBase/Partials/_footer.html.twig'  %}
+    {% endblock %}
+
+    {% block control_sidebar %}
+{#        <h1>Control_sidebar {{ _self }}</h1>#}
+{#        {% if admin_lte_context.control_sidebar %}#}
+{#             include '@SurvosBase/Partials/_control-sidebar.html.twig'#}
+{#        {% endif %}#}
+
+{#         hinclude '@SurvosBaseBundle/Partials/_footer.html.twig'#}
+    {% endblock %}
+        {# @todo: get this working!  It's pretty cool
+    {% block control_sidebar %}
+        {% if admin_lte_context.control_sidebar %}
+            {% include '@SurvosBaseBundle/Partials/_control-sidebar.html.twig' %}
+        {% endif %}
+    {% endblock %}
+        #}
+
+</div>
+
+
+</body>
+</html>
+

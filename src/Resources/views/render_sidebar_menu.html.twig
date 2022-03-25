@@ -1,0 +1,67 @@
+    {% if menuCode is not defined %}
+    {% set menuCode = 'survos_sidebar_menu'%}
+{% endif %}
+{# was admin_lte_context.knp_menu.main_menu  #}
+{#
+    I guess we could pass root-attributes and handle it ourself.  Otherwise, set the root attributes in MenuBuilder.php (which dispatches the menu event)
+"attributes"    : "mt-2 navbar whereisthisfrom navbar-dark knp_collapse_menu",
+#}
+
+{% if theme is not defined %}
+{% set theme = 'adminkit' %}
+{% endif %}
+
+{% if theme == 'volt' %}
+{{ knp_menu_render(menuCode, {
+    'menu_code'     : menuCode,
+    "template"      : "@SurvosBase/knp_menu_volt.html.twig",
+    "currentClass"  : "active show",
+    "ancestorClass" : "ancestor-active current_ancestor",
+    "branch_class"  : "multi-level nav-item justify-content-between",
+    'firstClass'    : 'first-class',
+    'lastClass'     : 'last-class',
+    'leaf_class'    : 'leaf_class nav-link',
+    "allow_safe_labels": true,
+})
+}}
+{% endif %}
+
+theme {{ theme }}
+{% if theme == 'mmenu' %}
+
+    {% set menuItem = knp_menu_get(menuCode, [], {'some_option': 'my_value'}) %}
+    {{ knp_menu_render(menuItem) }}
+
+{#    {{ knp_menu_render(menuCode, {#}
+{#        'menu_code'     : menuCode,#}
+{#        "template"      : "@SurvosBase/knp_menu/mmenu_knp_menu.html.twig",#}
+{#        "currentClass"  : "active show",#}
+{#        "ancestorClass" : "ancestor-active current_ancestor",#}
+{#        "branch_class"  : "multi-level nav-item justify-content-between",#}
+{#        'firstClass'    : 'first-class',#}
+{#        'lastClass'     : 'last-class',#}
+{#        'leaf_class'    : 'leaf_class nav-link',#}
+{#        "allow_safe_labels": true,#}
+{#    })#}
+{#    }}#}
+{% endif %}
+
+<!-- {{ _self }} -->
+<span class="text-danger">Theme: {{ theme }}</span>
+{% if theme == 'adminkit' %}
+    {% set html = knp_menu_render(menuCode, {
+        'menu_code'     : menuCode,
+        "template"      : "@SurvosBase/knp_menu_adminkit.html.twig",
+        "currentClass"  : "active show",
+        "ancestorClass" : "ancestor-active current_ancestor",
+        "branch_class"  : "sidebar-header",
+        'leaf_class'    : 'sidebar-item',
+        "allow_safe_labels": true,
+    })
+    %}
+    {% if debug|default(false) %}
+        <pre>{{ html|indent|escape('html') }}</pre>
+    {% endif %}
+    {{ html|raw }}
+{% endif %}
+

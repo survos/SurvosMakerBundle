@@ -1,0 +1,29 @@
+###> symfony/framework-bundle ###
+.idea
+/.env.live
+/.env.local
+/.env.*.local
+composer.lock
+/docker/.env
+/docker/.env.app
+/docker/.env.local
+/public/bundles/
+/public/js/fos_js_routes.json
+/var/
+/vendor/
+/config/secrets/prod/prod.sodium.decrypt.private
+composer.lock
+
+###< symfony/framework-bundle ###
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+/phpunit.xml
+###< symfony/phpunit-bridge ###

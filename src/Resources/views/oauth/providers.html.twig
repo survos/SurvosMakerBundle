@@ -1,0 +1,61 @@
+{% extends ['base.html.twig', "SurvosBaseBundle::base.html.twig"] %}
+
+{% block title 'OAuth Providers' %}
+{% block body %}
+
+    SiteURL: <input value="{{ url('app_homepage') }}" /><br />
+
+    <table class="table js-datatable">
+        <thead>
+        <tr>
+            <th>Key</th>
+            <th>Client ID</th>
+            <th>Apps Url</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for providerKey, providerData in clients %}
+            <tr>
+                <td><a class="btn btn-primary btn-sm" href="{{ path('oauth_provider', {providerKey:providerKey}) }}">
+                        Configure {{ providerKey }}</a>
+                </td>
+
+                <td>{{ providerData.client_id }}</td>
+                <td><a target="_blank" href="{{ providerData.apps_url }}">{{ providerData.apps_url }}</a></td>
+                <td>
+                    {{ providerData.clients ? providerData.clients|length }}
+                </td>
+                <td>
+                    {% for clientKey, client in providerData.clients %}
+                    {% set callback = url('oauth_connect_check', {clientKey: clientKey}, true)   %}
+                    <input value="{{ callback}}" /><a href="{{ callback }}" target="_blank"><i class="fas fa-external-link"></i></a> </td>
+                    {% endfor %}
+                {% set config = providerData %}
+                <td><a target="_blank" href="{{ config.admin_url }}">{{ config.admin_url }}</a></td>
+                <td><a target="_blank" href="{{ config.user_url }}">{{ config.user_url }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <ul>
+
+        {% for providerKey, providerData in clients %}
+            <h3>{{ providerKey }}</h3>
+        {% endfor %}
+
+        {#
+    {% for key, clientInfo in clients %}
+    {% set project = clientInfo.provider %}
+        {% set client = clientInfo.client %}
+        <li>{{ key }}:
+
+        <a href="{{ path('oauth_connect_check', {clientKey: key}) }}">redirect</a>
+
+        {{ dump(client) }}
+        {{ dump(project) }}
+    </li>
+        {% endfor %}
+    </ul>
+    #}
+
+{% endblock %}

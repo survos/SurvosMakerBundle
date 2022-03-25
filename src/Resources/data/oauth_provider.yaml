@@ -1,0 +1,1193 @@
+#  automatically recreated, merges data from knp oauth client bundle  and /var/www/Survos/BaseBundle/src/../Resources/data/oauth_provider_urls.yaml
+
+providers:
+    amazon:
+        type: amazon
+        client_id: '%env(OAUTH_AMAZON_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_AMAZON_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\AmazonClient
+        library: luchianenco/oauth2-amazon
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\AmazonClient
+                    # composer require luchianenco/oauth2-amazon
+                    amazon:
+                        # must be "amazon" - it activates that type!
+                        type: amazon
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_AMAZON_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_AMAZON_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_amazon_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    auth0:
+        type: auth0
+        client_id: '%env(OAUTH_AUTH0_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_AUTH0_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\Auth0Client
+        library: riskio/oauth2-auth0
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\Auth0Client
+                    # composer require riskio/oauth2-auth0
+                    auth0:
+                        # must be "auth0" - it activates that type!
+                        type: auth0
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_AUTH0_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_AUTH0_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_auth0_check
+                        redirect_params: {}
+                        # Your custom/definite Auth0 domain, e.g. "login.mycompany.com". Set this if you use Auth0's Custom Domain feature. The "account" and "region" parameters will be ignored in this case.
+                        # custom_domain: null
+                        # Your Auth0 domain/account, e.g. "mycompany" if your domain is "mycompany.auth0.com"
+                        # account: null
+                        # Your Auth0 region, e.g. "eu" if your tenant is in the EU.
+                        # region: null
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    azure:
+        type: azure
+        client_id: '%env(OAUTH_AZURE_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_AZURE_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\AzureClient
+        library: thenetworg/oauth2-azure
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\AzureClient
+                    # composer require thenetworg/oauth2-azure
+                    azure:
+                        # must be "azure" - it activates that type!
+                        type: azure
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_AZURE_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_AZURE_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_azure_check
+                        redirect_params: {}
+                        # Domain to build login URL
+                        # url_login: 'https://login.microsoftonline.com/'
+                        # Oauth path to authorize against
+                        # path_authorize: '/oauth2/authorize'
+                        # Oauth path to retrieve a token
+                        # path_token: '/oauth2/token'
+                        # Oauth scope send with the request
+                        # scope: {}
+                        # The tenant to use, default is `common`
+                        # tenant: 'common'
+                        # Domain to build request URL
+                        # url_api: 'https://graph.windows.net/'
+                        # Oauth resource field
+                        # resource: null
+                        # The API version to run against
+                        # api_version: '1.6'
+                        # Send resource field with auth-request
+                        # auth_with_resource: true
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    bitbucket:
+        type: bitbucket
+        client_id: '%env(OAUTH_BITBUCKET_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_BITBUCKET_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\BitbucketClient
+        library: stevenmaguire/oauth2-bitbucket
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\BitbucketClient
+                    # composer require stevenmaguire/oauth2-bitbucket
+                    bitbucket:
+                        # must be "bitbucket" - it activates that type!
+                        type: bitbucket
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_BITBUCKET_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_BITBUCKET_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_bitbucket_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    box:
+        type: box
+        client_id: '%env(OAUTH_BOX_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_BOX_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\BoxClient
+        library: stevenmaguire/oauth2-box
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\BoxClient
+                    # composer require stevenmaguire/oauth2-box
+                    box:
+                        # must be "box" - it activates that type!
+                        type: box
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_BOX_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_BOX_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_box_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    buffer:
+        type: buffer
+        client_id: '%env(OAUTH_BUFFER_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_BUFFER_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\BufferClient
+        library: tgallice/oauth2-buffer
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\BufferClient
+                    # composer require tgallice/oauth2-buffer
+                    buffer:
+                        # must be "buffer" - it activates that type!
+                        type: buffer
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_BUFFER_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_BUFFER_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_buffer_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    canvas_lms:
+        type: canvas_lms
+        client_id: '%env(OAUTH_CANVAS_LMS_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_CANVAS_LMS_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\CanvasLMSClient
+        library: smtech/oauth2-canvaslms
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\CanvasLMSClient
+                    # composer require smtech/oauth2-canvaslms
+                    canvas_lms:
+                        # must be "canvas_lms" - it activates that type!
+                        type: canvas_lms
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_CANVAS_LMS_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_CANVAS_LMS_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_canvas_lms_check
+                        redirect_params: {}
+                        # URL of Canvas Instance (e.g. https://canvas.instructure.com)
+                        canvas_instance_url: null
+                        # This can be used to help the user identify which instance of an application this token is for. For example, a mobile device application could provide the name of the device.
+                        # purpose: ''
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    clever:
+        type: clever
+        client_id: '%env(OAUTH_CLEVER_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_CLEVER_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\CleverClient
+        library: schoolrunner/oauth2-clever
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\CleverClient
+                    # composer require schoolrunner/oauth2-clever
+                    clever:
+                        # must be "clever" - it activates that type!
+                        type: clever
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_CLEVER_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_CLEVER_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_clever_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    devian_art:
+        type: devian_art
+        client_id: '%env(OAUTH_DEVIAN_ART_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_DEVIAN_ART_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\DevianArtClient
+        library: seinopsys/oauth2-deviantart
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\DevianArtClient
+                    # composer require seinopsys/oauth2-deviantart
+                    devian_art:
+                        # must be "devian_art" - it activates that type!
+                        type: devian_art
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_DEVIAN_ART_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_DEVIAN_ART_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_devian_art_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    digital_ocean:
+        type: digital_ocean
+        client_id: '%env(OAUTH_DIGITAL_OCEAN_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_DIGITAL_OCEAN_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\DigitalOceanClient
+        library: chrishemmings/oauth2-digitalocean
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\DigitalOceanClient
+                    # composer require chrishemmings/oauth2-digitalocean
+                    digital_ocean:
+                        # must be "digital_ocean" - it activates that type!
+                        type: digital_ocean
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_DIGITAL_OCEAN_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_DIGITAL_OCEAN_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_digital_ocean_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    discord:
+        type: discord
+        client_id: '%env(OAUTH_DISCORD_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_DISCORD_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\DiscordClient
+        library: wohali/oauth2-discord-new
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\DiscordClient
+                    # composer require wohali/oauth2-discord-new
+                    discord:
+                        # must be "discord" - it activates that type!
+                        type: discord
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_DISCORD_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_DISCORD_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_discord_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    dribbble:
+        type: dribbble
+        client_id: '%env(OAUTH_DRIBBBLE_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_DRIBBBLE_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\DribbbleClient
+        library: crewlabs/oauth2-dribbble
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\DribbbleClient
+                    # composer require crewlabs/oauth2-dribbble
+                    dribbble:
+                        # must be "dribbble" - it activates that type!
+                        type: dribbble
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_DRIBBBLE_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_DRIBBBLE_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_dribbble_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    dropbox:
+        type: dropbox
+        client_id: '%env(OAUTH_DROPBOX_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_DROPBOX_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\DropboxClient
+        library: stevenmaguire/oauth2-dropbox
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\DropboxClient
+                    # composer require stevenmaguire/oauth2-dropbox
+                    dropbox:
+                        # must be "dropbox" - it activates that type!
+                        type: dropbox
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_DROPBOX_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_DROPBOX_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_dropbox_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    drupal:
+        type: drupal
+        client_id: '%env(OAUTH_DRUPAL_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_DRUPAL_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\DrupalClient
+        library: chrishemmings/oauth2-drupal
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\DrupalClient
+                    # composer require chrishemmings/oauth2-drupal
+                    drupal:
+                        # must be "drupal" - it activates that type!
+                        type: drupal
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_DRUPAL_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_DRUPAL_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_drupal_check
+                        redirect_params: {}
+                        # Drupal oAuth2 server URL
+                        base_url: '%env(OAUTH_DRUPAL_BASE_URL)%'
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    elance:
+        type: elance
+        client_id: '%env(OAUTH_ELANCE_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_ELANCE_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\ElanceClient
+        library: stevenmaguire/oauth2-elance
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\ElanceClient
+                    # composer require stevenmaguire/oauth2-elance
+                    elance:
+                        # must be "elance" - it activates that type!
+                        type: elance
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_ELANCE_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_ELANCE_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_elance_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    eve_online:
+        type: eve_online
+        client_id: '%env(OAUTH_EVE_ONLINE_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_EVE_ONLINE_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\EveOnlineClient
+        library: evelabs/oauth2-eveonline
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\EveOnlineClient
+                    # composer require evelabs/oauth2-eveonline
+                    eve_online:
+                        # must be "eve_online" - it activates that type!
+                        type: eve_online
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_EVE_ONLINE_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_EVE_ONLINE_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_eve_online_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    eventbrite:
+        type: eventbrite
+        client_id: '%env(OAUTH_EVENTBRITE_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_EVENTBRITE_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\EventbriteClient
+        library: stevenmaguire/oauth2-eventbrite
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\EventbriteClient
+                    # composer require stevenmaguire/oauth2-eventbrite
+                    eventbrite:
+                        # must be "eventbrite" - it activates that type!
+                        type: eventbrite
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_EVENTBRITE_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_EVENTBRITE_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_eventbrite_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    facebook:
+        type: facebook
+        client_id: '%env(OAUTH_FACEBOOK_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_FACEBOOK_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\FacebookClient
+        library: league/oauth2-facebook
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\FacebookClient
+                    # composer require league/oauth2-facebook
+                    facebook:
+                        # must be "facebook" - it activates that type!
+                        type: facebook
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_FACEBOOK_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_FACEBOOK_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_facebook_check
+                        redirect_params: {}
+                        graph_api_version: v2.12
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+        apps_url: 'https://developers.facebookId.com/apps/'
+        app_url: 'https://developers.facebookId.com/apps/%s/dashboard/'
+        user_apps: 'https://www.facebookId.com/settings?tab=applications'
+    fitbit:
+        type: fitbit
+        client_id: '%env(OAUTH_FITBIT_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_FITBIT_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\FitbitClient
+        library: djchen/oauth2-fitbit
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\FitbitClient
+                    # composer require djchen/oauth2-fitbit
+                    fitbit:
+                        # must be "fitbit" - it activates that type!
+                        type: fitbit
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_FITBIT_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_FITBIT_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_fitbit_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    four_square:
+        type: four_square
+        client_id: '%env(OAUTH_FOUR_SQUARE_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_FOUR_SQUARE_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\FoursquareClient
+        library: stevenmaguire/oauth2-foursquare
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\FoursquareClient
+                    # composer require stevenmaguire/oauth2-foursquare
+                    four_square:
+                        # must be "four_square" - it activates that type!
+                        type: four_square
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_FOUR_SQUARE_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_FOUR_SQUARE_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_four_square_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    geocaching:
+        type: geocaching
+        client_id: '%env(OAUTH_GEOCACHING_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_GEOCACHING_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\GeocachingClient
+        library: surfoo/oauth2-geocaching
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\GeocachingClient
+                    # composer require surfoo/oauth2-geocaching
+                    geocaching:
+                        # must be "geocaching" - it activates that type!
+                        type: geocaching
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_GEOCACHING_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_GEOCACHING_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_geocaching_check
+                        redirect_params: {}
+                        # dev, staging or production
+                        environment: production
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    github:
+        type: github
+        client_id: '%env(OAUTH_GITHUB_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_GITHUB_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\GithubClient
+        library: league/oauth2-github
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\GithubClient
+                    # composer require league/oauth2-github
+                    github:
+                        # must be "github" - it activates that type!
+                        type: github
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_GITHUB_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_GITHUB_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_github_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+        apps_url: 'https://github.com/settings/developers'
+        app_url: 'https://github.com/settings/applications/%s'
+        user_apps: 'https://github.com/settings/applications'
+    gitlab:
+        type: gitlab
+        client_id: '%env(OAUTH_GITLAB_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_GITLAB_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\GitlabClient
+        library: omines/oauth2-gitlab
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\GitlabClient
+                    # composer require omines/oauth2-gitlab
+                    gitlab:
+                        # must be "gitlab" - it activates that type!
+                        type: gitlab
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_GITLAB_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_GITLAB_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_gitlab_check
+                        redirect_params: {}
+                        # Base installation URL, modify this for self-hosted instances
+                        # domain: https://gitlab.com
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    google:
+        type: google
+        client_id: '%env(OAUTH_GOOGLE_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_GOOGLE_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\GoogleClient
+        library: league/oauth2-google
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\GoogleClient
+                    # composer require league/oauth2-google
+                    google:
+                        # must be "google" - it activates that type!
+                        type: google
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_GOOGLE_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_GOOGLE_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_google_check
+                        redirect_params: {}
+                        # Optional value for sending access_type parameter. More detail: https://developers.google.com/identity/protocols/OpenIDConnect#authenticationuriparameters
+                        # access_type: null
+                        # Optional value for sending hd parameter. More detail: https://developers.google.com/identity/protocols/OpenIDConnect#hd-param
+                        # hosted_domain: null
+                        # Optional value for additional fields to be requested from the user profile. If set, these values will be included with the defaults. More details: https://developers.google.com/+/web/api/rest/latest/people
+                        # user_fields: {}
+                        # Optional value if you don't want or need to enable Google+ API access.
+                        # use_oidc_mode: false
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+        apps_url: 'https://console.developers.google.com/apis/credentials'
+        user_apps: ''
+    headhunter:
+        type: headhunter
+        client_id: '%env(OAUTH_HEADHUNTER_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_HEADHUNTER_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\HeadHunterClient
+        library: alexmasterov/oauth2-headhunter
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\HeadHunterClient
+                    # composer require alexmasterov/oauth2-headhunter
+                    headhunter:
+                        # must be "headhunter" - it activates that type!
+                        type: headhunter
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_HEADHUNTER_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_HEADHUNTER_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_headhunter_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    heroku:
+        type: heroku
+        client_id: '%env(OAUTH_HEROKU_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_HEROKU_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\HerokuClient
+        library: stevenmaguire/oauth2-heroku
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\HerokuClient
+                    # composer require stevenmaguire/oauth2-heroku
+                    heroku:
+                        # must be "heroku" - it activates that type!
+                        type: heroku
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_HEROKU_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_HEROKU_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_heroku_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    instagram:
+        type: instagram
+        client_id: '%env(OAUTH_INSTAGRAM_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_INSTAGRAM_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\InstagramClient
+        library: league/oauth2-instagram
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\InstagramClient
+                    # composer require league/oauth2-instagram
+                    instagram:
+                        # must be "instagram" - it activates that type!
+                        type: instagram
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_INSTAGRAM_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_INSTAGRAM_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_instagram_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    jira:
+        type: jira
+        client_id: '%env(OAUTH_JIRA_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_JIRA_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\JiraClient
+        library: mrjoops/oauth2-jira
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\JiraClient
+                    # composer require mrjoops/oauth2-jira
+                    jira:
+                        # must be "jira" - it activates that type!
+                        type: jira
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_JIRA_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_JIRA_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_jira_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    keycloak:
+        type: keycloak
+        client_id: '%env(OAUTH_KEYCLOAK_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_KEYCLOAK_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\KeycloakClient
+        library: stevenmaguire/oauth2-keycloak
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\KeycloakClient
+                    # composer require stevenmaguire/oauth2-keycloak
+                    keycloak:
+                        # must be "keycloak" - it activates that type!
+                        type: keycloak
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_KEYCLOAK_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_KEYCLOAK_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_keycloak_check
+                        redirect_params: {}
+                        # Keycloak server URL
+                        auth_server_url: null
+                        # Keycloak realm
+                        realm: null
+                        # Optional: Encryption algorith, i.e. RS256
+                        # encryption_algorithm: null
+                        # Optional: Encryption key path, i.e. ../key.pem
+                        # encryption_key_path: null
+                        # Optional: Encryption key, i.e. contents of key or certificate
+                        # encryption_key: null
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    linkedin:
+        type: linkedin
+        client_id: '%env(OAUTH_LINKEDIN_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_LINKEDIN_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\LinkedInClient
+        library: league/oauth2-linkedin
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\LinkedInClient
+                    # composer require league/oauth2-linkedin
+                    linkedin:
+                        # must be "linkedin" - it activates that type!
+                        type: linkedin
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_LINKEDIN_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_LINKEDIN_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_linkedin_check
+                        redirect_params: {}
+                        # Optional value to specify Linkedin's API version to use. As the time of writing, v1 is still used by default by league/oauth2-linkedin.
+                        # api_version: null
+                        # Optional value to specify fields to be requested from the profile. Since Linkedin's API upgrade from v1 to v2, fields and authorizations policy have been enforced. See https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin for more details.
+                        # fields: {}
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    mail_ru:
+        type: mail_ru
+        client_id: '%env(OAUTH_MAIL_RU_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_MAIL_RU_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\MailRuClient
+        library: aego/oauth2-mailru
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\MailRuClient
+                    # composer require aego/oauth2-mailru
+                    mail_ru:
+                        # must be "mail_ru" - it activates that type!
+                        type: mail_ru
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_MAIL_RU_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_MAIL_RU_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_mail_ru_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    microsoft:
+        type: microsoft
+        client_id: '%env(OAUTH_MICROSOFT_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_MICROSOFT_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\MicrosoftClient
+        library: stevenmaguire/oauth2-microsoft
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\MicrosoftClient
+                    # composer require stevenmaguire/oauth2-microsoft
+                    microsoft:
+                        # must be "microsoft" - it activates that type!
+                        type: microsoft
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_MICROSOFT_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_MICROSOFT_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_microsoft_check
+                        redirect_params: {}
+                        # Optional value for URL Authorize
+                        # url_authorize: null
+                        # Optional value for URL Access Token
+                        # url_access_token: null
+                        # Optional value for URL Resource Owner Details
+                        # url_resource_owner_details: null
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    mollie:
+        type: mollie
+        client_id: '%env(OAUTH_MOLLIE_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_MOLLIE_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\MollieClient
+        library: mollie/oauth2-mollie-php
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\MollieClient
+                    # composer require mollie/oauth2-mollie-php
+                    mollie:
+                        # must be "mollie" - it activates that type!
+                        type: mollie
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_MOLLIE_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_MOLLIE_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_mollie_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    odnoklassniki:
+        type: odnoklassniki
+        client_id: '%env(OAUTH_ODNOKLASSNIKI_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_ODNOKLASSNIKI_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\OdnoklassnikiClient
+        library: aego/oauth2-odnoklassniki
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\OdnoklassnikiClient
+                    # composer require aego/oauth2-odnoklassniki
+                    odnoklassniki:
+                        # must be "odnoklassniki" - it activates that type!
+                        type: odnoklassniki
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_ODNOKLASSNIKI_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_ODNOKLASSNIKI_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_odnoklassniki_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    paypal:
+        type: paypal
+        client_id: '%env(OAUTH_PAYPAL_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_PAYPAL_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\PaypalClient
+        library: stevenmaguire/oauth2-paypal
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\PaypalClient
+                    # composer require stevenmaguire/oauth2-paypal
+                    paypal:
+                        # must be "paypal" - it activates that type!
+                        type: paypal
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_PAYPAL_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_PAYPAL_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_paypal_check
+                        redirect_params: {}
+                        # When true, client uses Paypal Sandbox URLs.
+                        # is_sandbox: false
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    psn:
+        type: psn
+        client_id: '%env(OAUTH_PSN_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_PSN_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\PsnClient
+        library: larabros/oauth2-psn
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\PsnClient
+                    # composer require larabros/oauth2-psn
+                    psn:
+                        # must be "psn" - it activates that type!
+                        type: psn
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_PSN_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_PSN_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_psn_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    salesforce:
+        type: salesforce
+        client_id: '%env(OAUTH_SALESFORCE_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_SALESFORCE_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\SalesforceClient
+        library: stevenmaguire/oauth2-salesforce
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\SalesforceClient
+                    # composer require stevenmaguire/oauth2-salesforce
+                    salesforce:
+                        # must be "salesforce" - it activates that type!
+                        type: salesforce
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_SALESFORCE_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_SALESFORCE_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_salesforce_check
+                        redirect_params: {}
+                        # Custom Salesforce domain. Default domain is https://login.salesforce.com
+                        # domain: ''
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    slack:
+        type: slack
+        client_id: '%env(OAUTH_SLACK_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_SLACK_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\SlackClient
+        library: adam-paterson/oauth2-slack
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\SlackClient
+                    # composer require adam-paterson/oauth2-slack
+                    slack:
+                        # must be "slack" - it activates that type!
+                        type: slack
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_SLACK_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_SLACK_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_slack_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    strava:
+        type: strava
+        client_id: '%env(OAUTH_STRAVA_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_STRAVA_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\StravaClient
+        library: edwin-luijten/oauth2-strava
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\StravaClient
+                    # composer require edwin-luijten/oauth2-strava
+                    strava:
+                        # must be "strava" - it activates that type!
+                        type: strava
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_STRAVA_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_STRAVA_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_strava_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    stripe:
+        type: stripe
+        client_id: '%env(OAUTH_STRIPE_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_STRIPE_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\StripeClient
+        library: adam-paterson/oauth2-stripe
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\StripeClient
+                    # composer require adam-paterson/oauth2-stripe
+                    stripe:
+                        # must be "stripe" - it activates that type!
+                        type: stripe
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_STRIPE_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_STRIPE_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_stripe_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    uber:
+        type: uber
+        client_id: '%env(OAUTH_UBER_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_UBER_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\UberClient
+        library: stevenmaguire/oauth2-uber
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\UberClient
+                    # composer require stevenmaguire/oauth2-uber
+                    uber:
+                        # must be "uber" - it activates that type!
+                        type: uber
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_UBER_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_UBER_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_uber_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    unsplash:
+        type: unsplash
+        client_id: '%env(OAUTH_UNSPLASH_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_UNSPLASH_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\UnsplashClient
+        library: hughbertd/oauth2-unsplash
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\UnsplashClient
+                    # composer require hughbertd/oauth2-unsplash
+                    unsplash:
+                        # must be "unsplash" - it activates that type!
+                        type: unsplash
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_UNSPLASH_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_UNSPLASH_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_unsplash_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    vimeo:
+        type: vimeo
+        client_id: '%env(OAUTH_VIMEO_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_VIMEO_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\VimeoClient
+        library: saf33r/oauth2-vimeo
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\VimeoClient
+                    # composer require saf33r/oauth2-vimeo
+                    vimeo:
+                        # must be "vimeo" - it activates that type!
+                        type: vimeo
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_VIMEO_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_VIMEO_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_vimeo_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    vkontakte:
+        type: vkontakte
+        client_id: '%env(OAUTH_VKONTAKTE_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_VKONTAKTE_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\VKontakteClient
+        library: j4k/oauth2-vkontakte
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\VKontakteClient
+                    # composer require j4k/oauth2-vkontakte
+                    vkontakte:
+                        # must be "vkontakte" - it activates that type!
+                        type: vkontakte
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_VKONTAKTE_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_VKONTAKTE_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_vkontakte_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    yahoo:
+        type: yahoo
+        client_id: '%env(OAUTH_YAHOO_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_YAHOO_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\YahooClient
+        library: hayageek/oauth2-yahoo
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\YahooClient
+                    # composer require hayageek/oauth2-yahoo
+                    yahoo:
+                        # must be "yahoo" - it activates that type!
+                        type: yahoo
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_YAHOO_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_YAHOO_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_yahoo_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    yandex:
+        type: yandex
+        client_id: '%env(OAUTH_YANDEX_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_YANDEX_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\YandexClient
+        library: aego/oauth2-yandex
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\YandexClient
+                    # composer require aego/oauth2-yandex
+                    yandex:
+                        # must be "yandex" - it activates that type!
+                        type: yandex
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_YANDEX_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_YANDEX_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_yandex_check
+                        redirect_params: {}
+            
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            
+                    
+    zendesk:
+        type: zendesk
+        client_id: '%env(OAUTH_ZENDESK_CLIENT_ID)%'
+        client_secret: '%env(OAUTH_ZENDESK_CLIENT_SECRET)%'
+        class: KnpU\OAuth2ClientBundle\Client\Provider\ZendeskClient
+        library: stevenmaguire/oauth2-zendesk
+        comments: |
+            
+                    # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\ZendeskClient
+                    # composer require stevenmaguire/oauth2-zendesk
+                    zendesk:
+                        # must be "zendesk" - it activates that type!
+                        type: zendesk
+                        # add and configure client_id and client_secret in parameters.yml
+                        client_id: '%env(OAUTH_ZENDESK_CLIENT_ID)%'
+                        client_secret: '%env(OAUTH_ZENDESK_CLIENT_SECRET)%'
+                        # a route name you'll create
+                        redirect_route: connect_zendesk_check
+                        redirect_params: {}
+                        # Your Zendesk subdomain
+                        subdomain: null
+                        # whether to check OAuth2 "state": defaults to true
+                        # use_state: true
+            

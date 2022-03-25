@@ -1,0 +1,104 @@
+<nav class="main-header navbar navbar-expand navbar-light">
+    <div class="container-fluid">
+    <ul class="navbar-nav">
+        {% block navbar_toggle %}
+            <li class="nav-item">
+                <a class="nav-link" data-lte-toggle="sidebar-full" href="#" role="button"><i class="fas fa-bars"></i></a>
+                <span class="sr-only">{{ 'Toggle navigation'|trans({}, 'AdminLTEBundle')  }}</span>
+            </li>
+        {% endblock %}
+
+        {% block navbar_links %}
+            <li class="nav-item d-none d-md-block">
+                <a href="{{ path('app_homepage') }}" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item d-none d-md-block">
+                <a href="#" class="nav-link">Contact!</a>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Dropdown
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </li>
+
+            {# TODO document, move to NavbarMenuSubscriber #}
+            {#
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="../../index3.html" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="#" class="nav-link">Contact</a>
+            </li>
+            #}
+        {% endblock %}
+    </ul>
+
+
+    {% block navbar_search %}
+        <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+
+        {% block sidebar_search %}
+
+{#            {{ 0 and render(controller('KevinPapst\\AdminLTEBundle\\Controller\\SidebarController::searchFormAction')) }}#}
+        {% endblock %}
+    {% endblock %}
+
+
+    <ul class="navbar-nav ml-auto">
+
+        {% block navbar_start %}{% endblock %}
+
+        {#
+        @todo: refactor navbar
+
+        {% block navbar_actions %}
+            Use HInclude here!
+            {#
+        {% block navbar_messages %}
+            {{ render(control`ler('KevinPapst\\AdminLTEBundle\\Controller\\NavbarController::messagesAction')) }}
+        {% endblock %}
+        {% block navbar_notifications %}
+            {{ render(controller('KevinPapst\\AdminLTEBundle\\Controller\\NavbarController::notificationsAction')) }}
+        {% endblock %}
+        {% block navbar_tasks %}
+            {{ render(controller('KevinPapst\\AdminLTEBundle\\Controller\\NavbarController::tasksAction')) }}
+        {% endblock %}
+        #}
+
+        {% block navbar_user %}
+            <ul class="nav">
+                <li class="nav-item">
+            {% if not is_granted('ROLE_USER') %}
+                <a href="{{ path('app_login') }}">Log in</a> or
+                <a href="{{ path('app_register') }}">Register</a> to customize your view.
+
+                    {% else %}
+                {{ include('@theme/_navbar_user.html.twig') }}
+            {% endif %}
+            {#                    {{ render(controller('KevinPapst\\AdminLTEBundle\\Controller\\NavbarController::userAction')) }}#}
+                </li>
+            </ul>
+        {% endblock %}
+
+        {% block navbar_end %}{% endblock %}
+
+        {% block navbar_control_sidebar_toggle %}
+            {% if admin_lte_context.control_sidebar is defined and admin_lte_context.control_sidebar is not empty %}
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-widget="control-sidebar" data-slide="true"><i class="fas fa-th-large"></i></a>
+                </li>
+            {% endif %}
+        {% endblock %}
+    </ul>
+    </div>
+</nav>

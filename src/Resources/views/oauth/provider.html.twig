@@ -1,0 +1,157 @@
+{% extends ['base.html.twig', "SurvosBaseBundle::base.html.twig"] %}
+
+{% block stylesheets %}
+{{ parent() }}
+<style>
+    .input {width: 400px}
+</style>
+{% endblock  %}
+{% block javascripts %}
+    {{ parent() }}
+    {# the JS file lives at "public/bundles/acme/js/loader.js" #}
+    <script src="{{ asset('bundles/survos/base-/loader.js') }}"></script>
+
+    <script>
+        console.log('add click handler');
+        document.getElementById("copyButton").addEventListener("click", function() {
+            console.log('copy clicked');
+            copyToClipboard(document.getElementById("copyTarget"));
+        });
+
+        function copyToClipboard(elem) {
+            // create hidden text element, if it doesn't already exist
+            var targetId = "_hiddenCopyText_";
+            var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
+            console.log('copying to clipboard');
+            var origSelectionStart, origSelectionEnd;
+            if (isInput) {
+                // can just use the original source element for the selection and copy
+                target = elem;
+                origSelectionStart = elem.selectionStart;
+                origSelectionEnd = elem.selectionEnd;
+            } else {
+                // must use a temporary form element for the selection and copy
+                target = document.getElementById(targetId);
+                if (!target) {
+                    var target = document.createElement("textarea");
+                    target.style.position = "absolute";
+                    target.style.left = "-9999px";
+                    target.style.top = "0";
+                    target.id = targetId;
+                    document.body.appendChild(target);
+                }
+                target.textContent = elem.textContent;
+            }
+            // select the content
+            var currentFocus = document.activeElement;
+            target.focus();
+            target.setSelectionRange(0, target.value.length);
+
+            // copy the selection
+            var succeed;
+            try {
+                succeed = document.execCommand("copy");
+            } catch(e) {
+                succeed = false;
+            }
+            // restore original focus
+            if (currentFocus && typeof currentFocus.focus === "function") {
+                currentFocus.focus();
+            }
+
+            if (isInput) {
+                // restore prior selection
+                elem.setSelectionRange(origSelectionStart, origSelectionEnd);
+            } else {
+                // clear temporary content
+                target.textContent = "";
+            }
+            return succeed;
+        }
+    function jQuerycopyToClipboard(element) {
+            let $ = window.$;
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val($(element).text()).select();
+        document.execCommand("copy");
+        $temp.remove();
+    }
+    </script>
+{% endblock %}
+
+{% block title 'Provider ' ~ provider.type %}
+{% block body %}
+
+    <input type="text" id="copyTarget" value="{{ path('app_homepage') }}"> <button id="copyButton">Copy Homepage</button><br><br>
+    <input type="text" placeholder="Click here and press Ctrl-V to see clipboard contents">
+    <hr />
+    <p id="p1">P1: I am paragraph 1</p>
+    <p id="p2">P2: I am a second paragraph</p>
+    <p id="p3">composer req {{ provider.library }}</p>
+    Need copy.js
+    <input type="text" class="input-md" value="" />
+
+
+    <button onclick="jQuerycopyToClipboard('#p1')">Copy Homepage</button>
+    <button onclick="jQuerycopyToClipboard('#p2')">Copy Redirect</button>
+    <button onclick="jQuerycopyToClipboard('#p3')">Copy Composer</button>
+
+    <br/><br/><input type="text" placeholder="Paste here for test" />
+
+    {% if provider.clients|length %}
+    <h3>Configured Clients</h3>
+    <ul class="list inline-list">
+        {% for clientKey, client in provider.clients %}
+            <li><a href="{{ path('oauth_connect_start', {clientKey: clientKey}) }}" class="btn btn-primary">
+                Login With {{ clientKey }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+
+    <h3>Install the provider library</h3>
+
+    {% if package %}
+        <i class="far fa-check-square text-success"></i>
+        Installed.
+    {% endif %}
+
+    <h3>Setup your environment (.env)</h3>
+    <textarea cols="80" rows="2">{% for var in provider.env_vars %}{{ var }}=~
+{% endfor %}</textarea>
+
+    <h3>Install and register the client in config/packages/knpu_oauth_clients.yaml</h3>
+
+    <label>
+<textarea cols="80" rows="{{ provider.comments|split("\n")|length + 1 }}">{{ provider.comments }}
+</textarea>
+    </label>
+
+    <h3>Client ID and Secret</h3>
+    Register your app, making sure to set your callback url in the configuration:<br />
+    {% if provider.apps_url %}
+    <a href="{{ provider.apps_url }}" target="_blank" class="btn btn-primary"><i class="fas fa-external-link"></i> {{ provider.type|title }} Apps</a>
+    {% else %}
+        Sorry, we don't yet have the url for the {{ provider.type|title }} Apps Page.
+    {% endif %}
+
+    {% set clientKey = provider.type %}
+
+    {# https://stackoverflow.com/questions/22581345/click-button-copy-to-clipboard-using-jquery #}
+    {% set callback = url('oauth_connect_check', {clientKey: clientKey})   %}
+    <textarea cols="90" rows="1">{{ callback }}</textarea>
+    <a href="{{ callback }}" target="_blank"><i class="fas fa-external-link"></i></a>
+
+
+    <h3>Configure live keys (.env.local)</h3>
+<textarea cols="80" rows="2">{% for var in provider.env_vars %}{{ var }}=
+{% endfor %}</textarea>
+
+    <h3>Add the field to your user class</h3>
+
+
+    use {{ provider.type|title }}Trait;
+
+
+{% endblock %}
