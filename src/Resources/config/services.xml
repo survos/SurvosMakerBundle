@@ -6,14 +6,14 @@
 
     <services>
 
-        <service id="Survos\Command\SurvosSetupHerokuCommand" class="Survos\Command\SurvosSetupHerokuCommand" public="false">
-            <tag name="console.command" />
-        </service>
+<!--        <service id="Survos\Command\SurvosSetupHerokuCommand" class="Survos\Command\SurvosSetupHerokuCommand" public="false">-->
+<!--            <tag name="console.command" />-->
+<!--        </service>-->
 
-        <service id="Survos\MakerBundle\Command\SurvosBuildDocsCommand" class="Survos\Bundle\Command\SurvosBuildDocsCommand" public="false">
-            <argument type="service" id="twig"/>
-            <tag name="console.command" />
-        </service>
+<!--        <service id="Survos\MakerBundle\Command\SurvosBuildDocsCommand" class="Survos\Bundle\Command\SurvosBuildDocsCommand" public="false">-->
+<!--            <argument type="service" id="twig"/>-->
+<!--            <tag name="console.command" />-->
+<!--        </service>-->
 
         <!-- this is used by the Survos Workflow bundle -->
         <service id="maker.param_converter" class="Survos\BaseBundle\Renderer\ParamConverterRenderer" public="true">

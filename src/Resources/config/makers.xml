@@ -5,15 +5,12 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <defaults public="false"/>
 
-        <service id="survos.maker.make_param_converter" class="Survos\Bundle\MakerBundle\Maker\MakeParamConverter">
+        <service id="survos.maker.make_param_converter" class="Survos\Bundle\MakerBundle\Maker\MakeParamConverter" public="true">
             <argument type="service" id="maker.doctrine_helper" />
             <argument type="service" id="maker.param_converter" />
             <tag name="maker.command" />
         </service>
-
-
 
     </services>
 </container>

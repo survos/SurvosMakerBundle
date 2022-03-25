@@ -7,7 +7,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
-class SurvosMakerBundleExtension extends Extension
+class SurvosMakerExtension extends Extension
 {
 
     public function load(array $configs, ContainerBuilder $container)
@@ -21,6 +21,6 @@ class SurvosMakerBundleExtension extends Extension
 
     public function getAlias(): string
     {
-        return 'survos_maker_bundle';
+        return 'survos_maker';
     }
 }
