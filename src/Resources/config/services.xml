@@ -10,7 +10,7 @@
             <tag name="console.command" />
         </service>
 
-        <service id="Survos\BaseBundle\Command\SurvosBuildDocsCommand" class="Survos\BaseBundle\Command\SurvosBuildDocsCommand" public="false">
+        <service id="Survos\MakerBundle\Command\SurvosBuildDocsCommand" class="Survos\Bundle\Command\SurvosBuildDocsCommand" public="false">
             <argument type="service" id="twig"/>
             <tag name="console.command" />
         </service>
@@ -20,34 +20,34 @@
             <argument type="service" id="maker.generator"/>
         </service>
 
-        <service id="Survos\BaseBundle\Maker\MakeParamConverter"
-                 class="Survos\BaseBundle\Maker\MakeParamConverter" public="false">
+        <service id="Survos\Bundle\MakerBundle\Maker\MakeParamConverter"
+                 class="Survos\Bundle\MakerBundle\Maker\MakeParamConverter" public="false">
             <argument type="service" id="maker.doctrine_helper" />
             <argument type="service" id="maker.param_converter" />
             <tag name="maker.command" />
         </service>
 
-        <service id="Survos\BaseBundle\Maker\MakeCrud"
-                 class="Survos\BaseBundle\Maker\MakeCrud" public="false">
+        <service id="Survos\Bundle\MakerBundle\Maker\MakeCrud"
+                 class="Survos\Bundle\MakerBundle\Maker\MakeCrud" public="false">
             <argument type="service" id="maker.doctrine_helper" />
             <argument type="service" id="maker.renderer.form_type_renderer" />
             <tag name="maker.command" />
         </service>
 
-        <service id="Survos\BaseBundle\Command\SurvosSetupCommand" class="Survos\BaseBundle\Command\SurvosSetupCommand" public="false">
-            <argument type="service" id="kernel" />
-            <argument type="service" id="doctrine.orm.entity_manager.abstract" />
-            <argument type="service" id="twig" />
-            <tag name="console.command" />
-        </service>
+<!--        <service id="Survos\BaseBundle\Command\SurvosSetupCommand" class="Survos\BaseBundle\Command\SurvosSetupCommand" public="false">-->
+<!--            <argument type="service" id="kernel" />-->
+<!--            <argument type="service" id="doctrine.orm.entity_manager.abstract" />-->
+<!--            <argument type="service" id="twig" />-->
+<!--            <tag name="console.command" />-->
+<!--        </service>-->
 
-        <service id="Survos\BaseBundle\Command\SurvosInitCommand" class="Survos\BaseBundle\Command\SurvosInitCommand" public="false">
-            <argument type="service" id="kernel" />
-            <argument type="service" id="doctrine.orm.entity_manager.abstract" />
-            <argument type="service" id="parameter_bag" />
-            <argument type="service" id="twig" />
-            <tag name="console.command" />
-        </service>
+<!--        <service id="Survos\BaseBundle\Command\SurvosInitCommand" class="Survos\BaseBundle\Command\SurvosInitCommand" public="false">-->
+<!--            <argument type="service" id="kernel" />-->
+<!--            <argument type="service" id="doctrine.orm.entity_manager.abstract" />-->
+<!--            <argument type="service" id="parameter_bag" />-->
+<!--            <argument type="service" id="twig" />-->
+<!--            <tag name="console.command" />-->
+<!--        </service>-->
 
     </services>
 </container>

@@ -16,7 +16,6 @@ use Symfony\Component\String\Inflector\EnglishInflector;
 //use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Survos\BaseBundle\Controller\LandingController;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
 use Symfony\Bundle\MakerBundle\DependencyBuilder;
 use Symfony\Bundle\MakerBundle\Doctrine\DoctrineHelper;
