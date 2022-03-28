@@ -16,7 +16,8 @@
 <!--        </service>-->
 
         <!-- this is used by the Survos Workflow bundle -->
-        <service id="maker.param_converter" class="Survos\BaseBundle\Renderer\ParamConverterRenderer" public="true">
+        <service id="maker.param_converter"
+                 class="Survos\Bundle\MakerBundle\Renderer\ParamConverterRenderer" public="true">
             <argument type="service" id="maker.generator"/>
         </service>
 

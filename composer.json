@@ -19,7 +19,7 @@
         "sensio/framework-extra-bundle": "^6.2",
         "symfony/form": ">= 5.4",
         "symfony/http-client": "^4.4|^5.0|^6.0",
-        "symfony/maker-bundle": "^1.36",
+        "symfony/maker-bundle": "^1.38",
         "symfony/phpunit-bridge": "^4.4|^5.0|^6.0",
         "symfony/polyfill-php80": "^1.16.0",
         "symfony/process": "^4.4|^5.0|^6.0",

@@ -151,7 +151,7 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
 
         // otherwise, it uses the ones from symfony, because generator looks for __DIR__
         $templateRoot = __DIR__.'/../Resources/skeleton/';
-        foreach (['Controller' => $controllerClassDetails, 'EntityController' => $entityControllerClassDetails] as $name => $cClassDetails) {
+        foreach (['Controller' => $controllerClassDetails, 'CollectionController' => $entityControllerClassDetails] as $name => $cClassDetails) {
             $generator->generateController(
                 $cClassDetails->getFullName(),
                 $templateRoot . sprintf('crud/controller/%s.tpl.php', $name),

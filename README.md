@@ -1,10 +1,11 @@
 # Quickstart
 
+```bash
 composer config repositories.survos_admin_maker_bundle '{"type": "vcs", "url": "git@github.com:survos/AdminMakerBundle.git"}'
 
 composer req symfony/maker-bundle --dev
-composer req survos/admin-maker-bundle --dev
 composer req survos/admin-bundle 
+```
 
 bin/console make:entity -a Entity
 
