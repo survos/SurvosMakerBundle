@@ -1,10 +1,29 @@
 # Quickstart
 
-```bash
-composer config repositories.survos_admin_maker_bundle '{"type": "vcs", "url": "git@github.com:survos/AdminMakerBundle.git"}'
+This bundle has a dependency of Symfony's Maker Bundle, so install that first. 
 
+```bash
 composer req symfony/maker-bundle --dev
-composer req survos/admin-bundle 
+
+composer config minimum-stability dev
+composer config prefer-stable true
+
+
+composer config repositories.survos_maker_bundle '{"type": "vcs", "url": "git@github.com:survos/AdminMakerBundle.git"}'
+composer req survos/maker-bundle 
+
+
+composer config repositories.survos_base_bundle '{"type": "vcs", "url": "git@github.com:survos/BaseBundle.git"}'
+composer req survos/base-bundle:"^2.0.3"
+
+composer config repositories.ux-datatable '{"type": "vcs", "url": "git@github.com:tacman/ux-datatable.git"}'
+composer req tacman/ux-datatable
+
+composer require umbrella2/adminbundle
+php bin/console make:admin:home
+
+composer config repositories.survos_workflow '{"type": "vcs", "url": "git@github.com:survos/workflow-bundle.git"}'
+
 ```
 
 bin/console make:entity -a Entity
