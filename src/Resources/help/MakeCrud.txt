@@ -2,6 +2,8 @@ The <info>%command.name%</info> command generates crud controller with templates
 
 The entity must define a unique identifiers method (e.g. id, slug), which is used for the ParamConverter.
 
+Ideally, this should add a new controller method to NewEntityController, and a browse method to DataTableController
+
 Templates extend a base specific to the entity.
 
 <info>php %command.full_name% BlogPost</info>

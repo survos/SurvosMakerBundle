@@ -35,7 +35,16 @@
             <tag name="maker.command" />
         </service>
 
-<!--        <service id="Survos\BaseBundle\Command\SurvosSetupCommand" class="Survos\BaseBundle\Command\SurvosSetupCommand" public="false">-->
+
+
+        <service id="Survos\Bundle\MakerBundle\Maker\MakeMenu"
+                 class="Survos\Bundle\MakerBundle\Maker\MakeMenu" public="false">
+            <tag name="maker.command" />
+        </service>
+
+
+
+        <!--        <service id="Survos\BaseBundle\Command\SurvosSetupCommand" class="Survos\BaseBundle\Command\SurvosSetupCommand" public="false">-->
 <!--            <argument type="service" id="kernel" />-->
 <!--            <argument type="service" id="doctrine.orm.entity_manager.abstract" />-->
 <!--            <argument type="service" id="twig" />-->

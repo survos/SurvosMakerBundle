@@ -18,9 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-/**
- * @Route("<?= $route_path ?>")
- */
+#[Route('<?= $route_path ?>')]
 class <?= $class_name ?> extends <?= $parent_class_name; ?><?= "\n" ?>
 {
 
