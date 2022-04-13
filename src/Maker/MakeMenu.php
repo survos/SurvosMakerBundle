@@ -14,9 +14,15 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Bundle\MakerBundle\MakerInterface;
+use Symfony\Bundle\MakerBundle\Str;
 
 final class MakeMenu extends AbstractMaker implements MakerInterface
 {
+    public function __construct(private Generator $generator)
+    {
+
+    }
+
     public static function getCommandName(): string
     {
         return 'survos:make:menu';
@@ -28,24 +34,15 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
     public function configureCommand(Command $command, InputConfiguration $inputConfig)
     {
         $command
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Menu Name')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
+            ->addArgument('menuClassName', InputArgument::OPTIONAL, 'Menu Class Name', 'App')
+            ->addOption('force', null, InputOption::VALUE_NONE, 'Overwrite if it already exists.')
         ;
     }
 
     public function interact(InputInterface $input, ConsoleStyle $io, Command $command)
     {
-        $arg1 = $input->getArgument('arg1');
 
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
-        }
-
-        if ($input->getOption('option1')) {
-            // ...
-        }
-
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $io->success('Add knp_menu_render() to a twig file to render.');
 
         return Command::SUCCESS;
     }
@@ -57,6 +54,42 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator)
     {
+
+        $shortName = $input->getArgument('menuClassName');
+        $classNameDetails = $generator->createClassNameDetails(
+            $shortName,
+            'Menu\\',
+            'Menu'
+        );
+
+        $generatedFilename= $this->generator->generateClass(
+            $classNameDetails->getFullName(),
+            __DIR__ . '/../Resources/skeleton/MenuMenu.php.tpl',
+            $v=[
+                'entity_full_class_name' =>$classNameDetails->getFullName(),
+//                'entity_class_name' => $boundClassDetails ? $boundClassDetails->getShortName() : null,
+//                'form_fields' => $fields,
+//                'entity_var_name' => $entityVarSingular,
+//                'entity_unique_name' => $entityVarSingular . 'Id',
+//                'field_type_use_statements' => $mergedTypeUseStatements,
+//                'constraint_use_statements' => $constraintClasses,
+//                'shortClassName' => $formClassDetails->getShortName(),
+            ]
+        );
+
+
+        $templatesPath = Str::asFilePath($paramConverterClassNameDetails->getRelativeNameWithoutSuffix());
+
+        $this->paramConverterRenderer->render(
+            $paramConverterClassNameDetails,
+            $formFields,
+            $boundClassDetails
+        );
+
+        $generator->writeChanges();
+
+        $this->writeSuccessMessage($io);
+
         // TODO: Implement generate() method.
     }
 
