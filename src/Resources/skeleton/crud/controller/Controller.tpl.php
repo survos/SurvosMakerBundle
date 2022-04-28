@@ -26,7 +26,19 @@ public function __construct(private EntityManagerInterface $entityManager) {
 
 }
 
-#[Route('/', name: '<?= $route_name ?>_show')]
+#[Route(path: '/transition/{transition}', name: '<?= $entity_var_singular?>_transition')]
+public function transition(Request $request, WorkflowInterface $<?= $entity_var_singular ?>StateMachine, string $transition, <?= $entity_class_name ?> $<?= $entity_var_singular ?>): Response
+{
+if ($transition === '_') {
+$transition = $request->request->get('transition'); // the _ is a hack to display the form, @todo: cleanup
+}
+
+$this->handleTransitionButtons($repoStateMachine, $transition, $github);
+$this->entityManager->flush(); // to save the marking
+return $this->redirectToRoute('<?= $route_name ?>_show', $github->getRP());
+}
+
+#[Route('/', name: '<?= $route_name ?>_show', options: ['expose' => true])]
     public function show(<?= $entity_class_name ?> $<?= $entity_var_singular ?>): Response
     {
         return $this->render('<?= $templates_path ?>/show.html.twig', [
@@ -34,7 +46,7 @@ public function __construct(private EntityManagerInterface $entityManager) {
         ]);
     }
 
-#[Route('/edit', name: '<?= $route_name ?>_edit')]
+#[Route('/edit', name: '<?= $route_name ?>_edit', options: ['expose' => true])]
     public function edit(Request $request, <?= $entity_class_name ?> $<?= $entity_var_singular ?>): Response
     {
         $form = $this->createForm(<?= $form_class_name ?>::class, $<?= $entity_var_singular ?>);

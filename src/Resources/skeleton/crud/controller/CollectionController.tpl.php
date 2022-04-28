@@ -17,35 +17,41 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Survos\WorkflowBundle\Traits\HandleTransitionsTrait;
 
 #[Route('<?= $route_path ?>')]
 class <?= $class_name ?> extends <?= $parent_class_name; ?><?= "\n" ?>
 {
 
+use HandleTransitionsTrait;
+
+
 public function __construct(private EntityManagerInterface $entityManager) {
 
 }
 
-#[Route('/', name: '<?= $route_name ?>_index')]
-<?php if (isset($repository_full_class_name)): ?>
+#[Route(path: '/list/{marking}', name: '<?= $route_name ?>_browse', methods: ['GET'])]
+public function browse(string $marking=<?= $entity_class_name ?>::PLACE_NEW): Response
+{
+$class = <?= $entity_class_name ?>::class;
+// WorkflowInterface $projectStateMachine
+$markingData = []; // $this->workflowHelperService->getMarkingData($projectStateMachine, $class);
+
+return $this->render('<?= $templates_path ?>/browse.html.twig', [
+'class' => $class,
+'marking' => $marking,
+'filter' => [],
+//            'owner' => $owner,
+]);
+}
+
+#[Route('/index', name: '<?= $route_name ?>_index')]
     public function index(<?= $repository_class_name ?> $<?= $repository_var ?>): Response
     {
         return $this->render('<?= $templates_path ?>/index.html.twig', [
             '<?= $entity_twig_var_plural ?>' => $<?= $repository_var ?>->findBy([], [], 30),
         ]);
     }
-<?php else: ?>
-    public function index(): Response
-    {
-        $<?= $entity_var_plural ?> = $this->getDoctrine()
-            ->getRepository(<?= $entity_class_name ?>::class)
-            ->findAll();
-
-        return $this->render('<?= $templates_path ?>/index.html.twig', [
-            '<?= $entity_twig_var_plural ?>' => $<?= $entity_var_plural ?>,
-        ]);
-    }
-<?php endif ?>
 
 #[Route('<?= $route_name ?>/new', name: '<?= $route_name ?>_new')]
     public function new(Request $request): Response

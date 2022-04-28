@@ -219,6 +219,14 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
                 'entity_fields' => $entityDoctrineDetails->getDisplayFields(),
                 'route_name' => $routeName,
             ],
+            'browse' => [
+                'entity_class_name' => $entityClassDetails->getShortName(),
+                'entity_twig_var_plural' => $entityTwigVarPlural,
+                'entity_twig_var_singular' => $entityTwigVarSingular,
+                'entity_identifier' => $entityDoctrineDetails->getIdentifier(),
+                'entity_fields' => $entityDoctrineDetails->getDisplayFields(),
+                'route_name' => $routeName,
+            ],
             'new' => [
                 'entity_class_name' => $entityClassDetails->getShortName(),
                 'route_name' => $routeName,
