@@ -26,6 +26,18 @@ public function __construct(private EntityManagerInterface $entityManager) {
 
 }
 
+#[Route(path: '/transition/{transition}', name: '<?= $route_name ?>_transition')]
+public function transition(Request $request, WorkflowInterface $<?= $entity_twig_var_singular ?>StateMachine, string $transition, Github $github): Response
+{
+if ($transition === '_') {
+$transition = $request->request->get('transition'); // the _ is a hack to display the form, @todo: cleanup
+}
+
+$this->handleTransitionButtons($<?= $entity_twig_var_singular ?>StateMachine, $transition, $<?= $entity_twig_var_singular ?>);
+$this->entityManager->flush(); // to save the marking
+return $this->redirectToRoute('<?= $entity_twig_var_singular ?>_show', $<?= $entity_twig_var_singular ?>->getRP());
+}
+
 #[Route('/', name: '<?= $route_name ?>_show')]
     public function show(<?= $entity_class_name ?> $<?= $entity_var_singular ?>): Response
     {
