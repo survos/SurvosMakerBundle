@@ -26,8 +26,10 @@ public function __construct(private EntityManagerInterface $entityManager) {
 
 }
 
-#[Route(path: '/transition/{transition}', name: '<?= $route_name ?>_transition')]
-public function transition(Request $request, WorkflowInterface $<?= $entity_twig_var_singular ?>StateMachine, string $transition, Github $github): Response
+<!--#[Route(path: '/transition/{transition}', name: '--><?//= $route_name ?><!--_transition')]-->
+<!--public function transition(Request $request, WorkflowInterface $--><?//= $entity_twig_var_singular ?><!--StateMachine, string $transition, Github $github): Response-->
+#[Route(path: '/transition/{transition}', name: '<?= $entity_var_singular?>_transition')]
+public function transition(Request $request, WorkflowInterface $<?= $entity_var_singular ?>StateMachine, string $transition, <?= $entity_class_name ?> $<?= $entity_var_singular ?>): Response
 {
 if ($transition === '_') {
 $transition = $request->request->get('transition'); // the _ is a hack to display the form, @todo: cleanup
@@ -39,6 +41,13 @@ return $this->redirectToRoute('<?= $entity_twig_var_singular ?>_show', $<?= $ent
 }
 
 #[Route('/', name: '<?= $route_name ?>_show')]
+$this->handleTransitionButtons($repoStateMachine, $transition, $github);
+$this->entityManager->flush(); // to save the marking
+return $this->redirectToRoute('<?= $route_name ?>_show', $github->getRP());
+}
+
+#[Route('/', name: '<?= $route_name ?>_show', options: ['expose' => true])]
+>>>>>>> 1e8b0448278acd95bc8669d7f54eeae40325472d
     public function show(<?= $entity_class_name ?> $<?= $entity_var_singular ?>): Response
     {
         return $this->render('<?= $templates_path ?>/show.html.twig', [
@@ -46,7 +55,7 @@ return $this->redirectToRoute('<?= $entity_twig_var_singular ?>_show', $<?= $ent
         ]);
     }
 
-#[Route('/edit', name: '<?= $route_name ?>_edit')]
+#[Route('/edit', name: '<?= $route_name ?>_edit', options: ['expose' => true])]
     public function edit(Request $request, <?= $entity_class_name ?> $<?= $entity_var_singular ?>): Response
     {
         $form = $this->createForm(<?= $form_class_name ?>::class, $<?= $entity_var_singular ?>);
