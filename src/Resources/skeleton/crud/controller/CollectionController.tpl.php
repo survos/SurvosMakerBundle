@@ -12,7 +12,6 @@ use Doctrine\ORM\EntityManagerInterface;
 <?php if (isset($repository_full_class_name)): ?>
 use <?= $repository_full_class_name ?>;
 <?php endif ?>
-// use Symfony\Bundle\FrameworkBundle\Controller\<?= $parent_class_name ?>;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,13 +19,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Survos\WorkflowBundle\Traits\HandleTransitionsTrait;
 
 #[Route('<?= $route_path ?>')]
-class <?= $class_name ?> extends <?= $parent_class_name; ?><?= "\n" ?>
+class <?= $class_name ?> extends AbstractController<?= "\n" ?>
 {
 
 use HandleTransitionsTrait;
 
+const PLACE_NEW = 'new';
 
 public function __construct(private EntityManagerInterface $entityManager) {
+   $this->marking = self::PLACE_NEW;
 
 }
 

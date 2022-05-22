@@ -62,6 +62,7 @@
             "dev-master": "2.1.0"
         },
         "symfony": {
+            "require": "^6.1",
             "allow-contrib": "true",
             "id": "maker-bundle.survos.com"
         }

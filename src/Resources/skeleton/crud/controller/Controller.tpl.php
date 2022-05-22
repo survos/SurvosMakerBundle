@@ -12,22 +12,20 @@ use Doctrine\ORM\EntityManagerInterface;
 <?php if (isset($repository_full_class_name)): ?>
 use <?= $repository_full_class_name ?>;
 <?php endif ?>
-// use Symfony\Bundle\FrameworkBundle\Controller\<?= $parent_class_name ?>;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 #[Route('<?= $route_path ?>/{<?= $entity_identifier ?>}')]
-class <?= $class_name ?> extends <?= $parent_class_name; ?><?= "\n" ?>
+class <?= $class_name ?> extends AbstractController <?= "\n" ?>
 {
 
 public function __construct(private EntityManagerInterface $entityManager) {
 
 }
 
-<!--#[Route(path: '/transition/{transition}', name: '--><?//= $route_name ?><!--_transition')]-->
-<!--public function transition(Request $request, WorkflowInterface $--><?//= $entity_twig_var_singular ?><!--StateMachine, string $transition, Github $github): Response-->
 #[Route(path: '/transition/{transition}', name: '<?= $entity_var_singular?>_transition')]
 public function transition(Request $request, WorkflowInterface $<?= $entity_var_singular ?>StateMachine, string $transition, <?= $entity_class_name ?> $<?= $entity_var_singular ?>): Response
 {
@@ -40,14 +38,7 @@ $this->entityManager->flush(); // to save the marking
 return $this->redirectToRoute('<?= $entity_twig_var_singular ?>_show', $<?= $entity_twig_var_singular ?>->getRP());
 }
 
-#[Route('/', name: '<?= $route_name ?>_show')]
-$this->handleTransitionButtons($repoStateMachine, $transition, $github);
-$this->entityManager->flush(); // to save the marking
-return $this->redirectToRoute('<?= $route_name ?>_show', $github->getRP());
-}
-
 #[Route('/', name: '<?= $route_name ?>_show', options: ['expose' => true])]
->>>>>>> 1e8b0448278acd95bc8669d7f54eeae40325472d
     public function show(<?= $entity_class_name ?> $<?= $entity_var_singular ?>): Response
     {
         return $this->render('<?= $templates_path ?>/show.html.twig', [
