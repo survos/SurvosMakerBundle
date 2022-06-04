@@ -15,6 +15,7 @@ use Survos\Bundle\MakerBundle\Maker\MakeBundle;
 use Survos\Bundle\MakerBundle\Maker\MakeCrud;
 use Survos\Bundle\MakerBundle\Maker\MakeMenu;
 use Survos\Bundle\MakerBundle\Maker\MakeParamConverter;
+use Survos\Bundle\MakerBundle\Maker\MakeService;
 use Survos\Bundle\MakerBundle\Maker\MakeWorkflowListener;
 use Survos\Bundle\MakerBundle\Renderer\ParamConverterRenderer;
 use Symfony\Bundle\MakerBundle\DependencyInjection\CompilerPass\DoctrineAttributesCheckPass;
@@ -36,8 +37,8 @@ class SurvosMakerBundle extends AbstractBundle
     {
         $builder->setParameter('survos_maker.template_path', $config['template_path']);
 
-        foreach ([MakeMenu::class, MakeBundle::class] as $makerClass) {
-            $builder->autowire($makerClass, $makerClass)
+        foreach ([MakeMenu::class, MakeBundle::class, MakeService::class] as $makerClass) {
+            $builder->autowire($makerClass)
                 ->addTag('maker.command')
                 ->addArgument(new Reference('maker.generator'))
                 ->addArgument($config['template_path'])
@@ -75,7 +76,7 @@ class SurvosMakerBundle extends AbstractBundle
     {
         $definition->rootNode()
             ->children()
-          ->scalarNode('template_path')->defaultValue(__DIR__.'/../../templates/skeleton/')
+          ->scalarNode('template_path')->defaultValue(__DIR__.'/../templates/skeleton/')
             ->end()
 //              ->booleanNode('unicorns_are_real')->defaultTrue()->end()
 //            ->integerNode('min_sunshine')->defaultValue(3)->end()

@@ -117,7 +117,7 @@ class MakeBundle extends AbstractMaker implements MakerInterface
 
         $generator->generateClass(
             $extensionClassNameDetails->getFullName(),
-            __DIR__ . 'bundle/src/Bundle.tpl.php',
+            $this->templatePath .  'bundle/src/Bundle.tpl.php',
             ['use_statements' => $useStatements]
         );
 

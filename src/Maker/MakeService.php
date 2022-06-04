@@ -1,37 +1,27 @@
 <?php
 
-/*
- * This file is part of the Symfony MakerBundle package.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-namespace Symfony\Bundle\MakerBundle\Maker;
+namespace Survos\Bundle\MakerBundle\Maker;
 
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
 use Symfony\Bundle\MakerBundle\DependencyBuilder;
 use Symfony\Bundle\MakerBundle\Generator;
 use Symfony\Bundle\MakerBundle\InputConfiguration;
+use Symfony\Bundle\MakerBundle\Maker\AbstractMaker;
 use Symfony\Bundle\MakerBundle\Util\UseStatementGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
-use Twig\TwigFunction;
 
-/**
- * @author Javier Eguiluz <javier.eguiluz@gmail.com>
- * @author Ryan Weaver <weaverryan@gmail.com>
- */
-final class MakeTwigExtension extends AbstractMaker
+final class MakeService extends AbstractMaker
 {
+    public function __construct(private Generator $generator, private string $templatePath)
+    {
+
+    }
+
     public static function getCommandName(): string
     {
-        return 'make:service';
+        return 'survos:make:service';
     }
 
     public static function getCommandDescription(): string
@@ -43,7 +33,7 @@ final class MakeTwigExtension extends AbstractMaker
     {
         $command
             ->addArgument('name', InputArgument::OPTIONAL, 'The name of the service extension class (e.g. <fg=yellow>AppService</>)')
-            ->setHelp(file_get_contents(__DIR__.'/../Resources/help/MakeTwigExtension.txt'))
+            ->setHelp("Create a new Service class")
         ;
     }
 
@@ -60,7 +50,7 @@ final class MakeTwigExtension extends AbstractMaker
 
         $generator->generateClass(
             $extensionClassNameDetails->getFullName(),
-            'twig/Extension.tpl.php',
+            $this->templatePath . 'Service/Service.tpl.php',
             ['use_statements' => $useStatements]
         );
 
@@ -76,9 +66,9 @@ final class MakeTwigExtension extends AbstractMaker
 
     public function configureDependencies(DependencyBuilder $dependencies): void
     {
-        $dependencies->addClassDependency(
-            AbstractExtension::class,
-            'twig'
-        );
+//        $dependencies->addClassDependency(
+//            AbstractExtension::class,
+//            'twig'
+//        );
     }
 }
