@@ -63,7 +63,7 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
         $command
             ->setDescription('Creates CRUD for Doctrine entity class with Survos Base Bundle')
             ->addArgument('entity-class', InputArgument::OPTIONAL, sprintf('The class name of the entity to create CRUD (e.g. <fg=yellow>%s</>)', Str::asClassName(Str::getRandomTerm())))
-            ->setHelp(file_get_contents(__DIR__.'/../Resources/help/MakeCrud.txt'))
+            ->setHelp(file_get_contents(__DIR__.'/../../help/MakeCrud.txt'))
         ;
 
         $inputConfig->setArgumentAsNonInteractive('entity-class');
@@ -156,14 +156,14 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
         $templatesPath = str_replace('_controller', '', $templatesPath);
 
         // otherwise, it uses the ones from symfony, because generator looks for __DIR__
-        $templateRoot = __DIR__.'/../Resources/skeleton/';
+        $templateRoot = __DIR__.'/../../templates/skeleton/';
         foreach (['Controller' => $controllerClassDetails, 'CollectionController' => $entityControllerClassDetails] as $name => $cClassDetails) {
             $routePath = Str::asRoutePath($cClassDetails->getRelativeNameWithoutSuffix());
             $routePath = str_replace('/controller', '', $routePath);
             $routePath = str_replace('/collection', '', $routePath);
 
 
-            dump($name, $cClassDetails, $routePath);
+//            dump($name, $cClassDetails, $routePath);
             $generator->generateController(
                 $cClassDetails->getFullName(),
                 $templateRoot . sprintf('crud/controller/%s.tpl.php', $name),

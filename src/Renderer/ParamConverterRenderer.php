@@ -19,13 +19,10 @@ use Symfony\Component\String\Inflector\EnglishInflector;
 
 class ParamConverterRenderer
 {
-    private $generator;
-
     private EnglishInflector $inflector;
 
-    public function __construct(Generator $generator)
+    public function __construct(private Generator $generator, private string $templatesPath)
     {
-        $this->generator = $generator;
         $this->inflector = new EnglishInflector();
     }
 
@@ -63,7 +60,7 @@ class ParamConverterRenderer
 
     $generatedFilename= $this->generator->generateClass(
             $formClassDetails->getFullName(),
-            __DIR__ . '/../Resources/skeleton/Request/ParamConverter/ParamConverter.tpl.php',
+            $this->templatesPath . '/Request/ParamConverter/ParamConverter.tpl.php',
             $v=[
                 'entity_full_class_name' => $boundClassDetails ? $boundClassDetails->getFullName() : null,
                 'entity_class_name' => $boundClassDetails ? $boundClassDetails->getShortName() : null,

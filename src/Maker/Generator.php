@@ -7,5 +7,9 @@ use Symfony\Bundle\MakerBundle\Generator as SymfonyGenerator;
 class Generator extends SymfonyGenerator
 {
 
+    public function generateBundleClass()
+    {
+
+    }
 
 }

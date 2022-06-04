@@ -18,7 +18,7 @@ use Symfony\Bundle\MakerBundle\Str;
 
 final class MakeMenu extends AbstractMaker implements MakerInterface
 {
-    public function __construct(private Generator $generator)
+    public function __construct(private Generator $generator, private string $templatePath)
     {
 
     }
@@ -62,9 +62,11 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
             'Menu'
         );
 
+        dd($this->templatePath);
+
         $generatedFilename= $this->generator->generateClass(
             $classNameDetails->getFullName(),
-            __DIR__ . '/../Resources/skeleton/MenuMenu.php.tpl',
+            __DIR__ . '/../Resources/skeleton/Menu/MenuEventSubscriber.tpl.twig',
             $v=[
                 'entity_full_class_name' =>$classNameDetails->getFullName(),
 //                'entity_class_name' => $boundClassDetails ? $boundClassDetails->getShortName() : null,
@@ -75,15 +77,6 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
 //                'constraint_use_statements' => $constraintClasses,
 //                'shortClassName' => $formClassDetails->getShortName(),
             ]
-        );
-
-
-        $templatesPath = Str::asFilePath($paramConverterClassNameDetails->getRelativeNameWithoutSuffix());
-
-        $this->paramConverterRenderer->render(
-            $paramConverterClassNameDetails,
-            $formFields,
-            $boundClassDetails
         );
 
         $generator->writeChanges();

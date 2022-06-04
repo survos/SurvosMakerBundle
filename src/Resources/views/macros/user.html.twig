@@ -1,8 +1,0 @@
-{% macro avatar(image, alt, class) %}
-    {% if image %}
-        <img src="{{ asset(image) }}" class="{{ class|default('img-circle elevation-2') }}" alt="{{ alt }}" />
-    {% else %}
-        <img src="{{ asset(admin_lte_context.default_avatar) }}" class="{{ class|default('img-circle elevation-2') }}" alt="{{ alt }}" />
-    {% endif %}
-{% endmacro %}
-

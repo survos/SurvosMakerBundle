@@ -1,0 +1,2 @@
+The <info>%command.name%</info> command generates a bundle with optionally a twig extension, a stimulus controller and an autowired service.
+

@@ -1,9 +1,0 @@
-    {% for breadcrumb_item in knp_menu_get_breadcrumbs_array(knp_menu_get_current_item(item))|slice(1) %}
-        <li class="breadcrumb-item {{ loop.last ? 'active' }}">
-        {% if not loop.last %}
-            {{ breadcrumb_item.label }}
-            {% else %}
-            <li><a href="{{ breadcrumb_item.uri }}">{{ breadcrumb_item.label }}</a>
-        {% endif %}
-        </li>
-    {% endfor %}

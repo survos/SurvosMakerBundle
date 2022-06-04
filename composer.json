@@ -10,6 +10,7 @@
         "symfony/options-resolver": ">= 5.4",
         "symfony/process": ">= 5.4",
         "symfony/string": ">= 5.4",
+        "symfony/workflow": "^6.0",
         "twig/twig": "^2.0|^3.0"
     },
     "require-dev": {
@@ -27,7 +28,6 @@
         "symfony/security-csrf": "^6.0",
         "symfony/twig-bundle": ">= 5.4",
         "symfony/validator": ">= 5.4",
-        "symfony/workflow": "^6.0",
         "symfony/yaml": "^4.4|^5.0|^6.0"
     },
     "scripts": {

@@ -29,9 +29,8 @@ use Symfony\Component\Validator\Validation;
 final class MakeParamConverter extends AbstractMaker implements MakerInterface
 {
     private $entityHelper;
-    private $formTypeRenderer; // , FormTypeRenderer $formTypeRenderer, see this for example
 
-    public function __construct(DoctrineHelper $entityHelper, private ParamConverterRenderer $paramConverterRenderer)
+    public function __construct(DoctrineHelper $entityHelper, private ParamConverterRenderer $paramConverterRenderer, private string $templatePath)
     {
         $this->entityHelper = $entityHelper;
     }
@@ -47,7 +46,7 @@ final class MakeParamConverter extends AbstractMaker implements MakerInterface
             ->setDescription('Creates a new param converter class')
             ->addArgument('bound-class', InputArgument::REQUIRED, 'The name of Entity or fully qualified model class name that the new form will be bound to (empty for none)')
        //     ->addArgument('name', InputArgument::OPTIONAL, sprintf('The name of the ParamConverter class (e.g. <fg=yellow>%sType</>)', Str::asClassName(Str::getRandomTerm())))
-            ->setHelp(file_get_contents(__DIR__.'/../Resources/help/MakeParamConverter.txt'))
+            ->setHelp(file_get_contents(__DIR__.'/../../help/MakeParamConverter.txt'))
         ;
 
         $inputConf->setArgumentAsNonInteractive('bound-class');
@@ -97,7 +96,7 @@ final class MakeParamConverter extends AbstractMaker implements MakerInterface
             'ParamConverter'
         );
 
-        $templatesPath = Str::asFilePath($paramConverterClassNameDetails->getRelativeNameWithoutSuffix());
+//        $templatesPath = Str::asFilePath($paramConverterClassNameDetails->getRelativeNameWithoutSuffix());
 
         $formFields = ['field_name' => null];
 
