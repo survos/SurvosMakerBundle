@@ -19,6 +19,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Validator\Validation;
 
@@ -30,9 +31,10 @@ final class MakeParamConverter extends AbstractMaker implements MakerInterface
 {
     private $entityHelper;
 
-    public function __construct(DoctrineHelper $entityHelper, private ParamConverterRenderer $paramConverterRenderer, private string $templatePath)
+    public function __construct(DoctrineHelper $entityHelper, private ParamConverterRenderer $paramConverterRenderer, private string $templatePath, private ParameterBagInterface $bag,)
     {
         $this->entityHelper = $entityHelper;
+        dd($this->bag->all());
     }
 
     public static function getCommandName(): string

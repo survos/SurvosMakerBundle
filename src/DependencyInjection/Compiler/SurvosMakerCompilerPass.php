@@ -10,7 +10,9 @@ class SurvosMakerCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-//        $definition = $container->getDefinition('survos_base_bundle.base_service');
+//        dump($container->getParameterBag()->all(), $container->getParameter('kernel.bundles'));
+//        $definition = $container->getDefinition('maker');
+//        dd($definition); die('stopped' . __FILE__);
 //        $definition->setArgument(1, new Reference('oauth2.registry'));
     }
 }

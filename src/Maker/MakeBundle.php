@@ -17,6 +17,7 @@ use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\String\Inflector\EnglishInflector;
@@ -46,6 +47,7 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 use function Symfony\Component\String\u;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * @author Sadicov Vladimir <sadikoff@gmail.com>
@@ -54,9 +56,11 @@ use function Symfony\Component\String\u;
 class MakeBundle extends AbstractMaker implements MakerInterface
 {
 
-    public function __construct(private Generator $generator, private string $templatePath)
+    public function __construct(private Generator $generator, private string $templatePath,
+                                private string $vendor,
+                                private string $bundleName,
+    )
     {
-
     }
 
     public static function getCommandName(): string
@@ -101,11 +105,30 @@ class MakeBundle extends AbstractMaker implements MakerInterface
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
     {
+        $vendor = $input->getArgument('vendor');
+        $name = $input->getArgument('name');
+
+        // if the namespace doesn't exist, die and prompt user to reload the map
+        $json = json_decode(file_get_contents("composer.json"));  // object, not array (no second arg)
+        $bundleNamespace = "$vendor\\$name\\";
+        $psr = $json->autoload->{'psr-4'};
+        if (!property_exists($psr, $bundleNamespace)) {
+
+            $json->{"autoload"}->{"psr-4"}->{$bundleNamespace} = "lib/temp";  // object properties, not array indexes
+            file_put_contents("composer.json", $newjson = json_encode($json, JSON_PRETTY_PRINT && JSON_UNESCAPED_SLASHES && JSON_UNESCAPED_UNICODE));
+            $io->write("Please run composer dump-autoload to create a bundle structure for $bundleNamespace\n");
+            return;
+        }
+
+
+        // after generation, remove this line and tell user to load bundle from new directory
+
         $extensionClassNameDetails = $generator->createClassNameDetails(
             $input->getArgument('name'),
             '\\',
             'Bundle'
         );
+
 
         $useStatements = new UseStatementGenerator([
             DefinitionConfigurator::class,
@@ -115,11 +138,27 @@ class MakeBundle extends AbstractMaker implements MakerInterface
             Bundle::class,
         ]);
 
-        $generator->generateClass(
+        $classPath = $generator->generateClass(
             $extensionClassNameDetails->getFullName(),
             $this->templatePath .  'bundle/src/Bundle.tpl.php',
             ['use_statements' => $useStatements]
         );
+        $classDir = pathinfo($classPath, PATHINFO_DIRNAME);
+        // composer belongs above src
+        $snake = u($this->bundleName)->snake()->replace('_', '-');
+
+
+        $generator->generateFile(
+            $classDir . '/../composer.json',
+            $this->templatePath .  'bundle/composer.tpl.json',
+            $x = [
+                'vendor' => $vendor,
+                'bundleName' => $this->bundleName,
+                'name' => sprintf("%s/%s", u($vendor)->lower(), $snake)
+            ]
+        );
+
+//        dd($x, $classDir, $generator->getRootDirectory(), $generator->getRootNamespace(), __FILE__, __LINE__);
 
         $generator->writeChanges();
 
