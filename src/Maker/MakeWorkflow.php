@@ -23,6 +23,8 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Validator\Validation;
+use Symfony\Config\FrameworkConfig;
+use function Symfony\Component\String\u;
 
 /**
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
@@ -30,9 +32,8 @@ use Symfony\Component\Validator\Validation;
  */
 final class MakeWorkflow extends AbstractMaker implements MakerInterface
 {
-    public function __construct(private DoctrineHelper $entityHelper, private ParamConverterRenderer $paramConverterRenderer, private string $templatePath, private ParameterBagInterface $bag,)
+    public function __construct(private DoctrineHelper $entityHelper, private string $templatePath)
     {
-        dd($this->bag->all());
     }
 
     public static function getCommandName(): string
@@ -80,24 +81,28 @@ final class MakeWorkflow extends AbstractMaker implements MakerInterface
                 'Entity\\'
             );
 
-            $doctrineEntityDetails = $this->entityHelper->createDoctrineDetails($boundClassDetails->getFullName());
-
-            if (null !== $doctrineEntityDetails) {
-                $formFields = $doctrineEntityDetails->getFormFields();
-            } else {
-                $classDetails = new ClassDetails($boundClassDetails->getFullName());
-                $formFields = $classDetails->getFormFields();
-            }
+            $classDetails = new ClassDetails($boundClassDetails->getFullName());
         }
 
         $useStatements = new UseStatementGenerator([
+            $boundClassDetails->getFullName(),
+            FrameworkConfig::class,
         ]);
 
-        dd($generator->getRootDirectory());
+        $reflection = new \ReflectionClass($boundClassDetails->getFullName());
+        $constants =  array_keys($reflection->getConstants());
+        $workflowConfigFilename = $generator->getRootDirectory() . sprintf('/config/packages/%s_workflow.php', strtolower($boundClassDetails->getShortName()));
         $generator->generateFile(
-            $extensionClassNameDetails->getFullName(),
-            $this->templatePath . 'config/Workflow.tpl.php',
-            ['use_statements' => $useStatements]
+            $workflowConfigFilename,
+            $this->templatePath . 'Workflow/config/_workflow.tpl.php',
+            $v=[
+                'places' => array_filter($constants, fn($c) => str_starts_with($c, 'PLACE_')),
+                'transitions' => array_filter($constants, fn($c) => str_starts_with($c, 'TRANSITION_')),
+                'entity_full_class_name' => $boundClassDetails->getFullName(),
+                'entityName' => $boundClassDetails->getShortName(),
+                'use_statements' => $useStatements
+            ]
+
         );
 
         $generator->writeChanges();
@@ -105,62 +110,21 @@ final class MakeWorkflow extends AbstractMaker implements MakerInterface
         $this->writeSuccessMessage($io);
 
         $io->text([
-            'Next: Open your new extension class and start customizing it.',
+            'Next: Open your new workflow class and start customizing it.',
             'Find the documentation at <fg=yellow>http://symfony.com/doc/current/templating/twig_extension.html</>',
         ]);
 
 
-        $paramConverterClassNameDetails = $generator->createClassNameDetails(
-            $boundClassDetails->getShortName(),
-            'Request\\ParamConverter\\',
-            'ParamConverter'
-        );
-
-//        $templatesPath = Str::asFilePath($paramConverterClassNameDetails->getRelativeNameWithoutSuffix());
-
-        $formFields = ['field_name' => null];
-
-
-        $this->paramConverterRenderer->render(
-            $paramConverterClassNameDetails,
-            $formFields,
-            $boundClassDetails
-        );
-
-        $generator->writeChanges();
-
-        $this->writeSuccessMessage($io);
-
-        $io->text([
-            'Next: Add fields to your form and start using it.',
-            'Find the documentation at <fg=yellow>https://symfony.com/doc/current/forms.html</>',
-        ]);
     }
 
     public function configureDependencies(DependencyBuilder $dependencies)
     {
-        $dependencies->addClassDependency(
-            AbstractType::class,
-            // technically only form is needed, but the user will *probably* also want validation
-            'form'
-        );
-
-        $dependencies->addClassDependency(
-            Validation::class,
-            'validator',
-            // add as an optional dependency: the user *probably* wants validation
-            false
-        );
-
-        $dependencies->addClassDependency(
-            DoctrineBundle::class,
-            'orm',
-            false
-        );
+        // TODO: Implement configureDependencies() method.
     }
+
 
     static function getCommandDescription(): string
     {
-        return "Check request for object";
+        return "Make workflow from constants";
     }
 }

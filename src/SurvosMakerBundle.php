@@ -94,7 +94,7 @@ class SurvosMakerBundle extends AbstractBundle
 
 //        $ns = $builder->getParameter('maker.root_namespace', $config['template_path']); dd($ns, __FILE__);
 
-        foreach ([MakeMenu::class, MakeService::class, MakeWorkflow::class] as $makerClass) {
+        foreach ([MakeMenu::class, MakeService::class] as $makerClass) {
             $builder->autowire($makerClass)
                 ->addTag(MakeCommandRegistrationPass::MAKER_TAG) // 'maker.command'
                 ->addArgument(new Reference('maker.generator'))
@@ -139,6 +139,12 @@ class SurvosMakerBundle extends AbstractBundle
             ->addArgument(new Reference('maker.doctrine_helper'))
             ->addArgument(new Reference('maker.generator'))
             ->addArgument(new Reference('workflow.registry'))
+        ;
+
+        $builder->autowire(MakeWorkflow::class)
+            ->addTag('maker.command')
+            ->addArgument(new Reference('maker.doctrine_helper'))
+            ->addArgument($config['template_path'])
         ;
 
         }
