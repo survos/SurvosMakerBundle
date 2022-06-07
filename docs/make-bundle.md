@@ -5,6 +5,7 @@ The bundle maker is considerably more complicated that the other maker scripts, 
 The basic workflow is to
 
 * Establish a separate namespace for the bundle pointing to a directory within the repository.
+* composer dump-autoload -o
 * Create the bundle-specific file structure (controllers, services, templates, packages, etc.), without dependencies
 * Create the *Bundle.php, automatically wiring the relevant services
 * Create the composer.json files in that directory
@@ -17,8 +18,23 @@ The basic workflow is to
 * Submit recipe to recipes-contrib
 * delete the config.repositories line once it's on packagist.
 
+
 open maker.yaml and set the root_namespace: /bundle-dev
-bin/console survos:make:bundle init 
+```yaml
+maker:
+  root_namespace: Survos\CsvBundle
+
+survos_maker:
+  vendor: Survos
+  bundle_name: CsvBundle
+```
+
+```bash
+# set the namespace keys.  idea: use ENV var?
+bin/console survos:bundle CsvBundle Survos --force 
+composer dump-autoload -o
+
+```
 
 
 
@@ -41,7 +57,7 @@ OR
 composer config repositories.survos_maker_bundle '{"type": "path", "url": "/home/tac/survos/bundles/maker-bundle"}' 
 composer req survos/maker-bundle:*@dev --dev
 
-bin/console survos:make:bundle Survos FooBundle --dir=../bundle-dev
+bin/console survos:make:bundle Survos CsvBundle --dir=../bundle-dev
 cd  
 git init
 gh repo create survos/SurvosFooBundle --private -s .
@@ -71,6 +87,7 @@ echo "maker: { root_namespace: Survos\FooBundle }" > config/packages/maker.yaml
 
 
     composer config repositories.survos_foo '{"type": "path", "url": "lib/FooBundle"}'
+    composer config repositories.survos_test '{"type": "path", "url": "lib/temp"}'
     composer req survos/survosfoo-bundle:"*@dev"
 
 survos/-bundle

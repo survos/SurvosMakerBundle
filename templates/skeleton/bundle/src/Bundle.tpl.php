@@ -11,7 +11,19 @@ class <?= $class_name ?> extends AbstractBundle
     {
         $builder->setParameter('survos_workflow.direction', $config['direction']);
 
-        $container->import('../config/services.xml');
+        // twig classes
+
+/*
+$definition = $builder
+->autowire('survos.barcode_twig', BarcodeTwigExtension::class)
+->addTag('twig.extension');
+
+$definition->setArgument('$widthFactor', $config['widthFactor']);
+$definition->setArgument('$height', $config['height']);
+$definition->setArgument('$foregroundColor', $config['foregroundColor']);
+*/
+
+<!--        $container->import('../config/services.xml');-->
 
     }
 

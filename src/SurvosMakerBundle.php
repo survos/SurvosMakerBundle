@@ -17,6 +17,7 @@ use Survos\Bundle\MakerBundle\Maker\MakeCrud;
 use Survos\Bundle\MakerBundle\Maker\MakeMenu;
 use Survos\Bundle\MakerBundle\Maker\MakeParamConverter;
 use Survos\Bundle\MakerBundle\Maker\MakeService;
+use Survos\Bundle\MakerBundle\Maker\MakeWorkflow;
 use Survos\Bundle\MakerBundle\Maker\MakeWorkflowListener;
 use Survos\Bundle\MakerBundle\Renderer\ParamConverterRenderer;
 use Symfony\Bundle\MakerBundle\DependencyInjection\CompilerPass\DoctrineAttributesCheckPass;
@@ -32,7 +33,6 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-
 class SurvosMakerBundle extends AbstractBundle
 {
 
@@ -94,7 +94,7 @@ class SurvosMakerBundle extends AbstractBundle
 
 //        $ns = $builder->getParameter('maker.root_namespace', $config['template_path']); dd($ns, __FILE__);
 
-        foreach ([MakeMenu::class, MakeService::class] as $makerClass) {
+        foreach ([MakeMenu::class, MakeService::class, MakeWorkflow::class] as $makerClass) {
             $builder->autowire($makerClass)
                 ->addTag(MakeCommandRegistrationPass::MAKER_TAG) // 'maker.command'
                 ->addArgument(new Reference('maker.generator'))
@@ -106,10 +106,11 @@ class SurvosMakerBundle extends AbstractBundle
             ->addArgument(new Reference('maker.generator'))
             ->addArgument($config['template_path'])
             ->addArgument($config['vendor'])
+            ->addArgument($config['relative_bundle_path'])
             ->addArgument($config['bundle_name'])
 
         ;
-        dump($config, __FILE__);
+//        dump($config, __FILE__);
 
 
         // we can likely combine these, or even move it to crud
@@ -150,6 +151,7 @@ class SurvosMakerBundle extends AbstractBundle
           ->scalarNode('template_path')->defaultValue(__DIR__.'/../templates/skeleton/')->end()
           ->scalarNode('vendor')->defaultValue('Survos')->end()
           ->scalarNode('bundle_name')->defaultValue('FooBundle')->end()
+          ->scalarNode('relative_bundle_path')->defaultValue('lib/temp/src')->end()
 //              ->booleanNode('unicorns_are_real')->defaultTrue()->end()
 //            ->integerNode('min_sunshine')->defaultValue(3)->end()
             ->end();

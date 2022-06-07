@@ -58,6 +58,7 @@ class MakeBundle extends AbstractMaker implements MakerInterface
 
     public function __construct(private Generator $generator, private string $templatePath,
                                 private string $vendor,
+                                private string $bundlePath,
                                 private string $bundleName,
     )
     {
@@ -81,12 +82,13 @@ class MakeBundle extends AbstractMaker implements MakerInterface
         $command
             ->setDescription('Creates a Symfony 6.1 bundle in a new directory')
             // echo "maker: { root_namespace: Survos }" > config/packages/maker.yaml
+//            ->addArgument('action', InputArgument::REQUIRED, 'init or library or local-bundle or remote-bundle', null)
             ->addArgument('name', InputArgument::OPTIONAL, 'The bundle name part of the namespace', 'SurvosFoo')
             ->addArgument('vendor', InputArgument::OPTIONAL, 'The vendor part of the namespace', 'Survos')
 //            ->addArgument('directory', InputArgument::OPTIONAL, 'The directory (relative to the project root) where the bundle will be created', '..')
 //            ->addArgument('bundle-class', InputArgument::OPTIONAL, sprintf('The class name of the bundle to create (e.g. <fg=yellow>%sBundle</>)', Str::asClassName(Str::getRandomTerm())))
             ->addOption('twig', null, InputOption::VALUE_OPTIONAL, "Create and register a Twig Extension", 'TwigExtension')
-            ->setHelp(file_get_contents(__DIR__.'/../../help/MakeCrud.txt'))
+            ->setHelp(file_get_contents(__DIR__.'/../../help/MakeBundle.txt'))
         ;
 
         $inputConfig->setArgumentAsNonInteractive('entity-class');
@@ -114,9 +116,10 @@ class MakeBundle extends AbstractMaker implements MakerInterface
         $psr = $json->autoload->{'psr-4'};
         if (!property_exists($psr, $bundleNamespace)) {
 
-            $json->{"autoload"}->{"psr-4"}->{$bundleNamespace} = "lib/temp";  // object properties, not array indexes
+            // @todo: use jq from cli instead
+            $json->{"autoload"}->{"psr-4"}->{$bundleNamespace} = $this->bundlePath;  // object properties, not array indexes
             file_put_contents("composer.json", $newjson = json_encode($json, JSON_PRETTY_PRINT && JSON_UNESCAPED_SLASHES && JSON_UNESCAPED_UNICODE));
-            $io->write("Please run composer dump-autoload to create a bundle structure for $bundleNamespace\n");
+            $io->write("Please run composer dump-autoload to create a bundle structure for $bundleNamespace\nTHEN add services, then run ");
             return;
         }
 

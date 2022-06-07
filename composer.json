@@ -16,6 +16,7 @@
     "require-dev": {
         "doctrine/doctrine-bundle": "^2.0",
         "doctrine/orm": "^2.3",
+        "haydenpierce/class-finder": "^0.4.3",
         "phpstan/phpstan": "^1.4",
         "sensio/framework-extra-bundle": "^6.2",
         "symfony/form": ">= 6.0",
