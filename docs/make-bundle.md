@@ -1,3 +1,26 @@
+# make:bundle
+
+The bundle maker is considerably more complicated that the other maker scripts, because files are being generated that are included outside of the application namespace.
+
+The basic workflow is to
+
+* Establish a separate namespace for the bundle pointing to a directory within the repository.
+* Create the bundle-specific file structure (controllers, services, templates, packages, etc.), without dependencies
+* Create the *Bundle.php, automatically wiring the relevant services
+* Create the composer.json files in that directory
+* Add the external dependencies
+* unset the bundle namespace from the app repository
+* set the config.repositories to point to the local directory and install it.
+* develop the bundle, making sure to run composer update if 3rd-party dependecies are added to the bundle.
+* create a github repo for the bundle, reset the config.repositories to point to the private github repo.
+* Add bundle to packagist
+* Submit recipe to recipes-contrib
+* delete the config.repositories line once it's on packagist.
+
+open maker.yaml and set the root_namespace: /bundle-dev
+bin/console survos:make:bundle init 
+
+
 
 
 Goal: composer with 
@@ -24,11 +47,6 @@ git init
 gh repo create survos/SurvosFooBundle --private -s .
 
 cd ../bundles/$REPO
-composer config repositories.survos_foo '{"type": "path", "url": "lib/FooBundle"}'
-composer req survos/survosfoo-bundle:"*@dev"
-
-echo "maker: { root_namespace: Survos\FooBundle }" > config/packages/maker.yaml
-bin/console make:twig FooTwigExtension
 
 ```
 
@@ -56,3 +74,13 @@ echo "maker: { root_namespace: Survos\FooBundle }" > config/packages/maker.yaml
     composer req survos/survosfoo-bundle:"*@dev"
 
 survos/-bundle
+
+
+
+
+composer config repositories.survos_foo '{"type": "path", "url": "lib/FooBundle"}'
+composer req survos/survosfoo-bundle:"*@dev"
+
+echo "maker: { root_namespace: Survos\FooBundle }" > config/packages/maker.yaml
+bin/console make:twig FooTwigExtension
+
