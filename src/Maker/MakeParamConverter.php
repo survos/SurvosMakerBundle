@@ -34,7 +34,6 @@ final class MakeParamConverter extends AbstractMaker implements MakerInterface
     public function __construct(DoctrineHelper $entityHelper, private ParamConverterRenderer $paramConverterRenderer, private string $templatePath, private ParameterBagInterface $bag,)
     {
         $this->entityHelper = $entityHelper;
-        dd($this->bag->all());
     }
 
     public static function getCommandName(): string
