@@ -165,6 +165,7 @@ class SurvosMakerBundle extends AbstractBundle
 
     }
 
+// https://stackoverflow.com/questions/72507212/symfony-6-1-get-another-bundle-configuration-data/72664468#72664468
     public function XXprependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
     {
         $configs = $builder->getExtensionConfig('MakerBundle');
