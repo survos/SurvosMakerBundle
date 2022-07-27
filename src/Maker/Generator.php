@@ -9,7 +9,6 @@ use Symfony\Bundle\MakerBundle\Util\TemplateComponentGenerator;
 
 class Generator extends SymfonyGenerator
 {
-
     public function __construct(FileManager $fileManager, string $namespacePrefix, PhpCompatUtil $phpCompatUtil = null, TemplateComponentGenerator $templateComponentGenerator = null)
     {
         parent::__construct($fileManager, $namespacePrefix, $phpCompatUtil, $templateComponentGenerator);
@@ -23,7 +22,5 @@ class Generator extends SymfonyGenerator
 
     public function generateBundleClass()
     {
-
     }
-
 }

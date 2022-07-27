@@ -26,15 +26,19 @@ class ParamConverterRenderer
         $this->inflector = new EnglishInflector();
     }
 
-    public function render(ClassNameDetails $formClassDetails, array $formFields,
-                           ClassNameDetails $boundClassDetails = null, array $constraintClasses = [], array $extraUseClasses = [])
-    {
+    public function render(
+        ClassNameDetails $formClassDetails,
+        array $formFields,
+        ClassNameDetails $boundClassDetails = null,
+        array $constraintClasses = [],
+        array $extraUseClasses = []
+    ) {
 
         $inflector = new EnglishInflector();
         $fieldTypeUseStatements = [];
         $fields = [];
         foreach ($formFields as $name => $fieldTypeOptions) {
-            $fieldTypeOptions = $fieldTypeOptions ?? ['type' => null, 'options_code' => null];
+            $fieldTypeOptions ??= ['type' => null, 'options_code' => null];
 
             if (isset($fieldTypeOptions['type'])) {
                 $fieldTypeUseStatements[] = $fieldTypeOptions['type'];
@@ -58,10 +62,10 @@ class ParamConverterRenderer
         $templatesPath = Str::asFilePath($controllerClassDetails->getRelativeNameWithoutSuffix());
          */
 
-    $generatedFilename= $this->generator->generateClass(
+        $generatedFilename = $this->generator->generateClass(
             $formClassDetails->getFullName(),
             $this->templatesPath . '/Request/ParamConverter/ParamConverter.tpl.php',
-            $v=[
+            $v = [
                 'entity_full_class_name' => $boundClassDetails ? $boundClassDetails->getFullName() : null,
                 'entity_class_name' => $boundClassDetails ? $boundClassDetails->getShortName() : null,
                 'form_fields' => $fields,
@@ -73,6 +77,6 @@ class ParamConverterRenderer
             ]
         );
 //    dump($generatedFilename, $v, $formClassDetails);
-    $contents = $this->generator->getFileContentsForPendingOperation($generatedFilename);
+        $contents = $this->generator->getFileContentsForPendingOperation($generatedFilename);
     }
 }

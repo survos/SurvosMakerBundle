@@ -19,13 +19,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Bundle\MakerBundle\MakerInterface;
 use Symfony\Bundle\MakerBundle\Str;
 use Symfony\Component\Workflow\Registry;
+
 use function Symfony\Component\String\u;
 
 final class MakeWorkflowListener extends AbstractMaker implements MakerInterface
 {
     public function __construct(private DoctrineHelper $doctrineHelper, private Generator $generator, private Registry $registry)
     {
-
     }
 
     public static function getCommandName(): string
@@ -71,7 +71,7 @@ final class MakeWorkflowListener extends AbstractMaker implements MakerInterface
 
         $fullClassName = $listererClassDetails->getFullName();
         // to get the workflow name from the workflows
-        $workflow = $this->registry->get( new ($entityClassDetails->getFullName())());
+        $workflow = $this->registry->get(new ($entityClassDetails->getFullName())());
 //        dd($workflow->getName());
         $workflowName = constant($entityClassDetails->getFullName() . '::WORKFLOW');
 
@@ -81,25 +81,25 @@ final class MakeWorkflowListener extends AbstractMaker implements MakerInterface
         $skeletonPath = __DIR__ . '/../Resources/skeleton/';
         $templatesPath = 'Workflow/Listener/';
         $template = 'WorkflowListener.php.tpl';
-        $generatedFilename= $this->generator->generateClass(
+        $generatedFilename = $this->generator->generateClass(
             $fullClassName,
             $skeletonPath . $templatesPath . $template,
-            $v=[
+            $v = [
                 'entity_full_class_name' => $entityClassDetails->getFullName(),
                 'full_class_name' => $fullClassName,
                 'shortClassName' => $listererClassDetails->getShortName(),
                 'entityName' => $entityClassDetails->getShortName(),
-//                'transitions' => $workflow->getDefinition()->getTransitions(),
-'workflowName' => $workflowName,
-'constantsMap' => array_flip($entityClassDetails->getFullName()::getConstants('TRANSITION_'))
+            //                'transitions' => $workflow->getDefinition()->getTransitions(),
+            'workflowName' => $workflowName,
+            'constantsMap' => array_flip($entityClassDetails->getFullName()::getConstants('TRANSITION_'))
 
-//                'entity_class_name' => $boundClassDetails ? $boundClassDetails->getShortName() : null,
-//                'form_fields' => $fields,
-//                'entity_var_name' => $entityVarSingular,
-//                'entity_unique_name' => $entityVarSingular . 'Id',
-//                'field_type_use_statements' => $mergedTypeUseStatements,
-//                'constraint_use_statements' => $constraintClasses,
-//                'shortClassName' => $formClassDetails->getShortName(),
+            //                'entity_class_name' => $boundClassDetails ? $boundClassDetails->getShortName() : null,
+            //                'form_fields' => $fields,
+            //                'entity_var_name' => $entityVarSingular,
+            //                'entity_unique_name' => $entityVarSingular . 'Id',
+            //                'field_type_use_statements' => $mergedTypeUseStatements,
+            //                'constraint_use_statements' => $constraintClasses,
+            //                'shortClassName' => $formClassDetails->getShortName(),
             ]
         );
 
@@ -114,7 +114,6 @@ final class MakeWorkflowListener extends AbstractMaker implements MakerInterface
                 $generator->writeChanges();
 
         $this->writeSuccessMessage($io);
-
     }
 
     public function __call(string $name, array $arguments)

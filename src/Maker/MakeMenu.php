@@ -20,7 +20,6 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
 {
     public function __construct(private Generator $generator, private string $templatePath)
     {
-
     }
 
     public static function getCommandName(): string
@@ -64,18 +63,18 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
 
         dd($this->templatePath);
 
-        $generatedFilename= $this->generator->generateClass(
+        $generatedFilename = $this->generator->generateClass(
             $classNameDetails->getFullName(),
             __DIR__ . '/../Resources/skeleton/Menu/MenuEventSubscriber.tpl.twig',
-            $v=[
-                'entity_full_class_name' =>$classNameDetails->getFullName(),
-//                'entity_class_name' => $boundClassDetails ? $boundClassDetails->getShortName() : null,
-//                'form_fields' => $fields,
-//                'entity_var_name' => $entityVarSingular,
-//                'entity_unique_name' => $entityVarSingular . 'Id',
-//                'field_type_use_statements' => $mergedTypeUseStatements,
-//                'constraint_use_statements' => $constraintClasses,
-//                'shortClassName' => $formClassDetails->getShortName(),
+            $v = [
+                'entity_full_class_name' => $classNameDetails->getFullName(),
+            //                'entity_class_name' => $boundClassDetails ? $boundClassDetails->getShortName() : null,
+            //                'form_fields' => $fields,
+            //                'entity_var_name' => $entityVarSingular,
+            //                'entity_unique_name' => $entityVarSingular . 'Id',
+            //                'field_type_use_statements' => $mergedTypeUseStatements,
+            //                'constraint_use_statements' => $constraintClasses,
+            //                'shortClassName' => $formClassDetails->getShortName(),
             ]
         );
 

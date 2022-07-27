@@ -21,7 +21,6 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\String\Inflector\EnglishInflector;
-//use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
@@ -31,23 +30,14 @@ use Symfony\Bundle\MakerBundle\Generator;
 use Symfony\Bundle\MakerBundle\InputConfiguration;
 use Symfony\Bundle\MakerBundle\Maker\AbstractMaker;
 use Symfony\Bundle\MakerBundle\MakerInterface;
-use Symfony\Bundle\MakerBundle\Renderer\FormTypeRenderer;
-use Symfony\Bundle\MakerBundle\Str;
-use Symfony\Bundle\MakerBundle\Validator;
-use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Csrf\CsrfTokenManager;
-use Symfony\Component\Validator\Validation;
 use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
-use Twig\TwigFunction;
-use function Symfony\Component\String\u;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+
+use function Symfony\Component\String\u;
 
 /**
  * @author Sadicov Vladimir <sadikoff@gmail.com>
@@ -55,20 +45,20 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  */
 class MakeBundle extends AbstractMaker implements MakerInterface
 {
-
-    public function __construct(private Generator $generator, private string $templatePath,
-                                private string $vendor,
-                                private string $bundlePath,
-                                private string $bundleName,
-    )
-    {
+    public function __construct(
+        private Generator $generator,
+        private string $templatePath,
+        private string $vendor,
+        private string $bundlePath,
+        private string $bundleName,
+    ) {
     }
 
     public static function getCommandName(): string
     {
         return 'survos:make:bundle';
     }
-    static function getCommandDescription(): string
+    public static function getCommandDescription(): string
     {
         return "Makes a bundle class";
     }
@@ -88,7 +78,7 @@ class MakeBundle extends AbstractMaker implements MakerInterface
 //            ->addArgument('directory', InputArgument::OPTIONAL, 'The directory (relative to the project root) where the bundle will be created', '..')
 //            ->addArgument('bundle-class', InputArgument::OPTIONAL, sprintf('The class name of the bundle to create (e.g. <fg=yellow>%sBundle</>)', Str::asClassName(Str::getRandomTerm())))
             ->addOption('twig', null, InputOption::VALUE_OPTIONAL, "Create and register a Twig Extension", 'TwigExtension')
-            ->setHelp(file_get_contents(__DIR__.'/../../help/MakeBundle.txt'))
+            ->setHelp(file_get_contents(__DIR__ . '/../../help/MakeBundle.txt'))
         ;
 
         $inputConfig->setArgumentAsNonInteractive('entity-class');
@@ -115,7 +105,6 @@ class MakeBundle extends AbstractMaker implements MakerInterface
         $bundleNamespace = "$vendor\\$name\\";
         $psr = $json->autoload->{'psr-4'};
         if (!property_exists($psr, $bundleNamespace)) {
-
             // @todo: use jq from cli instead
             $json->{"autoload"}->{"psr-4"}->{$bundleNamespace} = $this->bundlePath;  // object properties, not array indexes
             file_put_contents("composer.json", $newjson = json_encode($json, JSON_PRETTY_PRINT && JSON_UNESCAPED_SLASHES && JSON_UNESCAPED_UNICODE));
@@ -180,6 +169,4 @@ class MakeBundle extends AbstractMaker implements MakerInterface
             'twig'
         );
     }
-
-
 }

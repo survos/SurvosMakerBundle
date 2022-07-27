@@ -47,7 +47,7 @@ final class MakeParamConverter extends AbstractMaker implements MakerInterface
             ->setDescription('Creates a new param converter class')
             ->addArgument('bound-class', InputArgument::REQUIRED, 'The name of Entity or fully qualified model class name that the new form will be bound to (empty for none)')
        //     ->addArgument('name', InputArgument::OPTIONAL, sprintf('The name of the ParamConverter class (e.g. <fg=yellow>%sType</>)', Str::asClassName(Str::getRandomTerm())))
-            ->setHelp(file_get_contents(__DIR__.'/../../help/MakeParamConverter.txt'))
+            ->setHelp(file_get_contents(__DIR__ . '/../../help/MakeParamConverter.txt'))
         ;
 
         $inputConf->setArgumentAsNonInteractive('bound-class');
@@ -61,7 +61,7 @@ final class MakeParamConverter extends AbstractMaker implements MakerInterface
             $entities = $this->entityHelper->getEntitiesForAutocomplete();
 
             $question = new Question($argument->getDescription());
-            $question->setValidator(function ($answer) use ($entities) {return Validator::existsOrNull($answer, $entities); });
+            $question->setValidator(fn($answer) => Validator::existsOrNull($answer, $entities));
             $question->setAutocompleterValues($entities);
             $question->setMaxAttempts(3);
 
@@ -140,7 +140,7 @@ final class MakeParamConverter extends AbstractMaker implements MakerInterface
         );
     }
 
-    static function getCommandDescription(): string
+    public static function getCommandDescription(): string
     {
         return "Check request for object";
     }

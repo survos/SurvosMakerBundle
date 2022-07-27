@@ -33,9 +33,9 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+
 class SurvosMakerBundle extends AbstractBundle
 {
-
     // src/Acme/HelloBundle/DependencyInjection/AcmeHelloExtension.php
     public function prepend(ContainerBuilder $container)
     {
@@ -146,23 +146,20 @@ class SurvosMakerBundle extends AbstractBundle
             ->addArgument(new Reference('maker.doctrine_helper'))
             ->addArgument($config['template_path'])
         ;
-
-        }
+    }
 
 
     public function configure(DefinitionConfigurator $definition): void
     {
         $definition->rootNode()
             ->children()
-          ->scalarNode('template_path')->defaultValue(__DIR__.'/../templates/skeleton/')->end()
+          ->scalarNode('template_path')->defaultValue(__DIR__ . '/../templates/skeleton/')->end()
           ->scalarNode('vendor')->defaultValue('Survos')->end()
           ->scalarNode('bundle_name')->defaultValue('FooBundle')->end()
           ->scalarNode('relative_bundle_path')->defaultValue('lib/temp/src')->end()
 //              ->booleanNode('unicorns_are_real')->defaultTrue()->end()
 //            ->integerNode('min_sunshine')->defaultValue(3)->end()
             ->end();
-
-
     }
 
 // https://stackoverflow.com/questions/72507212/symfony-6-1-get-another-bundle-configuration-data/72664468#72664468
@@ -188,7 +185,6 @@ class SurvosMakerBundle extends AbstractBundle
 
 //        // append from file
 //        $container->import('../config/packages/cache.php');
-
     }
 
     public function build(ContainerBuilder $container)
@@ -202,6 +198,5 @@ class SurvosMakerBundle extends AbstractBundle
 
 //        dump(__FILE__, __LINE__);
 //        $container->addCompilerPass(new SurvosMakerCompilerPass());
-
     }
 }

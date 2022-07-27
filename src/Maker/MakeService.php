@@ -16,7 +16,6 @@ final class MakeService extends AbstractMaker
 {
     public function __construct(private Generator $generator, private string $templatePath)
     {
-
     }
 
     public static function getCommandName(): string

@@ -24,6 +24,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Validator\Validation;
 use Symfony\Config\FrameworkConfig;
+
 use function Symfony\Component\String\u;
 
 /**
@@ -47,7 +48,7 @@ final class MakeWorkflow extends AbstractMaker implements MakerInterface
             ->setDescription('Creates a workflow configuration from PLACE_ and _TRANSITION constants')
             ->addArgument('bound-class', InputArgument::REQUIRED, 'The name of Entity or fully qualified model class name')
        //     ->addArgument('name', InputArgument::OPTIONAL, sprintf('The name of the ParamConverter class (e.g. <fg=yellow>%sType</>)', Str::asClassName(Str::getRandomTerm())))
-            ->setHelp(file_get_contents(__DIR__.'/../../help/MakeParamConverter.txt'))
+            ->setHelp(file_get_contents(__DIR__ . '/../../help/MakeParamConverter.txt'))
         ;
 
         $inputConf->setArgumentAsNonInteractive('bound-class');
@@ -61,7 +62,7 @@ final class MakeWorkflow extends AbstractMaker implements MakerInterface
             $entities = $this->entityHelper->getEntitiesForAutocomplete();
 
             $question = new Question($argument->getDescription());
-            $question->setValidator(function ($answer) use ($entities) {return Validator::existsOrNull($answer, $entities); });
+            $question->setValidator(fn($answer) => Validator::existsOrNull($answer, $entities));
             $question->setAutocompleterValues($entities);
             $question->setMaxAttempts(3);
 
@@ -95,14 +96,13 @@ final class MakeWorkflow extends AbstractMaker implements MakerInterface
         $generator->generateFile(
             $workflowConfigFilename,
             $this->templatePath . 'Workflow/config/_workflow.tpl.php',
-            $v=[
+            $v = [
                 'places' => array_filter($constants, fn($c) => str_starts_with($c, 'PLACE_')),
                 'transitions' => array_filter($constants, fn($c) => str_starts_with($c, 'TRANSITION_')),
                 'entity_full_class_name' => $boundClassDetails->getFullName(),
                 'entityName' => $boundClassDetails->getShortName(),
                 'use_statements' => $useStatements
             ]
-
         );
 
         $generator->writeChanges();
@@ -113,8 +113,6 @@ final class MakeWorkflow extends AbstractMaker implements MakerInterface
             'Next: Open your new workflow class and start customizing it.',
             'Find the documentation at <fg=yellow>http://symfony.com/doc/current/templating/twig_extension.html</>',
         ]);
-
-
     }
 
     public function configureDependencies(DependencyBuilder $dependencies)
@@ -123,7 +121,7 @@ final class MakeWorkflow extends AbstractMaker implements MakerInterface
     }
 
 
-    static function getCommandDescription(): string
+    public static function getCommandDescription(): string
     {
         return "Make workflow from constants";
     }

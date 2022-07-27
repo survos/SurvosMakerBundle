@@ -16,5 +16,3 @@ class SurvosMakerCompilerPass implements CompilerPassInterface
 //        $definition->setArgument(1, new Reference('oauth2.registry'));
     }
 }
-
-

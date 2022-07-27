@@ -35,6 +35,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
 use Symfony\Component\Validator\Validation;
+
 use function Symfony\Component\String\u;
 
 /**
@@ -63,7 +64,7 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
         $command
             ->setDescription('Creates CRUD for Doctrine entity class with Survos Base Bundle')
             ->addArgument('entity-class', InputArgument::OPTIONAL, sprintf('The class name of the entity to create CRUD (e.g. <fg=yellow>%s</>)', Str::asClassName(Str::getRandomTerm())))
-            ->setHelp(file_get_contents(__DIR__.'/../../help/MakeCrud.txt'))
+            ->setHelp(file_get_contents(__DIR__ . '/../../help/MakeCrud.txt'))
         ;
 
         $inputConfig->setArgumentAsNonInteractive('entity-class');
@@ -105,7 +106,7 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
 
         if (null !== $entityDoctrineDetails?->getRepositoryClass()) {
             $repositoryClassDetails = $generator->createClassNameDetails(
-                '\\'.$entityDoctrineDetails?->getRepositoryClass(),
+                '\\' . $entityDoctrineDetails?->getRepositoryClass(),
                 'Repository\\',
                 'Repository'
             );
@@ -118,12 +119,12 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
         }
 
         $controllerClassDetails = $generator->createClassNameDetails(
-            $entityClassDetails->getRelativeNameWithoutSuffix().'Controller',
+            $entityClassDetails->getRelativeNameWithoutSuffix() . 'Controller',
             'Controller\\',
         );
 
         $entityControllerClassDetails = $generator->createClassNameDetails(
-            $entityClassDetails->getRelativeNameWithoutSuffix().'CollectionController',
+            $entityClassDetails->getRelativeNameWithoutSuffix() . 'CollectionController',
             'Controller\\',
             'Controller'
         );
@@ -131,7 +132,7 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
         $iter = 0;
         do {
             $formClassDetails = $generator->createClassNameDetails(
-                $entityClassDetails->getRelativeNameWithoutSuffix().($iter ?: '').'Type',
+                $entityClassDetails->getRelativeNameWithoutSuffix() . ($iter ?: '') . 'Type',
                 'Form\\',
                 'Type'
             );
@@ -156,7 +157,7 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
         $templatesPath = str_replace('_controller', '', $templatesPath);
 
         // otherwise, it uses the ones from symfony, because generator looks for __DIR__
-        $templateRoot = __DIR__.'/../../templates/skeleton/';
+        $templateRoot = __DIR__ . '/../../templates/skeleton/';
         foreach (['Controller' => $controllerClassDetails, 'CollectionController' => $entityControllerClassDetails] as $name => $cClassDetails) {
             $routePath = Str::asRoutePath($cClassDetails->getRelativeNameWithoutSuffix());
             $routePath = str_replace('/controller', '', $routePath);
@@ -167,7 +168,8 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
             $generator->generateController(
                 $cClassDetails->getFullName(),
                 $templateRoot . sprintf('crud/controller/%s.tpl.php', $name),
-                array_merge([
+                array_merge(
+                    [
                     'entity_full_class_name' => $entityClassDetails->getFullName(),
                     'entity_class_name' => $entityClassDetails->getShortName(),
                     'form_full_class_name' => $formClassDetails->getFullName(),
@@ -180,7 +182,7 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
                     'entity_var_singular' => $entityVarSingular,
                     'entity_twig_var_singular' => $entityTwigVarSingular,
                     'entity_identifier' => $entityDoctrineDetails->getIdentifier(),
-                ],
+                    ],
                     $repositoryVars
                 )
             );
@@ -251,8 +253,8 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
         foreach ($templates as $template => $variables) {
 //            if ($template == 'index') dd($variables);
             $generator->generateTemplate(
-                $templatesPath.'/'.$template.'.html.twig',
-                $templateRoot . 'crud/templates/'.$template.'.tpl.php',
+                $templatesPath . '/' . $template . '.html.twig',
+                $templateRoot . 'crud/templates/' . $template . '.tpl.php',
                 $variables
             );
         }
@@ -315,10 +317,8 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
         return $this->inflector->singularize($word)[0];
     }
 
-    static function getCommandDescription(): string
+    public static function getCommandDescription(): string
     {
         return "Makes crud using ParamConverter?";
     }
-
-
 }
