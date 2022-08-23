@@ -1,5 +1,6 @@
 {
     "name": "survos/maker-bundle",
+    "minimum-stability": "dev",
     "description": "Tools to generate controllers and templates for the admin interface",
     "type": "symfony-bundle",
     "keywords": ["generator", "symfony", "crud"],
@@ -20,6 +21,7 @@
         "rector/rector": "^0.13.9",
         "sensio/framework-extra-bundle": "^6.2",
         "squizlabs/php_codesniffer": "^3.7",
+        "survos/bootstrap-bundle": "^2.0",
         "symfony/form": ">= 6.0",
         "symfony/http-client": "^6.0",
         "symfony/maker-bundle": "^1.38",

@@ -34,7 +34,6 @@ class ParamConverterRenderer
         array $extraUseClasses = []
     ) {
 
-        $inflector = new EnglishInflector();
         $fieldTypeUseStatements = [];
         $fields = [];
         foreach ($formFields as $name => $fieldTypeOptions) {

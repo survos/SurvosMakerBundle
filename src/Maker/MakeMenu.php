@@ -2,11 +2,16 @@
 
 namespace Survos\Bundle\MakerBundle\Maker;
 
+use Knp\Menu\ItemInterface;
+use Survos\BootstrapBundle\Traits\KnpMenuHelperTrait;
+use Survos\BootstrapBundle\Event\KnpMenuEvent;
+use Survos\BootstrapBundle\Menu\MenuBuilder;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
 use Symfony\Bundle\MakerBundle\DependencyBuilder;
 use Symfony\Bundle\MakerBundle\Generator;
 use Symfony\Bundle\MakerBundle\InputConfiguration;
 use Symfony\Bundle\MakerBundle\Maker\AbstractMaker;
+use Symfony\Bundle\MakerBundle\Util\UseStatementGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,6 +20,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Bundle\MakerBundle\MakerInterface;
 use Symfony\Bundle\MakerBundle\Str;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Twig\Extension\AbstractExtension;
 
 final class MakeMenu extends AbstractMaker implements MakerInterface
 {
@@ -33,7 +41,7 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
     public function configureCommand(Command $command, InputConfiguration $inputConfig)
     {
         $command
-            ->addArgument('menuClassName', InputArgument::OPTIONAL, 'Menu Class Name', 'App')
+            ->addArgument('menuClassName', InputArgument::OPTIONAL, 'Menu Class Name', '')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Overwrite if it already exists.')
         ;
     }
@@ -48,6 +56,11 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
 
     public function configureDependencies(DependencyBuilder $dependencies)
     {
+        $dependencies->addClassDependency(
+            AbstractExtension::class,
+            'twig'
+        );
+
         // TODO: Implement configureDependencies() method.
     }
 
@@ -57,17 +70,25 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
         $shortName = $input->getArgument('menuClassName');
         $classNameDetails = $generator->createClassNameDetails(
             $shortName,
-            'Menu\\',
-            'Menu'
+            'EventSubscriber\\',
+            'MenuSubscriber'
         );
 
-        dd($this->templatePath);
+        $useStatements = new UseStatementGenerator([
+            EventSubscriberInterface::class,
+            KnpMenuHelperTrait::class,
+            ItemInterface::class,
+            MenuBuilder::class,
+            KnpMenuEvent::class,
+            AuthorizationCheckerInterface::class,
+        ]);
 
         $generatedFilename = $this->generator->generateClass(
             $classNameDetails->getFullName(),
-            __DIR__ . '/../Resources/skeleton/Menu/MenuEventSubscriber.tpl.twig',
+            __DIR__ . '/../../templates/skeleton/Menu/MenuEventSubscriber.tpl.twig',
             $v = [
                 'entity_full_class_name' => $classNameDetails->getFullName(),
+                'use_statements' => $useStatements,
             //                'entity_class_name' => $boundClassDetails ? $boundClassDetails->getShortName() : null,
             //                'form_fields' => $fields,
             //                'entity_var_name' => $entityVarSingular,
@@ -78,9 +99,13 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
             ]
         );
 
+
+//        unlink($generatedFilename); // we need a --force flag
         $generator->writeChanges();
+        print file_get_contents($generatedFilename);
 
         $this->writeSuccessMessage($io);
+        dd($this->templatePath, $generatedFilename);
 
         // TODO: Implement generate() method.
     }

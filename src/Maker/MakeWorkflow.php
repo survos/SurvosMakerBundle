@@ -111,7 +111,6 @@ final class MakeWorkflow extends AbstractMaker implements MakerInterface
 
         $io->text([
             'Next: Open your new workflow class and start customizing it.',
-            'Find the documentation at <fg=yellow>http://symfony.com/doc/current/templating/twig_extension.html</>',
         ]);
     }
 
