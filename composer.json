@@ -1,6 +1,7 @@
 {
     "name": "survos/maker-bundle",
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "description": "Tools to generate controllers and templates for the admin interface",
     "type": "symfony-bundle",
     "keywords": ["generator", "symfony", "crud"],

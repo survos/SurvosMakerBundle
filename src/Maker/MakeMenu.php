@@ -20,7 +20,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Bundle\MakerBundle\MakerInterface;
 use Symfony\Bundle\MakerBundle\Str;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Extension\AbstractExtension;
 
@@ -71,7 +73,7 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
         $classNameDetails = $generator->createClassNameDetails(
             $shortName,
             'EventSubscriber\\',
-            'MenuSubscriber'
+            'MenuEventSubscriber'
         );
 
         $useStatements = new UseStatementGenerator([
@@ -80,22 +82,17 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
             ItemInterface::class,
             MenuBuilder::class,
             KnpMenuEvent::class,
+            AsEventListener::class,
+            OptionsResolver::class,
             AuthorizationCheckerInterface::class,
         ]);
 
         $generatedFilename = $this->generator->generateClass(
             $classNameDetails->getFullName(),
-            __DIR__ . '/../../templates/skeleton/Menu/MenuEventSubscriber.tpl.twig',
+            __DIR__ . '/../../templates/skeleton/Menu/MenuEventListener.tpl.twig',
             $v = [
                 'entity_full_class_name' => $classNameDetails->getFullName(),
                 'use_statements' => $useStatements,
-            //                'entity_class_name' => $boundClassDetails ? $boundClassDetails->getShortName() : null,
-            //                'form_fields' => $fields,
-            //                'entity_var_name' => $entityVarSingular,
-            //                'entity_unique_name' => $entityVarSingular . 'Id',
-            //                'field_type_use_statements' => $mergedTypeUseStatements,
-            //                'constraint_use_statements' => $constraintClasses,
-            //                'shortClassName' => $formClassDetails->getShortName(),
             ]
         );
 

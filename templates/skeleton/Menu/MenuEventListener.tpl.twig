@@ -4,35 +4,14 @@ namespace <?= $namespace ?>;
 
 <?= $use_statements; ?>
 
-
-<?php
-
-namespace App\EventListener;
-
-use Survos\BootstrapBundle\Event\KnpMenuEvent;
-use Survos\BootstrapBundle\Traits\KnpMenuHelperTrait;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-
 #[AsEventListener(event: KnpMenuEvent::SIDEBAR_MENU_EVENT, method: 'appSidebarMenu')]
 #[AsEventListener(event: KnpMenuEvent::SIDEBAR_MENU_EVENT, method: 'coreMenu')]
 #[AsEventListener(event: KnpMenuEvent::PAGE_MENU_EVENT, method: 'coreMenu')]
 final class AppMenuEventListener
 {
-    use KnpMenuHelperTrait;
+use KnpMenuHelperTrait;
 
-    public function __construct(
-        private ProfileService $profileService,
-        private ?AuthorizationCheckerInterface $security=null)
-    {
-        $this->setAuthorizationChecker($this->security);
-}
-
-public function coreMenu(KnpMenuEvent $event): void
-{
-
-class <?= $class_name ?> implements EventSubscriberInterface <?= "\n" ?>
+final class <?= $class_name ?> implements EventSubscriberInterface <?= "\n" ?> implements
 {
     use KnpMenuHelperTrait;
 
