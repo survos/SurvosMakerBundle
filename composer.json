@@ -67,21 +67,21 @@
         }
     },
     "conflict": {
-        "survos/html-prettify-bundle": "<1.2.5",
-        "survos/barcode-bundle": "<1.2.5",
-        "survos/api-grid-bundle": "<1.2.5",
-        "survos/second-package": "<1.2.5",
-        "survos/bootstrap-bundle": "<1.2.5",
-        "survos/inspection-bundle": "<1.2.5",
-        "survos/faker-bundle": "<1.2.5",
-        "survos/doc-bundle": "<1.2.5",
-        "survos/grid-bundle": "<1.2.5",
-        "survos/core-bundle": "<1.2.5",
-        "survos/tree-bundle": "<1.2.5",
-        "survos/first-package": "<1.2.5",
-        "survos/auth-bundle": "<1.2.5",
-        "survos/workflow-helper-bundle": "<1.2.5",
-        "survos/crawler-bundle": "<1.2.5"
+        "survos/html-prettify-bundle": "<1.2.6",
+        "survos/barcode-bundle": "<1.2.6",
+        "survos/api-grid-bundle": "<1.2.6",
+        "survos/second-package": "<1.2.6",
+        "survos/bootstrap-bundle": "<1.2.6",
+        "survos/inspection-bundle": "<1.2.6",
+        "survos/faker-bundle": "<1.2.6",
+        "survos/doc-bundle": "<1.2.6",
+        "survos/grid-bundle": "<1.2.6",
+        "survos/core-bundle": "<1.2.6",
+        "survos/tree-bundle": "<1.2.6",
+        "survos/first-package": "<1.2.6",
+        "survos/auth-bundle": "<1.2.6",
+        "survos/workflow-helper-bundle": "<1.2.6",
+        "survos/crawler-bundle": "<1.2.6"
     },
     "prefer-stable": true
 }
