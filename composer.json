@@ -1,7 +1,5 @@
 {
     "name": "survos/maker-bundle",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "description": "Tools to generate controllers and templates for the admin interface",
     "type": "symfony-bundle",
     "keywords": ["generator", "symfony", "crud"],
@@ -22,7 +20,7 @@
         "rector/rector": "^0.13.9",
         "sensio/framework-extra-bundle": "^6.2",
         "squizlabs/php_codesniffer": "^3.7",
-        "survos/bootstrap-bundle": "^2.0",
+        "survos/bootstrap-bundle": "^1.2.4",
         "symfony/form": ">= 6.0",
         "symfony/http-client": "^6.1.0",
         "symfony/maker-bundle": "^1.38",
@@ -41,9 +39,6 @@
         "test-coverage": "php -d xdebug.mode=coverage vendor/bin/phpunit --coverage-html build/coverage",
         "test-phpstan": "vendor/bin/phpstan analyse"
     },
-    "suggest": {
-    },
-
     "config": {
         "sort-packages": true,
         "allow-plugins": {
@@ -71,5 +66,21 @@
             "allow-contrib": "true",
             "id": "maker-bundle.survos.com"
         }
-    }
+    },
+    "conflict": {
+        "survos/html-prettify-bundle": "<1.2.4",
+        "survos/barcode-bundle": "<1.2.4",
+        "survos/api-grid-bundle": "<1.2.4",
+        "survos/second-package": "<1.2.4",
+        "survos/bootstrap-bundle": "<1.2.4",
+        "survos/inspection-bundle": "<1.2.4",
+        "survos/faker-bundle": "<1.2.4",
+        "survos/doc-bundle": "<1.2.4",
+        "survos/grid-bundle": "<1.2.4",
+        "survos/core-bundle": "<1.2.4",
+        "survos/tree-bundle": "<1.2.4",
+        "survos/first-package": "<1.2.4"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
