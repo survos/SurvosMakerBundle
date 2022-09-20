@@ -102,7 +102,6 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
         print file_get_contents($generatedFilename);
 
         $this->writeSuccessMessage($io);
-        dd($this->templatePath, $generatedFilename);
 
         // TODO: Implement generate() method.
     }
