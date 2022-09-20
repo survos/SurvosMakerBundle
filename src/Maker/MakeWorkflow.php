@@ -33,8 +33,10 @@ use function Symfony\Component\String\u;
  */
 final class MakeWorkflow extends AbstractMaker implements MakerInterface
 {
-    public function __construct(private DoctrineHelper $entityHelper, private string $templatePath)
-    {
+    public function __construct(
+        private DoctrineHelper $entityHelper,
+        private string $templatePath
+    ) {
     }
 
     public static function getCommandName(): string
@@ -62,7 +64,7 @@ final class MakeWorkflow extends AbstractMaker implements MakerInterface
             $entities = $this->entityHelper->getEntitiesForAutocomplete();
 
             $question = new Question($argument->getDescription());
-            $question->setValidator(fn($answer) => Validator::existsOrNull($answer, $entities));
+            $question->setValidator(fn ($answer) => Validator::existsOrNull($answer, $entities));
             $question->setAutocompleterValues($entities);
             $question->setMaxAttempts(3);
 
@@ -72,7 +74,6 @@ final class MakeWorkflow extends AbstractMaker implements MakerInterface
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator)
     {
-
         $boundClass = $input->getArgument('bound-class');
         $boundClassDetails = null;
 
@@ -91,17 +92,17 @@ final class MakeWorkflow extends AbstractMaker implements MakerInterface
         ]);
 
         $reflection = new \ReflectionClass($boundClassDetails->getFullName());
-        $constants =  array_keys($reflection->getConstants());
+        $constants = array_keys($reflection->getConstants());
         $workflowConfigFilename = $generator->getRootDirectory() . sprintf('/config/packages/%s_workflow.php', strtolower($boundClassDetails->getShortName()));
         $generator->generateFile(
             $workflowConfigFilename,
             $this->templatePath . 'Workflow/config/_workflow.tpl.php',
             $v = [
-                'places' => array_filter($constants, fn($c) => str_starts_with($c, 'PLACE_')),
-                'transitions' => array_filter($constants, fn($c) => str_starts_with($c, 'TRANSITION_')),
+                'places' => array_filter($constants, fn ($c) => str_starts_with($c, 'PLACE_')),
+                'transitions' => array_filter($constants, fn ($c) => str_starts_with($c, 'TRANSITION_')),
                 'entity_full_class_name' => $boundClassDetails->getFullName(),
                 'entityName' => $boundClassDetails->getShortName(),
-                'use_statements' => $useStatements
+                'use_statements' => $useStatements,
             ]
         );
 
@@ -116,9 +117,8 @@ final class MakeWorkflow extends AbstractMaker implements MakerInterface
 
     public function configureDependencies(DependencyBuilder $dependencies)
     {
-        // TODO: Implement configureDependencies() method.
+        
     }
-
 
     public static function getCommandDescription(): string
     {

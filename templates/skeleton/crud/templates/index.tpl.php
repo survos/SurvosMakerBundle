@@ -1,4 +1,4 @@
-<?= $helper->getHeadPrintCode($entity_class_name.' index'); ?>
+<?= $helper->getHeadPrintCode($entity_class_name . ' index'); ?>
 
 
 {% block body %}

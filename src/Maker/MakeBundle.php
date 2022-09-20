@@ -12,15 +12,6 @@
 namespace Survos\Bundle\MakerBundle\Maker;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
-use Symfony\Bundle\MakerBundle\Util\UseStatementGenerator;
-use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\String\Inflector\EnglishInflector;
 use Doctrine\Inflector\InflectorFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
@@ -30,12 +21,21 @@ use Symfony\Bundle\MakerBundle\Generator;
 use Symfony\Bundle\MakerBundle\InputConfiguration;
 use Symfony\Bundle\MakerBundle\Maker\AbstractMaker;
 use Symfony\Bundle\MakerBundle\MakerInterface;
+use Symfony\Bundle\MakerBundle\Util\UseStatementGenerator;
+use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\Question;
-use Twig\Extension\AbstractExtension;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\String\Inflector\EnglishInflector;
+use Twig\Extension\AbstractExtension;
 
 use function Symfony\Component\String\u;
 
@@ -58,15 +58,13 @@ class MakeBundle extends AbstractMaker implements MakerInterface
     {
         return 'survos:make:bundle';
     }
+
     public static function getCommandDescription(): string
     {
         return "Makes a bundle class";
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureCommand(Command $command, InputConfiguration $inputConfig)
     {
         $command
@@ -104,14 +102,13 @@ class MakeBundle extends AbstractMaker implements MakerInterface
         $json = json_decode(file_get_contents("composer.json"));  // object, not array (no second arg)
         $bundleNamespace = "$vendor\\$name\\";
         $psr = $json->autoload->{'psr-4'};
-        if (!property_exists($psr, $bundleNamespace)) {
+        if (! property_exists($psr, $bundleNamespace)) {
             // @todo: use jq from cli instead
             $json->{"autoload"}->{"psr-4"}->{$bundleNamespace} = $this->bundlePath;  // object properties, not array indexes
             file_put_contents("composer.json", $newjson = json_encode($json, JSON_PRETTY_PRINT && JSON_UNESCAPED_SLASHES && JSON_UNESCAPED_UNICODE));
             $io->write("Please run composer dump-autoload to create a bundle structure for $bundleNamespace\nTHEN add services, then run ");
             return;
         }
-
 
         // after generation, remove this line and tell user to load bundle from new directory
 
@@ -120,7 +117,6 @@ class MakeBundle extends AbstractMaker implements MakerInterface
             '\\',
             'Bundle'
         );
-
 
         $useStatements = new UseStatementGenerator([
             DefinitionConfigurator::class,
@@ -132,25 +128,26 @@ class MakeBundle extends AbstractMaker implements MakerInterface
 
         $classPath = $generator->generateClass(
             $extensionClassNameDetails->getFullName(),
-            $this->templatePath .  'bundle/src/Bundle.tpl.php',
-            ['use_statements' => $useStatements]
+            $this->templatePath . 'bundle/src/Bundle.tpl.php',
+            [
+                'use_statements' => $useStatements,
+            ]
         );
         $classDir = pathinfo($classPath, PATHINFO_DIRNAME);
         // composer belongs above src
         $snake = u($this->bundleName)->snake()->replace('_', '-');
 
-
         $generator->generateFile(
             $classDir . '/../composer.json',
-            $this->templatePath .  'bundle/composer.tpl.json',
+            $this->templatePath . 'bundle/composer.tpl.json',
             $x = [
                 'vendor' => $vendor,
                 'bundleName' => $this->bundleName,
-                'name' => sprintf("%s/%s", u($vendor)->lower(), $snake)
+                'name' => sprintf("%s/%s", u($vendor)->lower(), $snake),
             ]
         );
 
-//        dd($x, $classDir, $generator->getRootDirectory(), $generator->getRootNamespace(), __FILE__, __LINE__);
+        //        dd($x, $classDir, $generator->getRootDirectory(), $generator->getRootNamespace(), __FILE__, __LINE__);
 
         $generator->writeChanges();
 

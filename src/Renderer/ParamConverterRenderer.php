@@ -21,8 +21,10 @@ class ParamConverterRenderer
 {
     private EnglishInflector $inflector;
 
-    public function __construct(private Generator $generator, private string $templatesPath)
-    {
+    public function __construct(
+        private Generator $generator,
+        private string $templatesPath
+    ) {
         $this->inflector = new EnglishInflector();
     }
 
@@ -33,11 +35,13 @@ class ParamConverterRenderer
         array $constraintClasses = [],
         array $extraUseClasses = []
     ) {
-
         $fieldTypeUseStatements = [];
         $fields = [];
         foreach ($formFields as $name => $fieldTypeOptions) {
-            $fieldTypeOptions ??= ['type' => null, 'options_code' => null];
+            $fieldTypeOptions ??= [
+                'type' => null,
+                'options_code' => null,
+            ];
 
             if (isset($fieldTypeOptions['type'])) {
                 $fieldTypeUseStatements[] = $fieldTypeOptions['type'];
@@ -46,7 +50,6 @@ class ParamConverterRenderer
 
             $fields[$name] = $fieldTypeOptions;
         }
-
 
         $mergedTypeUseStatements = array_merge($fieldTypeUseStatements, $extraUseClasses);
         sort($mergedTypeUseStatements);
@@ -75,7 +78,7 @@ class ParamConverterRenderer
                 'shortClassName' => $formClassDetails->getShortName(),
             ]
         );
-//    dump($generatedFilename, $v, $formClassDetails);
+        //    dump($generatedFilename, $v, $formClassDetails);
         $contents = $this->generator->getFileContentsForPendingOperation($generatedFilename);
     }
 }

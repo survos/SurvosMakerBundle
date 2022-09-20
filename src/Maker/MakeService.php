@@ -14,8 +14,10 @@ use Symfony\Component\Console\Input\InputInterface;
 
 final class MakeService extends AbstractMaker
 {
-    public function __construct(private Generator $generator, private string $templatePath)
-    {
+    public function __construct(
+        private Generator $generator,
+        private string $templatePath
+    ) {
     }
 
     public static function getCommandName(): string
@@ -50,7 +52,9 @@ final class MakeService extends AbstractMaker
         $generator->generateClass(
             $extensionClassNameDetails->getFullName(),
             $this->templatePath . 'Service/Service.tpl.php',
-            ['use_statements' => $useStatements]
+            [
+                'use_statements' => $useStatements,
+            ]
         );
 
         $generator->writeChanges();
@@ -65,9 +69,9 @@ final class MakeService extends AbstractMaker
 
     public function configureDependencies(DependencyBuilder $dependencies): void
     {
-//        $dependencies->addClassDependency(
-//            AbstractExtension::class,
-//            'twig'
-//        );
+        //        $dependencies->addClassDependency(
+        //            AbstractExtension::class,
+        //            'twig'
+        //        );
     }
 }

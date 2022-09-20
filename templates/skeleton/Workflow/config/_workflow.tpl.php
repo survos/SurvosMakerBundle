@@ -23,7 +23,7 @@ return static function (FrameworkConfig $framework) {
         $tracking->place()->name(<?= $entityName ?>::<?= $place ?>);
     <?php } ?>
 
-    <?php foreach ($transitions as $idx=>$transition) { ?>
+    <?php foreach ($transitions as $idx => $transition) { ?>
     $tracking->transition()
         ->name(<?= $entityName ?>::<?= $transition ?>)
         ->from([<?= $entityName ?>::<?= $initialPlace ?>])

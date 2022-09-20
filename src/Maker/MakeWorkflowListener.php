@@ -8,7 +8,9 @@ use Symfony\Bundle\MakerBundle\Doctrine\DoctrineHelper;
 use Symfony\Bundle\MakerBundle\Generator;
 use Symfony\Bundle\MakerBundle\InputConfiguration;
 use Symfony\Bundle\MakerBundle\Maker\AbstractMaker;
+use Symfony\Bundle\MakerBundle\MakerInterface;
 use Symfony\Bundle\MakerBundle\Renderer\FormTypeRenderer;
+use Symfony\Bundle\MakerBundle\Str;
 use Symfony\Bundle\MakerBundle\Validator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,16 +18,17 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Bundle\MakerBundle\MakerInterface;
-use Symfony\Bundle\MakerBundle\Str;
 use Symfony\Component\Workflow\Registry;
 
 use function Symfony\Component\String\u;
 
 final class MakeWorkflowListener extends AbstractMaker implements MakerInterface
 {
-    public function __construct(private DoctrineHelper $doctrineHelper, private Generator $generator, private Registry $registry)
-    {
+    public function __construct(
+        private DoctrineHelper $doctrineHelper,
+        private Generator $generator,
+        private Registry $registry
+    ) {
     }
 
     public static function getCommandName(): string
@@ -33,9 +36,7 @@ final class MakeWorkflowListener extends AbstractMaker implements MakerInterface
         return 'survos:make:workflow-listener';
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function configureCommand(Command $command, InputConfiguration $inputConfig)
     {
         $command
@@ -46,7 +47,6 @@ final class MakeWorkflowListener extends AbstractMaker implements MakerInterface
 
     public function interact(InputInterface $input, ConsoleStyle $io, Command $command)
     {
-
         $io->success('Workflow is now listening for events, open .. to react.');
 
         return Command::SUCCESS;
@@ -54,7 +54,7 @@ final class MakeWorkflowListener extends AbstractMaker implements MakerInterface
 
     public function configureDependencies(DependencyBuilder $dependencies)
     {
-        // TODO: Implement configureDependencies() method.
+        
     }
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator)
@@ -72,11 +72,10 @@ final class MakeWorkflowListener extends AbstractMaker implements MakerInterface
         $fullClassName = $listererClassDetails->getFullName();
         // to get the workflow name from the workflows
         $workflow = $this->registry->get(new ($entityClassDetails->getFullName())());
-//        dd($workflow->getName());
+        //        dd($workflow->getName());
         $workflowName = constant($entityClassDetails->getFullName() . '::WORKFLOW');
 
         // https://symfony.com/doc/current/workflow.html#using-events
-
 
         $skeletonPath = __DIR__ . '/../Resources/skeleton/';
         $templatesPath = 'Workflow/Listener/';
@@ -89,29 +88,28 @@ final class MakeWorkflowListener extends AbstractMaker implements MakerInterface
                 'full_class_name' => $fullClassName,
                 'shortClassName' => $listererClassDetails->getShortName(),
                 'entityName' => $entityClassDetails->getShortName(),
-            //                'transitions' => $workflow->getDefinition()->getTransitions(),
-            'workflowName' => $workflowName,
-            'constantsMap' => array_flip($entityClassDetails->getFullName()::getConstants('TRANSITION_'))
+                //                'transitions' => $workflow->getDefinition()->getTransitions(),
+                'workflowName' => $workflowName,
+                'constantsMap' => array_flip($entityClassDetails->getFullName()::getConstants('TRANSITION_')),
 
-            //                'entity_class_name' => $boundClassDetails ? $boundClassDetails->getShortName() : null,
-            //                'form_fields' => $fields,
-            //                'entity_var_name' => $entityVarSingular,
-            //                'entity_unique_name' => $entityVarSingular . 'Id',
-            //                'field_type_use_statements' => $mergedTypeUseStatements,
-            //                'constraint_use_statements' => $constraintClasses,
-            //                'shortClassName' => $formClassDetails->getShortName(),
+                //                'entity_class_name' => $boundClassDetails ? $boundClassDetails->getShortName() : null,
+                //                'form_fields' => $fields,
+                //                'entity_var_name' => $entityVarSingular,
+                //                'entity_unique_name' => $entityVarSingular . 'Id',
+                //                'field_type_use_statements' => $mergedTypeUseStatements,
+                //                'constraint_use_statements' => $constraintClasses,
+                //                'shortClassName' => $formClassDetails->getShortName(),
             ]
         );
 
+        //        $templatesPath = Str::asFilePath($entityClassDetails->getRelativeNameWithoutSuffix());
+        //        dd($templatesPath);
 
-//        $templatesPath = Str::asFilePath($entityClassDetails->getRelativeNameWithoutSuffix());
-//        dd($templatesPath);
 
+        //        $x = $generator->getFileContentsForPendingOperation($generatedFilename);
+        //        dd($x);
 
-//        $x = $generator->getFileContentsForPendingOperation($generatedFilename);
-//        dd($x);
-
-                $generator->writeChanges();
+        $generator->writeChanges();
 
         $this->writeSuccessMessage($io);
     }

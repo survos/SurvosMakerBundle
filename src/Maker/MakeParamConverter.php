@@ -31,8 +31,12 @@ final class MakeParamConverter extends AbstractMaker implements MakerInterface
 {
     private $entityHelper;
 
-    public function __construct(DoctrineHelper $entityHelper, private ParamConverterRenderer $paramConverterRenderer, private string $templatePath, private ParameterBagInterface $bag,)
-    {
+    public function __construct(
+        DoctrineHelper $entityHelper,
+        private ParamConverterRenderer $paramConverterRenderer,
+        private string $templatePath,
+        private ParameterBagInterface $bag,
+    ) {
         $this->entityHelper = $entityHelper;
     }
 
@@ -61,7 +65,7 @@ final class MakeParamConverter extends AbstractMaker implements MakerInterface
             $entities = $this->entityHelper->getEntitiesForAutocomplete();
 
             $question = new Question($argument->getDescription());
-            $question->setValidator(fn($answer) => Validator::existsOrNull($answer, $entities));
+            $question->setValidator(fn ($answer) => Validator::existsOrNull($answer, $entities));
             $question->setAutocompleterValues($entities);
             $question->setMaxAttempts(3);
 
@@ -71,7 +75,6 @@ final class MakeParamConverter extends AbstractMaker implements MakerInterface
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator)
     {
-
         $boundClass = $input->getArgument('bound-class');
         $boundClassDetails = null;
 
@@ -97,10 +100,11 @@ final class MakeParamConverter extends AbstractMaker implements MakerInterface
             'ParamConverter'
         );
 
-//        $templatesPath = Str::asFilePath($paramConverterClassNameDetails->getRelativeNameWithoutSuffix());
+        //        $templatesPath = Str::asFilePath($paramConverterClassNameDetails->getRelativeNameWithoutSuffix());
 
-        $formFields = ['field_name' => null];
-
+        $formFields = [
+            'field_name' => null,
+        ];
 
         $this->paramConverterRenderer->render(
             $paramConverterClassNameDetails,

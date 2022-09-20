@@ -31,10 +31,8 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SurvosMakerBundle extends AbstractBundle
 {
-
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-
         foreach ([MakeMenu::class, MakeService::class] as $makerClass) {
             $builder->autowire($makerClass)
                 ->addTag(MakeCommandRegistrationPass::MAKER_TAG) // 'maker.command'
@@ -57,14 +55,14 @@ class SurvosMakerBundle extends AbstractBundle
             ->addArgument($config['template_path']);
 
         $builder->autowire(MakeParamConverter::class)
-                ->addTag('maker.command')
+            ->addTag('maker.command')
             ->addArgument(new Reference('maker.doctrine_helper'))
 //                ->addArgument(new Reference('maker.generator'))
-                ->addArgument(new Reference('maker.param_converter_renderer'))
-                ->addArgument($config['template_path'])
+            ->addArgument(new Reference('maker.param_converter_renderer'))
+            ->addArgument($config['template_path'])
             ->addArgument(new Reference('parameter_bag'))
 
-            ;
+        ;
 
         $builder->autowire(MakeCrud::class)
             ->addTag('maker.command')
@@ -86,28 +84,27 @@ class SurvosMakerBundle extends AbstractBundle
         ;
     }
 
-
     public function configure(DefinitionConfigurator $definition): void
     {
         $definition->rootNode()
             ->children()
-          ->scalarNode('template_path')->defaultValue(__DIR__ . '/../templates/skeleton/')->end()
-          ->scalarNode('vendor')->defaultValue('Survos')->end()
-          ->scalarNode('bundle_name')->defaultValue('FooBundle')->end()
-          ->scalarNode('relative_bundle_path')->defaultValue('lib/temp/src')->end()
+            ->scalarNode('template_path')->defaultValue(__DIR__ . '/../templates/skeleton/')->end()
+            ->scalarNode('vendor')->defaultValue('Survos')->end()
+            ->scalarNode('bundle_name')->defaultValue('FooBundle')->end()
+            ->scalarNode('relative_bundle_path')->defaultValue('lib/temp/src')->end()
             ->end();
     }
 
     public function build(ContainerBuilder $container)
     {
         // add a priority so we run before the core command pass
-//        $container->addCompilerPass(new DoctrineAttributesCheckPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 11);
+        //        $container->addCompilerPass(new DoctrineAttributesCheckPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 11);
         $container->addCompilerPass(new MakeCommandRegistrationPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 10);
         $container->addCompilerPass(new RemoveMissingParametersPass());
-//        $container->addCompilerPass(new SetDoctrineManagerRegistryClassPass());
+        //        $container->addCompilerPass(new SetDoctrineManagerRegistryClassPass());
         $container->addCompilerPass(new SetDoctrineAnnotatedPrefixesPass());
 
-//        dump(__FILE__, __LINE__);
-//        $container->addCompilerPass(new SurvosMakerCompilerPass());
+        //        dump(__FILE__, __LINE__);
+        //        $container->addCompilerPass(new SurvosMakerCompilerPass());
     }
 }

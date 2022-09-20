@@ -1,4 +1,4 @@
-<?= $helper->getHeadPrintCode('BASE '.$entity_class_name) ?>
+<?= $helper->getHeadPrintCode('BASE ' . $entity_class_name) ?>
 
 {% block page_title %}{{ <?= $entity_twig_var_singular ?> }}{% endblock %}
 {% block page_subtitle %}{{ app.request.get('_route') }}{% endblock %}

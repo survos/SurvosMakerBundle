@@ -12,9 +12,8 @@
 namespace Survos\Bundle\MakerBundle\Maker;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
-use Symfony\Component\String\Inflector\EnglishInflector;
-//use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
+//use Doctrine\Inflector\Inflector;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
 use Symfony\Bundle\MakerBundle\DependencyBuilder;
@@ -34,6 +33,7 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
+use Symfony\Component\String\Inflector\EnglishInflector;
 use Symfony\Component\Validator\Validation;
 
 use function Symfony\Component\String\u;
@@ -45,8 +45,11 @@ use function Symfony\Component\String\u;
 final class MakeCrud extends AbstractMaker implements MakerInterface
 {
     private EnglishInflector $inflector;
-    public function __construct(private DoctrineHelper $doctrineHelper, private FormTypeRenderer $formTypeRenderer)
-    {
+
+    public function __construct(
+        private DoctrineHelper $doctrineHelper,
+        private FormTypeRenderer $formTypeRenderer
+    ) {
         // this is why familia and planta fail.
         $this->inflector = new EnglishInflector();
     }
@@ -56,9 +59,7 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
         return 'survos:make:crud';
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function configureCommand(Command $command, InputConfiguration $inputConfig)
     {
         $command
@@ -92,15 +93,15 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
             Validator::entityExists($input->getArgument('entity-class'), $this->doctrineHelper->getEntitiesForAutocomplete()),
             'Entity\\'
         );
-//        if (!$entityClassDetails->getFullName() instanceof BaseEntityInterface) {
-//            $io->error($entityClassDetails->getFullName() . ' must implement RP()');
-//            return;
-//        }
-//        dd($entityClassDetails);
+        //        if (!$entityClassDetails->getFullName() instanceof BaseEntityInterface) {
+        //            $io->error($entityClassDetails->getFullName() . ' must implement RP()');
+        //            return;
+        //        }
+        //        dd($entityClassDetails);
 
         $entityDoctrineDetails = $this->doctrineHelper->createDoctrineDetails($entityClassDetails->getFullName());
 
-//        dd($entityDoctrineDetails, $entityClassDetails, __FILE__, __METHOD__);
+        //        dd($entityDoctrineDetails, $entityClassDetails, __FILE__, __METHOD__);
 
         $repositoryVars = [];
 
@@ -150,7 +151,7 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
         $routeName = str_replace('app_', '', $routeName);
         $routeName = str_replace('_collection', '', $routeName);
         $routeName = str_replace('_controller', '', $routeName);
-//        $entityRouteName = Str::asRouteName($entityControllerClassDetails->getRelativeNameWithoutSuffix());
+        //        $entityRouteName = Str::asRouteName($entityControllerClassDetails->getRelativeNameWithoutSuffix());
 
 
         $templatesPath = Str::asFilePath($controllerClassDetails->getRelativeNameWithoutSuffix());
@@ -158,30 +159,32 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
 
         // otherwise, it uses the ones from symfony, because generator looks for __DIR__
         $templateRoot = __DIR__ . '/../../templates/skeleton/';
-        foreach (['Controller' => $controllerClassDetails, 'CollectionController' => $entityControllerClassDetails] as $name => $cClassDetails) {
+        foreach ([
+            'Controller' => $controllerClassDetails,
+            'CollectionController' => $entityControllerClassDetails,
+        ] as $name => $cClassDetails) {
             $routePath = Str::asRoutePath($cClassDetails->getRelativeNameWithoutSuffix());
             $routePath = str_replace('/controller', '', $routePath);
             $routePath = str_replace('/collection', '', $routePath);
 
-
-//            dump($name, $cClassDetails, $routePath);
+            //            dump($name, $cClassDetails, $routePath);
             $generator->generateController(
                 $cClassDetails->getFullName(),
                 $templateRoot . sprintf('crud/controller/%s.tpl.php', $name),
                 array_merge(
                     [
-                    'entity_full_class_name' => $entityClassDetails->getFullName(),
-                    'entity_class_name' => $entityClassDetails->getShortName(),
-                    'form_full_class_name' => $formClassDetails->getFullName(),
-                    'form_class_name' => $formClassDetails->getShortName(),
-                    'route_path' => $routePath,
-                    'route_name' => $routeName,
-                    'templates_path' => $templatesPath,
-                    'entity_var_plural' => $entityVarPlural,
-                    'entity_twig_var_plural' => $entityTwigVarPlural,
-                    'entity_var_singular' => $entityVarSingular,
-                    'entity_twig_var_singular' => $entityTwigVarSingular,
-                    'entity_identifier' => $entityDoctrineDetails->getIdentifier(),
+                        'entity_full_class_name' => $entityClassDetails->getFullName(),
+                        'entity_class_name' => $entityClassDetails->getShortName(),
+                        'form_full_class_name' => $formClassDetails->getFullName(),
+                        'form_class_name' => $formClassDetails->getShortName(),
+                        'route_path' => $routePath,
+                        'route_name' => $routeName,
+                        'templates_path' => $templatesPath,
+                        'entity_var_plural' => $entityVarPlural,
+                        'entity_twig_var_plural' => $entityTwigVarPlural,
+                        'entity_var_singular' => $entityVarSingular,
+                        'entity_twig_var_singular' => $entityTwigVarSingular,
+                        'entity_identifier' => $entityDoctrineDetails->getIdentifier(),
                     ],
                     $repositoryVars
                 )
@@ -251,7 +254,7 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
         ];
 
         foreach ($templates as $template => $variables) {
-//            if ($template == 'index') dd($variables);
+            //            if ($template == 'index') dd($variables);
             $generator->generateTemplate(
                 $templatesPath . '/' . $template . '.html.twig',
                 $templateRoot . 'crud/templates/' . $template . '.tpl.php',
@@ -266,9 +269,7 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
         $io->text(sprintf('Next: Check your new CRUD by going to <fg=yellow>%s/</>', Str::asRoutePath($controllerClassDetails->getRelativeNameWithoutSuffix())));
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function configureDependencies(DependencyBuilder $dependencies)
     {
         $dependencies->addClassDependency(
