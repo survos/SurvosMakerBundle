@@ -62,8 +62,7 @@
         },
         "symfony": {
             "require": "^6.1.0",
-            "allow-contrib": "true",
-            "id": "maker-bundle.survos.com"
+            "allow-contrib": "true"
         }
     },
     "conflict": {
