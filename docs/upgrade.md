@@ -13,5 +13,5 @@
     yarn remove bootstrap 
     yarn add bootstrap@next
     yarn upgrade @symfony/webpack-encore@1.1
-    use Survos\BaseBundle\Event\KnpMenuEvent; # (instead of KevinPabst)
+    use Survos\BootstrapBundle\Event\KnpMenuEvent; # (instead of KevinPabst)
 

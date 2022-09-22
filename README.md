@@ -299,7 +299,7 @@ Install the bundle, then go through the setup to add and configure the tools.
     
     composer req "kevinpapst/adminlte-bundle"
     composer require knplabs/knp-menu-bundle
-    bin/console make:subscriber KnpMenuSubscriber "Survos\BaseBundle\Event\KnpMenuEvent"
+    bin/console make:subscriber KnpMenuSubscriber "Survos\BootstrapBundle\Event\KnpMenuEvent"
     
     bin/console survos:init
     
@@ -329,14 +329,14 @@ admin_lte:
 
 ```yaml
 # config/routes/survos_base.yaml
-survos_base: {path: /, controller: 'Survos\BaseBundle\Controller\BaseController::base'}
-# app_homepage: {path: /, controller: 'Survos\BaseBundle\Controller\LandingController::base'}
-app_logo: {path: /logo, controller: 'Survos\BaseBundle\Controller\BaseController::logo'}
-app_profile: {path: /profile, controller: 'Survos\BaseBundle\Controller\BaseController::profile'}
-# profile: {path: /profile, controller: 'Survos\BaseBundle\Controller\LandingController::profile'}
-# logout: {path: /logout, controller: 'Survos\BaseBundle\Controller\LandingController::logout'}
+survos_base: {path: /, controller: 'Survos\BootstrapBundle\Controller\BaseController::base'}
+# app_homepage: {path: /, controller: 'Survos\BootstrapBundle\Controller\LandingController::base'}
+app_logo: {path: /logo, controller: 'Survos\BootstrapBundle\Controller\BaseController::logo'}
+app_profile: {path: /profile, controller: 'Survos\BootstrapBundle\Controller\BaseController::profile'}
+# profile: {path: /profile, controller: 'Survos\BootstrapBundle\Controller\LandingController::profile'}
+# logout: {path: /logout, controller: 'Survos\BootstrapBundle\Controller\LandingController::logout'}
 # required if app_profile is used, since you can change the password from the profile
-app_change_password: {path: /change-password, controller: 'Survos\BaseBundle\Controller\BaseController::changePassword'}
+app_change_password: {path: /change-password, controller: 'Survos\BootstrapBundle\Controller\BaseController::changePassword'}
 ```
 
 

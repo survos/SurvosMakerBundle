@@ -53,14 +53,14 @@
             <tag name="maker.command"/>
         </service>
 
-        <!--        <service id="Survos\BaseBundle\Command\SurvosSetupCommand" class="Survos\BaseBundle\Command\SurvosSetupCommand" public="false">-->
+        <!--        <service id="Survos\BootstrapBundle\Command\SurvosSetupCommand" class="Survos\BootstrapBundle\Command\SurvosSetupCommand" public="false">-->
         <!--            <argument type="service" id="kernel" />-->
         <!--            <argument type="service" id="doctrine.orm.entity_manager.abstract" />-->
         <!--            <argument type="service" id="twig" />-->
         <!--            <tag name="console.command" />-->
         <!--        </service>-->
 
-        <!--        <service id="Survos\BaseBundle\Command\SurvosInitCommand" class="Survos\BaseBundle\Command\SurvosInitCommand" public="false">-->
+        <!--        <service id="Survos\BootstrapBundle\Command\SurvosInitCommand" class="Survos\BootstrapBundle\Command\SurvosInitCommand" public="false">-->
         <!--            <argument type="service" id="kernel" />-->
         <!--            <argument type="service" id="doctrine.orm.entity_manager.abstract" />-->
         <!--            <argument type="service" id="parameter_bag" />-->
