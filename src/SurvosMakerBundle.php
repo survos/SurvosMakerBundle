@@ -10,6 +10,7 @@ use Survos\Bundle\MakerBundle\DependencyInjection\Compiler\SurvosMakerCompilerPa
 use Survos\Bundle\MakerBundle\Maker\MakeBundle;
 use Survos\Bundle\MakerBundle\Maker\MakeCrud;
 use Survos\Bundle\MakerBundle\Maker\MakeMenu;
+use Survos\Bundle\MakerBundle\Maker\MakeModel;
 use Survos\Bundle\MakerBundle\Maker\MakeParamConverter;
 use Survos\Bundle\MakerBundle\Maker\MakeService;
 use Survos\Bundle\MakerBundle\Maker\MakeWorkflow;
@@ -33,7 +34,7 @@ class SurvosMakerBundle extends AbstractBundle
 {
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        foreach ([MakeMenu::class, MakeService::class] as $makerClass) {
+        foreach ([MakeMenu::class, MakeService::class, MakeModel::class] as $makerClass) {
             $builder->autowire($makerClass)
                 ->addTag(MakeCommandRegistrationPass::MAKER_TAG) // 'maker.command'
                 ->addArgument(new Reference('maker.generator'))
