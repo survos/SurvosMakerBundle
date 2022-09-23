@@ -7,11 +7,8 @@ namespace <?= $namespace ?>;
 #[AsEventListener(event: KnpMenuEvent::SIDEBAR_MENU_EVENT, method: 'appSidebarMenu')]
 #[AsEventListener(event: KnpMenuEvent::SIDEBAR_MENU_EVENT, method: 'coreMenu')]
 #[AsEventListener(event: KnpMenuEvent::PAGE_MENU_EVENT, method: 'coreMenu')]
-final class AppMenuEventListener
-{
-use KnpMenuHelperTrait;
 
-final class <?= $class_name ?> implements EventSubscriberInterface <?= "\n" ?> implements
+final class <?= $class_name ?> implements KnpMenuHelperInterface<?= "\n" ?>
 {
     use KnpMenuHelperTrait;
 

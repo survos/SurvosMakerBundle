@@ -5,6 +5,7 @@ namespace Survos\Bundle\MakerBundle\Maker;
 use Knp\Menu\ItemInterface;
 use Survos\BootstrapBundle\Event\KnpMenuEvent;
 use Survos\BootstrapBundle\Menu\MenuBuilder;
+use Survos\BootstrapBundle\Traits\KnpMenuHelperInterface;
 use Survos\BootstrapBundle\Traits\KnpMenuHelperTrait;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
 use Symfony\Bundle\MakerBundle\DependencyBuilder;
@@ -34,6 +35,11 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
     ) {
     }
 
+    public static function getCommandDescription(): string
+    {
+        return 'Generate a Menu listener';
+    }
+
     public static function getCommandName(): string
     {
         return 'survos:make:menu';
@@ -50,7 +56,7 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
 
     public function interact(InputInterface $input, ConsoleStyle $io, Command $command)
     {
-        $io->success('Add knp_menu_render() to a twig file to render.');
+        $io->success('Add compoent("menu") to a twig file to render.');
 
         return Command::SUCCESS;
     }
@@ -62,7 +68,7 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
             'twig'
         );
 
-        
+
     }
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator)
@@ -70,8 +76,8 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
         $shortName = $input->getArgument('menuClassName');
         $classNameDetails = $generator->createClassNameDetails(
             $shortName,
-            'EventSubscriber\\',
-            'MenuEventSubscriber'
+            'EventListener\\',
+            'MenuEventListener'
         );
 
         $useStatements = new UseStatementGenerator([
@@ -81,6 +87,7 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
             MenuBuilder::class,
             KnpMenuEvent::class,
             AsEventListener::class,
+            KnpMenuHelperInterface::class,
             OptionsResolver::class,
             AuthorizationCheckerInterface::class,
         ]);
@@ -96,11 +103,16 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
 
         //        unlink($generatedFilename); // we need a --force flag
         $generator->writeChanges();
-        print file_get_contents($generatedFilename);
+//        print file_get_contents($generatedFilename);
 
         $this->writeSuccessMessage($io);
 
-        
+        $io->text([
+            'Next: Open your new menu class and start customizing it.',
+        ]);
+
+
+
     }
 
     public function __call(string $name, array $arguments)
