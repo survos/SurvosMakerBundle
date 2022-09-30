@@ -5,11 +5,11 @@
     "keywords": ["generator", "symfony", "crud"],
     "require": {
         "php": "^8.1",
+        "roave/better-reflection": "^5.11",
         "symfony/config": "^6.1.0",
         "symfony/console": "^6.1.0",
         "symfony/options-resolver": "^6.1.0",
         "symfony/string": "^6.1.0",
-        "symfony/workflow": "^6.1.0",
         "twig/twig": "^3.4",
         "zenstruck/console-extra": "^1.1"
     },
@@ -83,6 +83,9 @@
         "survos/workflow-helper-bundle": "<1.2.9",
         "survos/crawler-bundle": "<1.2.9",
         "survos/location-bundle": "<1.2.9"
+    },
+    "suggest": {
+        "symfony/workflow": "To generate a workflow from PHP constants"
     },
     "prefer-stable": true
 }
