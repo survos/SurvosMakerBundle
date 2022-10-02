@@ -1,5 +1,8 @@
 <?php
 
+/*
+ * @deprecated()
+ */
 namespace Survos\Bundle\MakerBundle\Maker;
 
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
@@ -24,21 +27,21 @@ final class MakeMethod extends AbstractMaker
 
     public static function getCommandName(): string
     {
-        return 'survos:no-input-stream-make:method';
+        return 'x:make:method';
     }
 
     public static function getCommandDescription(): string
     {
-        return 'Creates a new method';
+        return 'Creates a new method using a Maker (not command)';
     }
 
     public function configureCommand(Command $command, InputConfiguration $inputConfig): void
     {
         $command
-            ->addArgument('className', InputArgument::REQUIRED, 'The name of the existing class (e.g. <fg=yellow>App/Service/MathService</> or FQCN)')
-            ->addArgument('name', InputArgument::REQUIRED, 'The name of the method (e.g. <fg=yellow>calculateSum</>)')
+            ->addOption('className', 'c',InputOption::VALUE_OPTIONAL, 'The name of the existing class (e.g. <fg=yellow>App/Service/MathService</> or FQCN)')
+            ->addOption('methodName', 'm', InputOption::VALUE_OPTIONAL, 'The name of the method (e.g. <fg=yellow>calculateSum</>)')
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'overwrite this method if it already exists')
-            ->addOption('body', 'b', InputOption::VALUE_NONE, 'only replace the body of an existing method, requires --force')
+            ->addOption('body', 'b', InputOption::VALUE_REQUIRED, 'filename for the PHP body, requires --force')
             ->setHelp("Create or update a method in a class")
         ;
     }
@@ -46,10 +49,17 @@ final class MakeMethod extends AbstractMaker
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
     {
 
-            // If testing this will get input added by `CommandTester::setInputs` method.
+        // parse out the input if it has a namespace or filename in the piped-in input, e.g.
             $inputSteam = ($input instanceof StreamableInputInterface) ? $input->getStream() : null;
             $content = $inputSteam ? stream_get_contents($inputSteam) : null;
-//            dd($content);
+            if ($content) {
+                dd($content, file_get_contents($content));
+            }
+
+            // if the first line of the body is a filename or a namespace, use it instead of the CLI options
+
+//
+//            dd($contentFile = $input->getOption('body'), file_get_contents($contentFile));
 //        if ($input->getOption('no-interaction')) {
 //        }
 

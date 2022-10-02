@@ -1,6 +1,36 @@
 # Quickstart
 
+Some cool things you can do.
+
+
+
+
+```bash
+symfony new --webapp maker-demo && cd maker-demo
+composer require survos/maker-bundle --dev
+composer require survos/core-bundle
+
+# make an entity, using the symfony command
+
+# Create a command line program to load the data.  
+bin/console survos:make:command app:load-congress -barg purge
+cat < EOL | bin/console survos:class:update -m __invoke \n
+  --use Doctrine\ORM\EntityManagerInterface \n
+  --inject EntityManagerInterface$em
+dd('test')  
+EOL
+
+bin/console survos:make:command app:show-congress --oarg pattern "Show a list of representatives" --oint-arg limit 
+
+
+
+
+```
+
+
 This bundle has a dependency of Symfony's Maker Bundle, so install that first. 
+
+
 
 ```bash
 composer req symfony/maker-bundle --dev

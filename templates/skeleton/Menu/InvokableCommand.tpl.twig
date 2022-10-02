@@ -16,22 +16,17 @@ IO $io,
 // UserRepository $repo,
 
 // expand the arguments and options
-<?php foreach ($args as $arg=>$type) { ?>
-#[Argument(description: '<?= $type ?>')]
-<?= $type ?> $<?= $arg ?>,
+<?php foreach ($args as $argName=>$arg) { ?>
+#[Argument(description: '<?= $arg['description'] ?><?= $arg['default'] ? sprintf(", default:%s", $arg['default']) : '' ?>')]
+<?= $arg['phpType'] ?> $<?= $argName ?>,
 <?php } ?>
 
-#[Option(name: 'role', shortcut: 'r')]
-array $roles,
+<?php foreach ($options as $optionName=>$option) { ?>
+#[Option(description:'<?= $option['description'] ?>'<?= $option['shortCut'] ? sprintf(", shortcut:'%s'", $option['shortCut']) : '' ?>)]
+<?= $option['phpType'] ?> $<?= $optionName ?> <?= $option['default'] ? sprintf("=%s", $option['default']) : '' ?>,
+<?php } ?>
 
 ): void {
-
-<?php foreach ($args as $arg=>$type) { ?>
-   $io->note(sprintf("<?= $type ?> %s %s", '<?= $arg ?>', $<?= $arg ?>) ?? 'null');
-<?php } ?>
-
-// $this->runCommand('another:command');
-// $this->runProcess('/some/script');
 
 $io->success('<?= $commandName ?> success.');
 }

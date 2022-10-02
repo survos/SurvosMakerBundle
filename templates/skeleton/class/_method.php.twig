@@ -1,0 +1,13 @@
+public function {{ methodName }}(
+    {% for param in params %}
+        {% for a in param.attributes %}
+            [#{{ a.name }}]
+            {% endfor %}
+        {{ param.optional ? '?' }}{{ param.type }} {{ param.name }}
+        {{ not loop.last ? ',' }}
+    {% endfor %}
+): {{ returnType }}
+
+{
+// test
+}

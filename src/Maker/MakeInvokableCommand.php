@@ -59,9 +59,11 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
     {
 
         $command
-            ->addArgument('name', InputArgument::OPTIONAL, sprintf('Choose a command name (e.g. <fg=yellow>app:%s</>)', Str::asCommand(Str::getRandomTerm())))
-            ->addArgument('description', InputArgument::OPTIONAL, sprintf('A brief description of what the command does'))
+            ->addArgument('name', InputArgument::REQUIRED, sprintf('Choose a command name (e.g. <fg=yellow>app:%s</>)', Str::asCommand(Str::getRandomTerm())))
+            ->addArgument('args', InputArgument::IS_ARRAY | InputArgument::OPTIONAL, 'space-delimited arguments')
+
 //            ->setHelp(file_get_contents(__DIR__.'/../Resources/help/MakeCommand.txt'))
+            ->addOption('description', 'desc', InputOption::VALUE_OPTIONAL, sprintf('A brief description of what the command does'))
             ->addOption('force', null, InputOption::VALUE_NONE, 'Overwrite if it already exists.')
             ->addOption('prefix', null, InputOption::VALUE_OPTIONAL, 'Prefix the command name, but not the generated class, e.g. survos:make:user, app:do:something')
             ->addOption('inject', null, InputOption::VALUE_IS_ARRAY|InputOption::VALUE_REQUIRED, 'Interfaces to inject, e.g. EntityManagerInterface', [])
@@ -121,30 +123,111 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
             IO::class
         ]);
 
+        // bin/console survos:make:command app:testx x ?y int:z ?int:a:"A description of argument a" int:numberOfTimes-repeat?:"Option a"
+        //  --description="Just a silly test"
+/*
+ *
+ *
+    name: string $name
+    ?name: ?string $name
+    ?int:name: ?int $name
+name[]: array $name
+*/
+
         // walk through the different command line arguments/options, by type, to pass to the template
         $args = [];
-        foreach (['arg' => 'string', 'int-arg' => 'int', 'bool-arg' => 'bool'] as $argName=>$argType) {
-            $commandArguments = $input->getOption($argName);
-            foreach ( $input->getOption($argName) as $commandArg) {
-                $args[$commandArg] = $argType;
+
+        $commandArgs = $input->getArgument('args');
+        dump($commandArgs);
+        $hasOptional = false;
+        foreach ($commandArgs as $argString) {
+            $description = null;
+            $default = null;
+
+            $argTokens = explode(':', $argString);
+            $argTokenCount = count($argTokens);
+            if ($argTokenCount === 3) {
+                [$argType, $argName, $description] = $argTokens;
+            } elseif ($argTokenCount === 2) {
+                [$argType, $argName] = $argTokens;
+            } else {
+                $argName = $argString;
+                if (str_starts_with($argName, '?')) {
+                    $argType = '?string';
+                    $argName = str_replace('?', '', $argName);
+                } else {
+                    $argType = 'string';
+                }
+            }
+
+
+            if (empty($description)) {
+                $description = "($argType)";
+            }
+
+            if (str_ends_with($argName, '?')) {
+                $argName = trim($argName, '?');
+
+                // shortcut is after the name, as a hypen
+                if (str_contains($argName, '-')) {
+                    [$argName, $shortcut] = explode('-', $argName, 2);
+                } else {
+                    $shortcut = null;
+                }
+
+                if ($default) {
+
+                }
+                $options[$argName] = [
+                    'default' => $default,
+                    'phpType' => $argType,
+                    'shortCut' => $shortcut,
+                    'description' => $description
+            ];
+            } else {
+
+                if (str_starts_with($argType, '?')) {
+                    $hasOptional = true;
+                    $optionalArgument = $argName;
+                } else {
+                    if ($hasOptional) {
+                        throw new \LogicException("required argument $argName cannot come after optional argument $optionalArgument");
+                    }
+                }
+
+                $args[$argName] = [
+                    'phpType' => $argType,
+                    'default' => $default,
+                    'description' => $description
+                ];
             }
         }
-        // optional arguments must come AFTER the requirement arguments
-        foreach (['oarg' => '?string', 'oint-arg' => '?int', 'obool-arg' => '?bool'] as $argName=>$argType) {
-            $commandArguments = $input->getOption($argName);
-            foreach ( $input->getOption($argName) as $commandArg) {
-                $args[$commandArg] = $argType;
-            }
-        }
+//        $args = [];
+//        foreach (['arg' => 'string', 'int-arg' => 'int', 'bool-arg' => 'bool'] as $argName=>$argType) {
+//            $commandArguments = $input->getOption($argName);
+//            foreach ( $input->getOption($argName) as $commandArg) {
+//                $args[$commandArg] = $argType;
+//            }
+//        }
+//        dd($args, $options);
+//        // optional arguments must come AFTER the requirement arguments
+//        foreach (['oarg' => '?string', 'oint-arg' => '?int', 'obool-arg' => '?bool'] as $argName=>$argType) {
+//            $commandArguments = $input->getOption($argName);
+//            foreach ( $input->getOption($argName) as $commandArg) {
+//                $args[$commandArg] = $argType;
+//            }
+//        }
+
+
 
         $generatedFilename = $this->generator->generateClass(
             $classNameDetails->getFullName(),
             __DIR__ . '/../../templates/skeleton/Menu/InvokableCommand.tpl.twig',
             $v = [
                 'commandName' => $commandName,
-                'commandDescription' => $input->getArgument('description'),
+                'commandDescription' => $input->getOption('description'),
                 'args' => $args,
-                'options' => $input->getOption('option'),
+                'options' => $options,
                 'entity_full_class_name' => $classNameDetails->getFullName(),
                 'use_statements' => $useStatements,
             ]

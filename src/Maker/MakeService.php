@@ -11,6 +11,7 @@ use Symfony\Bundle\MakerBundle\Util\UseStatementGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\StreamableInputInterface;
 
 final class MakeService extends AbstractMaker
@@ -35,7 +36,8 @@ final class MakeService extends AbstractMaker
     {
         $command
             ->addArgument('name', InputArgument::REQUIRED, 'The name of the service class (e.g. <fg=yellow>AppService</>)')
-            ->addArgument('methodContent', InputArgument::REQUIRED, 'PHP Code')
+//            ->addOption('force', InputOption::VALUE_NONE|InputOption::VALUE_NEGATABLE)
+//            ->addArgument('methodContent', InputArgument::REQUIRED, 'PHP Code')
             ->setHelp("Create a new Service class")
         ;
     }
@@ -43,13 +45,23 @@ final class MakeService extends AbstractMaker
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
     {
 
+        $inputSteam = ($input instanceof StreamableInputInterface) ? $input->getStream() : null;
+        if ($inputSteam) {
+            $contents = stream_get_contents($inputSteam);
+            dd($contents);
+        } else {
+            $contents = null;
+        }
+        // If nothing from input stream use STDIN instead.
+        $inputSteam = $inputSteam ?? STDIN;
+
 
             // If testing this will get input added by `CommandTester::setInputs` method.
 //        dd($input::class);
-        $x = stream_get_contents($input->getStream());
-            $inputSteam = ($input instanceof StreamableInputInterface) ? $input->getStream() : null;
-            $content = $inputSteam ? stream_get_contents($inputSteam) : null;
-            dd($content);
+//        $x = stream_get_contents($input->getStream());
+//            $inputSteam = ($input instanceof StreamableInputInterface) ? $input->getStream() : null;
+//            $content = $inputSteam ? stream_get_contents($inputSteam) : null;
+//            dd($content);
 //        if ($input->getOption('no-interaction')) {
 //        }
 
@@ -68,7 +80,7 @@ final class MakeService extends AbstractMaker
             $extensionClassNameDetails->getFullName(),
             $this->templatePath . 'Service/Service.tpl.php',
             [
-                'content' => $content,
+                'content' => $contents,
                 'use_statements' => $useStatements,
             ]
         );

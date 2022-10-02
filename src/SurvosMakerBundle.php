@@ -6,13 +6,13 @@
 
 namespace Survos\Bundle\MakerBundle;
 
-use Survos\Bundle\MakerBundle\Command\MakeMethodCommand;
+use Survos\Bundle\MakerBundle\Command\ClassUpdateCommand;
 use Survos\Bundle\MakerBundle\DependencyInjection\Compiler\SurvosMakerCompilerPass;
 use Survos\Bundle\MakerBundle\Maker\MakeBundle;
 use Survos\Bundle\MakerBundle\Maker\MakeCrud;
 use Survos\Bundle\MakerBundle\Maker\MakeInvokableCommand;
 use Survos\Bundle\MakerBundle\Maker\MakeMenu;
-use Survos\Bundle\MakerBundle\Maker\MakeMethod;
+//use Survos\Bundle\MakerBundle\Maker\MakeMethod;
 use Survos\Bundle\MakerBundle\Maker\MakeModel;
 use Survos\Bundle\MakerBundle\Maker\MakeParamConverter;
 use Survos\Bundle\MakerBundle\Maker\MakeService;
@@ -20,6 +20,7 @@ use Survos\Bundle\MakerBundle\Maker\MakeWorkflow;
 use Survos\Bundle\MakerBundle\Maker\MakeWorkflowListener;
 use Survos\Bundle\MakerBundle\Renderer\ParamConverterRenderer;
 //use Symfony\Bundle\MakerBundle\DependencyInjection\CompilerPass\DoctrineAttributesCheckPass;
+use Survos\Bundle\MakerBundle\Service\MakerService;
 use Survos\DocBundle\Command\SurvosBuildDocsCommand;
 use Symfony\Bundle\MakerBundle\DependencyInjection\CompilerPass\MakeCommandRegistrationPass;
 use Symfony\Bundle\MakerBundle\DependencyInjection\CompilerPass\RemoveMissingParametersPass;
@@ -41,6 +42,25 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
     // The compiler pass
     public function process(ContainerBuilder $container)
     {
+
+//        $map = [];
+//        // get the map from serviceIds to classes, so we can inject things like router.default and serializer
+//        foreach ($container->getDefinitions() as $id => $definition) {
+//            $map[$id] = $definition->getClass();
+//        }
+//
+//        //        $builder = $this->getContainerBuilder($this->getApplication()->getKernel());
+//        $serviceIds = $container->getServiceIds();
+//        dd($serviceIds);
+//
+//
+//        $definition = $container->getDefinition(MakerService::class);
+//        $definition->addMethodCall(
+//            'setIdMap',
+//            [$map]
+//        );
+//
+
         if (false === $container->hasDefinition('workflow.registry')) {
             return;
         }
@@ -55,7 +75,7 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        foreach ([MakeMenu::class, MakeService::class, MakeMethod::class, MakeInvokableCommand::class, MakeModel::class] as $makerClass) {
+        foreach ([MakeMenu::class, MakeService::class, MakeInvokableCommand::class, MakeModel::class] as $makerClass) {
             $builder->autowire($makerClass)
                 ->addTag(MakeCommandRegistrationPass::MAKER_TAG) // 'maker.command'
                 ->addArgument(new Reference('maker.generator'))
@@ -98,9 +118,11 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
             ->addArgument(new Reference('maker.generator'))
         ;
 
-        $builder->autowire(MakeMethodCommand::class)
+        $builder->autowire(ClassUpdateCommand::class)
             ->addTag('console.command')
-            ->addMethodCall('setInvokeContainer', [new Reference('service_container')])
+            ->addTag('container.service_subscriber')
+//            ->setAutoconfigured(true)
+//            ->addMethodCall('setInvokeContainer', [new Reference('service_container')])
         ;
 
 
@@ -113,6 +135,11 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
 //            // there must be a better way to only wire this if it exists.
 //        }
 
+
+        $builder->autowire(MakerService::class)
+            ->setArgument('$propertyAccessor', new Reference('property_accessor'))
+            ->setArgument('$twig', new Reference('twig'))
+            ;
 
         $builder->autowire(MakeWorkflow::class)
             ->addTag('maker.command')
@@ -136,6 +163,11 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
     {
         parent::build($container);
 
+
+        $container->addCompilerPass($this, PassConfig::TYPE_BEFORE_OPTIMIZATION, -1000);
+
+        return;
+
         // add a priority so we run before the core command pass
         //        $container->addCompilerPass(new DoctrineAttributesCheckPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 11);
         $container->addCompilerPass(new MakeCommandRegistrationPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 10);
@@ -146,7 +178,6 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
 
         // Register this class as a pass, to eliminate the need for the extra DI class
         // https://stackoverflow.com/questions/73814467/how-do-i-add-a-twig-global-from-a-bundle-config
-        $container->addCompilerPass($this);
 
         //        dump(__FILE__, __LINE__);
         //        $container->addCompilerPass(new SurvosMakerCompilerPass());

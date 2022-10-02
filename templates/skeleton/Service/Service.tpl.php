@@ -6,10 +6,11 @@ namespace <?= $namespace ?>;
 
 class <?= $class_name ?>
 {
-public function __construct(
-)
+public function __construct()
 {
 }
+
+<?php echo $content ?>
 
 }
 
