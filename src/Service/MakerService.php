@@ -20,12 +20,12 @@ class MakerService
 {
     private array $idMap = [];
 
-//    private PropertyAccessor $propertyAccessor;
+    //    private PropertyAccessor $propertyAccessor;
     public function __construct(
         private Environment $twig,
         private PropertyAccessorInterface $propertyAccessor
     ) {
-//        $this->propertyAccessor = new PropertyAccessor();
+        //        $this->propertyAccessor = new PropertyAccessor();
     }
 
     public function setIdMap(array $idMap)
@@ -37,10 +37,6 @@ class MakerService
 
     /**
      * Get a list of classes that are not in the use section of the class
-     *
-     * @param string $className
-     * @param array $classList
-     * @return void
      */
     public function getNewUses(string $className, array $classList): array
     {
@@ -70,7 +66,7 @@ class MakerService
     {
         assert(class_exists($fqcn), $fqcn . " is not loaded");
         return (new BetterReflection()) // $this->betterReflection
-        ->reflector()
+            ->reflector()
             ->reflectClass($fqcn);
     }
 
@@ -83,8 +79,6 @@ class MakerService
         string $methodName = null,
         string $php = null,
     ): string {
-
-
         $source = $reflectionClass->getLocatedSource()->getSource();
         // go through inject to separate typehint and parameter
         foreach ($injects as $inject) {
@@ -103,19 +97,18 @@ class MakerService
             } else {
                 $optional = false;
             }
-//            assert(class_exists($class), "[$class]");
+            //            assert(class_exists($class), "[$class]");
             $shortClass = (new \ReflectionClass($class))->getShortName();
             if (!$var) {
                 $var = u($shortClass)->camel()->replace('Interface', '')->toString();
             }
-
 
             array_push($uses, $class);
             $injectionParams[] = [
                 'class' => $class,
                 'shortClass' => $shortClass,
                 'var' => $var,
-                'optional' => $optional
+                'optional' => $optional,
             ];
         }
 
@@ -128,24 +121,24 @@ class MakerService
         }
         if ($reflectionClass->hasMethod($injectMethod)) {
             $method = $reflectionClass->getMethod($injectMethod);
-            $existingParams = array_map(fn(ReflectionParameter $param) => $param->getName(), $method->getParameters());
+            $existingParams = array_map(fn (ReflectionParameter $param) => $param->getName(), $method->getParameters());
 
             foreach ($injectionParams as $injectionParam) {
                 $var = $injectionParam['var'];
                 if (!in_array($var, $existingParams)) {
                     $paramStr = sprintf('%s%s $%s', $injectionParam['optional'] ? '?' : '', $injectionParam['shortClass'], $var);
                     $params[] = $paramStr;
-//                    dd($injectionParam, $existingParams);
+                    //                    dd($injectionParam, $existingParams);
                 }
             }
 
-//            foreach ($method->getParameters() as $parameter) {
-//                dump($parameter);
-//            }
+            //            foreach ($method->getParameters() as $parameter) {
+            //                dump($parameter);
+            //            }
 
 
-//            dd($method->getParameters());
-//            $constructorSource = join("\n", $this->getSourceLines($method->getLocatedSource()->getSource(), $method->getStartLine(), $method->getEndLine()));
+            //            dd($method->getParameters());
+            //            $constructorSource = join("\n", $this->getSourceLines($method->getLocatedSource()->getSource(), $method->getStartLine(), $method->getEndLine()));
 
             // we could recreate the contructor header, so that we can put the new parameters at the end (in case named parameters are being used.)
             // hack for just, force the params in
@@ -162,9 +155,9 @@ class MakerService
             $originalClass = $reflectionClass->getName();
             $astLocator = (new BetterReflection())->astLocator();
             $reflector = new DefaultReflector(new StringSourceLocator($source, $astLocator));
-//            $reflectionClass = $reflector->reflectClass($originalClass);
+            //            $reflectionClass = $reflector->reflectClass($originalClass);
 
-//            $reflectionClass = (new BetterReflection())->reflector()->reflectClass()
+            //            $reflectionClass = (new BetterReflection())->reflector()->reflectClass()
             $method = $reflectionClass->getMethod($methodName);
             $originalBody = $method->getBodyCode();
             $methodSource = $this->getMethodSource($reflectionClass, $methodName);
@@ -173,7 +166,7 @@ class MakerService
             $newMethodSource = $this->twig->render('@SurvosMaker/skeleton/class/_method.php.twig', [
                 'params' => $method->getParameters(),
                 'methodName' => $methodName,
-                'returnType' => $method->getReturnType()
+                'returnType' => $method->getReturnType(),
             ]);
 
             // hack
@@ -185,22 +178,21 @@ class MakerService
                 }
                 assert(preg_match("/$divider/", $methodSource), "$divider not found in $methodSource");
                 $newMethodSource = preg_replace("/$divider.*?}/sm", ": $returnType { \n" . $php . "\n}\n", $methodSource);
-//            $newMethodSource = str_replace($originalBody, $php, $methodSource);
+                //            $newMethodSource = str_replace($originalBody, $php, $methodSource);
 
-//            dd($newMethodSource, $methodSource, $method->getReturnType(), $method->getName());
+                //            dd($newMethodSource, $methodSource, $method->getReturnType(), $method->getName());
                 // remove the old method
 
                 // we could remove the method completely, then add the new one,
                 // https://tomasvotruba.com/blog/2017/11/06/how-to-change-php-code-with-abstract-syntax-tree/?ref=aggregate.stitcher.io
                 $source = $this->replaceLines($source, $method->getStartLine(), $method->getEndLine(), $newMethodSource);
-//                dd($methodName, $php, $originalBody, $source);
+                //                dd($methodName, $php, $originalBody, $source);
             }
-//            dd($source);
+            //            dd($source);
         }
 
         // after the new method body is in place, add the injection
         $source = str_replace($injectMethod . '(', $injectMethod . '(' . $newPhp, $source);
-
 
         if (!$constructorSource = $this->getMethodSource($reflectionClass, '__construct')) {
             assert(false, "@todo: create constructor");
@@ -209,24 +201,24 @@ class MakerService
         $uses = array_unique(array_merge($uses, $traits, $implements));
 
         // first, get the new uses statements based on traits, etc.  @todo
-//        $reflectionClass = $this->getReflectionClass($fqcn);
+        //        $reflectionClass = $this->getReflectionClass($fqcn);
 
         $shortClassName = $reflectionClass->getShortName();
         $newImplements = array_diff($implements, $reflectionClass->getInterfaceNames());
 
         // hackish, AST would be more better, but regex will have to do.
-//        dd($reflectionClass->getInterfaceNames());
-//        dd($newImplements);
-//
-//        dd($reflectionClass->getImmediateInterfaces());
+        //        dd($reflectionClass->getInterfaceNames());
+        //        dd($newImplements);
+        //
+        //        dd($reflectionClass->getImmediateInterfaces());
 
         if (count($newImplements)) {
-            $php = join(",", array_map(fn($c) => (new \ReflectionClass($c))->getShortName(), $newImplements));
+            $php = join(",", array_map(fn ($c) => (new \ReflectionClass($c))->getShortName(), $newImplements));
             dd($php);
             // if this is in a comment, it may fail
             if (str_contains($source, $iString = "class $shortClassName implements ")) {
                 $source = str_replace($iString, $iString . $php . ',', $source);
-                // add new implements
+            // add new implements
             } else {
                 $toReplace = "class $shortClassName ";
                 assert(str_contains($source, $toReplace), "missing $toReplace in source");
@@ -234,21 +226,21 @@ class MakerService
             }
         }
 
-//        $classSignature = $this->getSourceLines($source, $reflectionClass->getStartLine(), $reflectionClass->getEndLine());
-//        dd($classSignature);
+        //        $classSignature = $this->getSourceLines($source, $reflectionClass->getStartLine(), $reflectionClass->getEndLine());
+        //        dd($classSignature);
         // insert traits before uses, so that we have an accurate line number
         $newTraits = array_diff($traits, $reflectionClass->getTraitNames());
         if (count($newTraits)) {
             // add them to the END of the class, let ecs fix them.
             assert(preg_match('/}$/', $source), "the last line of the source must be a } to close the class.");
-            $phpLines = array_map(fn(string $useClass) => sprintf("use %s;", (new \ReflectionClass($useClass))->getShortName()), $newTraits);
+            $phpLines = array_map(fn (string $useClass) => sprintf("use %s;", (new \ReflectionClass($useClass))->getShortName()), $newTraits);
             $source = preg_replace('/}$/', join("\n", $phpLines) . "\n}", $source);
         }
 
         $existingUses = $this->getClassUses(reflectionClass: $reflectionClass); // odd, getTraits exists, why not getUses()?
         $newUses = array_diff($uses, $existingUses);
         if (count($newUses)) {
-            $php = array_map(fn(string $useClass) => sprintf("use %s;", (new \ReflectionClass($useClass))->getName()), $newUses);
+            $php = array_map(fn (string $useClass) => sprintf("use %s;", (new \ReflectionClass($useClass))->getName()), $newUses);
             $sourceLines = explode("\n", $source);
             array_splice($sourceLines, $reflectionClass->getStartLine() - 1, 0, $php);
             $source = join("\n", $sourceLines);
@@ -278,10 +270,10 @@ class MakerService
 
         // add them to the END of the class, let ecs fix them.
         assert(preg_match('/}$/', $source), "the last line of the source must be a } to close the class.");
-        $newSource = preg_replace('/}$/', join("\n", array_map(fn($traitName) => "use $traitName;", $newTraits)) . "\n}", $source);
+        $newSource = preg_replace('/}$/', join("\n", array_map(fn ($traitName) => "use $traitName;", $newTraits)) . "\n}", $source);
         dump($classInfo->getTraitNames(), $newTraits, $traits, $newSource);
 
-//        $source = $classInfo->getLocatedSource()->getSource();
+        //        $source = $classInfo->getLocatedSource()->getSource();
 
         dd($classInfo->getAttributes(), $classInfo->getStartLine(), $this->getSourceLines($classInfo->getFileName(), $classInfo->getStartLine(), $classInfo->getEndLine()));
 
@@ -299,7 +291,7 @@ class MakerService
             $sourceLines,
             $this->getLastUseLineNumber(reflectionClass: $classInfo),
             0,
-            array_map(fn(string $useClass) => "use $useClass;", $uses)
+            array_map(fn (string $useClass) => "use $useClass;", $uses)
         );
         dd($sourceLines);
         return join("\n", $sourceLines);
@@ -316,17 +308,17 @@ class MakerService
     public function getMethodSource(ReflectionClass $reflectionClass, string $methodName): ?string
     {
         // use the PHP reflection, not BetterReflection?
-//        $reflectionClass = new \ReflectionClass($fqcn);
-//        $reflectionMethod = $reflectionClass->getMethod($methodName);
-//        $methodSource = $this->getSourceLines($reflectionMethod->getFileName(), $reflectionMethod->getStartLine(), $reflectionMethod->getEndLine());
-//        dump($reflectionMethod->getAttributes(), $methodSource);
-//
-//        return join("\n", $methodSource);
-//        dump($fqcn, $methodName, $methodSource);
+        //        $reflectionClass = new \ReflectionClass($fqcn);
+        //        $reflectionMethod = $reflectionClass->getMethod($methodName);
+        //        $methodSource = $this->getSourceLines($reflectionMethod->getFileName(), $reflectionMethod->getStartLine(), $reflectionMethod->getEndLine());
+        //        dump($reflectionMethod->getAttributes(), $methodSource);
+        //
+        //        return join("\n", $methodSource);
+        //        dump($fqcn, $methodName, $methodSource);
         if ($reflectionClass->hasMethod($methodName)) {
             $method = $reflectionClass->getMethod($methodName);
             return join("\n", $this->getSourceLines($method->getLocatedSource()->getSource(), $method->getStartLine(), $method->getEndLine()));
-//            dd($method, $method->getStartLine(), ));
+            //            dd($method, $method->getStartLine(), ));
             dd($method->getNumberOfParameters(), $this->getProperty($method, 'methodNode'));
             dd($method, $method->getLocatedSource());
         } else {
@@ -350,7 +342,7 @@ class MakerService
         foreach ($reflectionClass->getDeclaringNamespaceAst()->stmts as $stmt) {
             foreach ($stmt->uses ?? [] as $use) {
                 $attributes = $accessor->getValue($use, 'attributes');
-//                dd($use, $attributes??null);
+                //                dd($use, $attributes??null);
                 $lastLineNumber = $attributes['endLine'];
                 $uses[] = join('\\', $use->name->parts);
             }

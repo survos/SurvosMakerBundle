@@ -43,35 +43,33 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
     // The compiler pass
     public function process(ContainerBuilder $container)
     {
-
-//        $map = [];
-//        // get the map from serviceIds to classes, so we can inject things like router.default and serializer
-//        foreach ($container->getDefinitions() as $id => $definition) {
-//            $map[$id] = $definition->getClass();
-//        }
-//
-//        //        $builder = $this->getContainerBuilder($this->getApplication()->getKernel());
-//        $serviceIds = $container->getServiceIds();
-//        dd($serviceIds);
-//
-//
-//        $definition = $container->getDefinition(MakerService::class);
-//        $definition->addMethodCall(
-//            'setIdMap',
-//            [$map]
-//        );
-//
+        //        $map = [];
+        //        // get the map from serviceIds to classes, so we can inject things like router.default and serializer
+        //        foreach ($container->getDefinitions() as $id => $definition) {
+        //            $map[$id] = $definition->getClass();
+        //        }
+        //
+        //        //        $builder = $this->getContainerBuilder($this->getApplication()->getKernel());
+        //        $serviceIds = $container->getServiceIds();
+        //        dd($serviceIds);
+        //
+        //
+        //        $definition = $container->getDefinition(MakerService::class);
+        //        $definition->addMethodCall(
+        //            'setIdMap',
+        //            [$map]
+        //        );
+        //
 
         if (false === $container->hasDefinition('workflow.registry')) {
             return;
         }
-//        $reference = new Reference('workflow.registry');
+        //        $reference = new Reference('workflow.registry');
 
         $container->get(MakeWorkflowListener::class)
             ->setArgument('registry', new Reference('workflow.registry'))
         ;
     }
-
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
@@ -125,21 +123,20 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
 //            ->addMethodCall('setInvokeContainer', [new Reference('service_container')])
         ;
 
-
-//        dd(service('maker.doctrine_helper')->nullOnInvalid(), service('workflow.registry')->nullOnInvalid(), service('x')->nullOnInvalid());
-//            $definition
-//                ->addArgument(new Reference('workflow.registry'))
-//            ;
-//        try {
-//        } catch (\Exception $exception) {
-//            // there must be a better way to only wire this if it exists.
-//        }
+        //        dd(service('maker.doctrine_helper')->nullOnInvalid(), service('workflow.registry')->nullOnInvalid(), service('x')->nullOnInvalid());
+        //            $definition
+        //                ->addArgument(new Reference('workflow.registry'))
+        //            ;
+        //        try {
+        //        } catch (\Exception $exception) {
+        //            // there must be a better way to only wire this if it exists.
+        //        }
 
 
         $builder->autowire(MakerService::class)
             ->setArgument('$propertyAccessor', new Reference('property_accessor'))
             ->setArgument('$twig', new Reference('twig'))
-            ;
+        ;
 
         $builder->autowire(MakeWorkflow::class)
             ->addTag('maker.command')
@@ -163,7 +160,6 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
     {
         parent::build($container);
 
-
         $container->addCompilerPass($this, PassConfig::TYPE_BEFORE_OPTIMIZATION, -1000);
 
         return;
@@ -174,7 +170,6 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
         $container->addCompilerPass(new RemoveMissingParametersPass());
         //        $container->addCompilerPass(new SetDoctrineManagerRegistryClassPass());
         $container->addCompilerPass(new SetDoctrineAnnotatedPrefixesPass());
-
 
         // Register this class as a pass, to eliminate the need for the extra DI class
         // https://stackoverflow.com/questions/73814467/how-do-i-add-a-twig-global-from-a-bundle-config

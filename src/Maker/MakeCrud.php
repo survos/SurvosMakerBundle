@@ -59,7 +59,6 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
         return 'survos:make:crud';
     }
 
-
     public function configureCommand(Command $command, InputConfiguration $inputConfig)
     {
         $command
@@ -153,7 +152,6 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
         $routeName = str_replace('_controller', '', $routeName);
         //        $entityRouteName = Str::asRouteName($entityControllerClassDetails->getRelativeNameWithoutSuffix());
 
-
         $templatesPath = Str::asFilePath($controllerClassDetails->getRelativeNameWithoutSuffix());
         $templatesPath = str_replace('_controller', '', $templatesPath);
 
@@ -161,8 +159,8 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
         $templateRoot = __DIR__ . '/../../templates/skeleton/';
         foreach (
             [
-            'Controller' => $controllerClassDetails,
-            'CollectionController' => $entityControllerClassDetails,
+                'Controller' => $controllerClassDetails,
+                'CollectionController' => $entityControllerClassDetails,
             ] as $name => $cClassDetails
         ) {
             $routePath = Str::asRoutePath($cClassDetails->getRelativeNameWithoutSuffix());
@@ -270,7 +268,6 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
 
         $io->text(sprintf('Next: Check your new CRUD by going to <fg=yellow>%s/</>', Str::asRoutePath($controllerClassDetails->getRelativeNameWithoutSuffix())));
     }
-
 
     public function configureDependencies(DependencyBuilder $dependencies)
     {

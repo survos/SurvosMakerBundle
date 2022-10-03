@@ -13,8 +13,8 @@ use Twig\Environment;
 use Zenstruck\Console\Attribute\Argument;
 use Zenstruck\Console\Attribute\Option;
 use Zenstruck\Console\ConfigureWithAttributes;
-use Zenstruck\Console\IO;
 use Zenstruck\Console\InvokableServiceCommand;
+use Zenstruck\Console\IO;
 use Zenstruck\Console\RunsCommands;
 use Zenstruck\Console\RunsProcesses;
 
@@ -47,7 +47,6 @@ final class ClassUpdateCommand extends InvokableServiceCommand
         #[Option(description: 'show a diff of the changes')]
         bool $diff,
     ): void {
-
         // this is only valid is are no prompts.
         $input = $io->input();
         $inputStream = ($input instanceof StreamableInputInterface) ? $input->getStream() : null;

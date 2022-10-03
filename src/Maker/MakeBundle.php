@@ -64,7 +64,6 @@ class MakeBundle extends AbstractMaker implements MakerInterface
         return "Makes a bundle class";
     }
 
-
     public function configureCommand(Command $command, InputConfiguration $inputConfig)
     {
         $command
@@ -102,7 +101,7 @@ class MakeBundle extends AbstractMaker implements MakerInterface
         $json = json_decode(file_get_contents("composer.json"));  // object, not array (no second arg)
         $bundleNamespace = "$vendor\\$name\\";
         $psr = $json->autoload->{'psr-4'};
-        if (! property_exists($psr, $bundleNamespace)) {
+        if (!property_exists($psr, $bundleNamespace)) {
             // @todo: use jq from cli instead
             $json->{"autoload"}->{"psr-4"}->{$bundleNamespace} = $this->bundlePath;  // object properties, not array indexes
             file_put_contents("composer.json", $newjson = json_encode($json, JSON_PRETTY_PRINT && JSON_UNESCAPED_SLASHES && JSON_UNESCAPED_UNICODE));

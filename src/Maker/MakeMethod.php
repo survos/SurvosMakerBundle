@@ -48,20 +48,19 @@ final class MakeMethod extends AbstractMaker
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
     {
-
         // parse out the input if it has a namespace or filename in the piped-in input, e.g.
-            $inputSteam = ($input instanceof StreamableInputInterface) ? $input->getStream() : null;
-            $content = $inputSteam ? stream_get_contents($inputSteam) : null;
+        $inputSteam = ($input instanceof StreamableInputInterface) ? $input->getStream() : null;
+        $content = $inputSteam ? stream_get_contents($inputSteam) : null;
         if ($content) {
             dd($content, file_get_contents($content));
         }
 
-            // if the first line of the body is a filename or a namespace, use it instead of the CLI options
+        // if the first line of the body is a filename or a namespace, use it instead of the CLI options
 
-//
-//            dd($contentFile = $input->getOption('body'), file_get_contents($contentFile));
-//        if ($input->getOption('no-interaction')) {
-//        }
+        //
+        //            dd($contentFile = $input->getOption('body'), file_get_contents($contentFile));
+        //        if ($input->getOption('no-interaction')) {
+        //        }
 
         $reflectionClass = new \ReflectionClass($className = $input->getArgument('className'));
 
@@ -78,11 +77,7 @@ final class MakeMethod extends AbstractMaker
             }
         }
 
-
-
-
         dd($reflectionClass->getFileName(), $content);
-
 
         $extensionClassNameDetails = $generator->createClassNameDetails(
             $input->getArgument('name'),

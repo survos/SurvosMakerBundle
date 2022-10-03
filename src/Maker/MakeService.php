@@ -44,7 +44,6 @@ final class MakeService extends AbstractMaker
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
     {
-
         $inputSteam = ($input instanceof StreamableInputInterface) ? $input->getStream() : null;
         if ($inputSteam) {
             $contents = stream_get_contents($inputSteam);
@@ -55,15 +54,14 @@ final class MakeService extends AbstractMaker
         // If nothing from input stream use STDIN instead.
         $inputSteam = $inputSteam ?? STDIN;
 
-
-            // If testing this will get input added by `CommandTester::setInputs` method.
-//        dd($input::class);
-//        $x = stream_get_contents($input->getStream());
-//            $inputSteam = ($input instanceof StreamableInputInterface) ? $input->getStream() : null;
-//            $content = $inputSteam ? stream_get_contents($inputSteam) : null;
-//            dd($content);
-//        if ($input->getOption('no-interaction')) {
-//        }
+        // If testing this will get input added by `CommandTester::setInputs` method.
+        //        dd($input::class);
+        //        $x = stream_get_contents($input->getStream());
+        //            $inputSteam = ($input instanceof StreamableInputInterface) ? $input->getStream() : null;
+        //            $content = $inputSteam ? stream_get_contents($inputSteam) : null;
+        //            dd($content);
+        //        if ($input->getOption('no-interaction')) {
+        //        }
 
 
 

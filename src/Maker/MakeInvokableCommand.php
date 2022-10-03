@@ -55,10 +55,8 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
         return 'survos:make:command';
     }
 
-
     public function configureCommand(Command $command, InputConfiguration $inputConfig)
     {
-
         $command
             ->addArgument('name', InputArgument::REQUIRED, sprintf('Choose a command name (e.g. <fg=yellow>app:%s</>)', Str::asCommand(Str::getRandomTerm())))
             ->addArgument('args', InputArgument::IS_ARRAY | InputArgument::OPTIONAL, 'space-delimited arguments')
@@ -82,13 +80,13 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
 
     public function interact(InputInterface $input, ConsoleStyle $io, Command $command): void
     {
-        $commandName  = $input->getArgument('name');
+        $commandName = $input->getArgument('name');
         if ($prefix = $input->getOption('prefix')) {
             $commandName = $prefix . ':' . $commandName;
         }
         $io->success('Run your command with ' . $commandName);
 
-//        return Command::SUCCESS;
+        //        return Command::SUCCESS;
     }
 
     public function configureDependencies(DependencyBuilder $dependencies)
@@ -119,19 +117,19 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
             RunsProcesses::class,
             Argument::class,
             Option::class,
-            IO::class
+            IO::class,
         ]);
 
         // bin/console survos:make:command app:testx x ?y int:z ?int:a:"A description of argument a" int:numberOfTimes-repeat?:"Option a"
         //  --description="Just a silly test"
-/*
- *
- *
-    name: string $name
-    ?name: ?string $name
-    ?int:name: ?int $name
-name[]: array $name
-*/
+        /*
+         *
+         *
+            name: string $name
+            ?name: ?string $name
+            ?int:name: ?int $name
+        name[]: array $name
+        */
 
         // walk through the different command line arguments/options, by type, to pass to the template
         $args = [];
@@ -160,7 +158,6 @@ name[]: array $name
                 }
             }
 
-
             if (empty($description)) {
                 $description = "($argType)";
             }
@@ -181,7 +178,7 @@ name[]: array $name
                     'default' => $default,
                     'phpType' => $argType,
                     'shortCut' => $shortcut,
-                    'description' => $description
+                    'description' => $description,
                 ];
             } else {
                 if (str_starts_with($argType, '?')) {
@@ -196,25 +193,25 @@ name[]: array $name
                 $args[$argName] = [
                     'phpType' => $argType,
                     'default' => $default,
-                    'description' => $description
+                    'description' => $description,
                 ];
             }
         }
-//        $args = [];
-//        foreach (['arg' => 'string', 'int-arg' => 'int', 'bool-arg' => 'bool'] as $argName=>$argType) {
-//            $commandArguments = $input->getOption($argName);
-//            foreach ( $input->getOption($argName) as $commandArg) {
-//                $args[$commandArg] = $argType;
-//            }
-//        }
-//        dd($args, $options);
-//        // optional arguments must come AFTER the requirement arguments
-//        foreach (['oarg' => '?string', 'oint-arg' => '?int', 'obool-arg' => '?bool'] as $argName=>$argType) {
-//            $commandArguments = $input->getOption($argName);
-//            foreach ( $input->getOption($argName) as $commandArg) {
-//                $args[$commandArg] = $argType;
-//            }
-//        }
+        //        $args = [];
+        //        foreach (['arg' => 'string', 'int-arg' => 'int', 'bool-arg' => 'bool'] as $argName=>$argType) {
+        //            $commandArguments = $input->getOption($argName);
+        //            foreach ( $input->getOption($argName) as $commandArg) {
+        //                $args[$commandArg] = $argType;
+        //            }
+        //        }
+        //        dd($args, $options);
+        //        // optional arguments must come AFTER the requirement arguments
+        //        foreach (['oarg' => '?string', 'oint-arg' => '?int', 'obool-arg' => '?bool'] as $argName=>$argType) {
+        //            $commandArguments = $input->getOption($argName);
+        //            foreach ( $input->getOption($argName) as $commandArg) {
+        //                $args[$commandArg] = $argType;
+        //            }
+        //        }
 
 
 
@@ -234,12 +231,12 @@ name[]: array $name
         //        unlink($generatedFilename); // we need a --force flag
         $generator->writeChanges();
         print file_get_contents($generatedFilename);
-//        dump($v);
+        //        dump($v);
 
         $this->writeSuccessMessage($io);
 
         $io->text([
-            sprintf('Next: Open %s and customize it', $generatedFilename)
+            sprintf('Next: Open %s and customize it', $generatedFilename),
         ]);
     }
 

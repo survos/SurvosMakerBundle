@@ -45,7 +45,6 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
         return 'survos:make:menu';
     }
 
-
     public function configureCommand(Command $command, InputConfiguration $inputConfig)
     {
         $command
@@ -104,7 +103,7 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
 
         //        unlink($generatedFilename); // we need a --force flag
         $generator->writeChanges();
-//        print file_get_contents($generatedFilename);
+        //        print file_get_contents($generatedFilename);
 
         $this->writeSuccessMessage($io);
 

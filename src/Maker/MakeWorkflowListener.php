@@ -36,7 +36,6 @@ final class MakeWorkflowListener extends AbstractMaker implements MakerInterface
         return 'survos:make:workflow-listener';
     }
 
-
     public function configureCommand(Command $command, InputConfiguration $inputConfig)
     {
         $command
@@ -103,7 +102,6 @@ final class MakeWorkflowListener extends AbstractMaker implements MakerInterface
 
         //        $templatesPath = Str::asFilePath($entityClassDetails->getRelativeNameWithoutSuffix());
         //        dd($templatesPath);
-
 
         //        $x = $generator->getFileContentsForPendingOperation($generatedFilename);
         //        dd($x);

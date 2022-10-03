@@ -32,7 +32,8 @@
         "symfony/security-csrf": "^6.1.0",
         "symfony/twig-bundle": "^6.1.0",
         "symfony/validator": "^6.1.0",
-        "symfony/yaml": "^6.1.0"
+        "symfony/yaml": "^6.1.0",
+        "symplify/easy-coding-standard": "^11.1"
     },
     "scripts": {
         "test": "vendor/bin/phpunit",
