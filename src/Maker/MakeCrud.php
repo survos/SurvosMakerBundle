@@ -159,10 +159,12 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
 
         // otherwise, it uses the ones from symfony, because generator looks for __DIR__
         $templateRoot = __DIR__ . '/../../templates/skeleton/';
-        foreach ([
+        foreach (
+            [
             'Controller' => $controllerClassDetails,
             'CollectionController' => $entityControllerClassDetails,
-        ] as $name => $cClassDetails) {
+            ] as $name => $cClassDetails
+        ) {
             $routePath = Str::asRoutePath($cClassDetails->getRelativeNameWithoutSuffix());
             $routePath = str_replace('/controller', '', $routePath);
             $routePath = str_replace('/collection', '', $routePath);

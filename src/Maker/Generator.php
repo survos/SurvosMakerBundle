@@ -16,7 +16,7 @@ class Generator extends SymfonyGenerator
 
     public function getRootDirectory(): string
     {
-        return parent::getRootDirectory(); 
+        return parent::getRootDirectory();
     }
 
     public function generateBundleClass()

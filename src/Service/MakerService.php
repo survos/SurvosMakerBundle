@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Survos\Bundle\MakerBundle\Service;
 
 use Roave\BetterReflection\BetterReflection;
-
-use phpDocumentor\Reflection\Types\Integer;
-
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 use Roave\BetterReflection\Reflector\DefaultReflector;
@@ -16,20 +13,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Twig\Environment;
+
 use function Symfony\Component\String\u;
 
 class MakerService
 {
-
-    private BetterReflection $betterReflection;
     private array $idMap = [];
 
 //    private PropertyAccessor $propertyAccessor;
     public function __construct(
-        private Environment               $twig,
-        private PropertyAccessorInterface $propertyAccessor)
-    {
-        $this->betterReflection = new BetterReflection();
+        private Environment $twig,
+        private PropertyAccessorInterface $propertyAccessor
+    ) {
 //        $this->propertyAccessor = new PropertyAccessor();
     }
 
@@ -51,8 +46,6 @@ class MakerService
     {
         $existingUses = $this->getClassUses($className);
         return array_diff($classList, $existingUses);
-        dd($existingUses, $classList);
-
     }
 
     /**
@@ -81,11 +74,15 @@ class MakerService
             ->reflectClass($fqcn);
     }
 
-    public function modifyClass(ReflectionClass $reflectionClass, array $traits = [], array $uses = [],
-                                array           $implements = [],
-                                array           $injects = [], string $methodName = null, string $php = null,
-    ): string
-    {
+    public function modifyClass(
+        ReflectionClass $reflectionClass,
+        array $traits = [],
+        array $uses = [],
+        array $implements = [],
+        array $injects = [],
+        string $methodName = null,
+        string $php = null,
+    ): string {
 
 
         $source = $reflectionClass->getLocatedSource()->getSource();
@@ -263,10 +260,8 @@ class MakerService
     private function replaceLines(string $source, int $startLine, int $endLine, string $newContent)
     {
         $lines = explode("\n", $source);
-        array_splice($lines, $startLine-1, $endLine - $startLine+1, explode("\n", $newContent));
+        array_splice($lines, $startLine - 1, $endLine - $startLine + 1, explode("\n", $newContent));
         return join("\n", $lines);
-
-
     }
 
     private function getSourceLines(string $source, $startLine, $endLine): array
@@ -274,26 +269,6 @@ class MakerService
         $sourceLines = explode("\n", $source);
         return array_slice($sourceLines, $startLine - 1, $endLine - $startLine + 1);
     }
-
-    public function insertNewUses(string $source, array $uses): string
-    {
-        // hack, put it at the end, then use the cleanup tool
-        $php = array_map(fn(string $useClass) => "use $useClass;", $uses);
-        $sourceLines = explode("\n", $source);
-
-//        array_splice($sourceLines, $this->getLastUseLineNumber(reflectionClass: $classInfo), 0,
-
-
-        $sourceLines = explode("\n", $source);
-        // insert the uses after the last existing one.
-        // @todo: handle no uses, although somewhat rare
-        array_splice($sourceLines, $this->getLastUseLineNumber(reflectionClass: $classInfo), 0,
-
-        );
-        dd($sourceLines);
-        return join("\n", $sourceLines);
-    }
-
 
     public function insertTraits(string $fqcn, array $traits): string
     {
@@ -320,7 +295,10 @@ class MakerService
         dd($traits, $sourceLines);
         // insert the uses after the last existing one.
         // @todo: handle no uses, although somewhat rare
-        array_splice($sourceLines, $this->getLastUseLineNumber(reflectionClass: $classInfo), 0,
+        array_splice(
+            $sourceLines,
+            $this->getLastUseLineNumber(reflectionClass: $classInfo),
+            0,
             array_map(fn(string $useClass) => "use $useClass;", $uses)
         );
         dd($sourceLines);
@@ -355,7 +333,6 @@ class MakerService
             assert(false, $methodName . ' does not exist in ' . $reflectionClass->getName());
             return null;
         }
-
     }
 
     /**
@@ -380,6 +357,4 @@ class MakerService
         }
         return $lastLineNumber;
     }
-
 }
-

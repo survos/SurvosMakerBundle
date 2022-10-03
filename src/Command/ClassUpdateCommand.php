@@ -21,60 +21,40 @@ use Zenstruck\Console\RunsProcesses;
 #[AsCommand('survos:class:update', 'insert or update a method in an existing class')]
 final class ClassUpdateCommand extends InvokableServiceCommand
 {
-    use ConfigureWithAttributes, RunsCommands, RunsProcesses;
+    use ConfigureWithAttributes;
+    use RunsCommands;
+    use RunsProcesses;
 
     public function __invoke(
-        IO              $io,
+        IO $io,
         MakerService $makerService,
-
         #[Argument(description: 'name of the class (path or FQCN)')]
-        string          $className,
-
+        string $className,
         #[Option(shortcut: 'm', description: 'name of the method (to check for existence)')]
-        ?string          $methodName,
-
+        ?string $methodName,
         #[Option(description: 'overwrite if exists')]
-        ?bool           $force,
-
+        ?bool $force,
         #[Option(description: 'class use statements')]
-        array           $use,
-
+        array $use,
         #[Option(description: 'class traits')]
-        array           $trait,
-
+        array $trait,
         #[Option(description: 'class implements')]
-        array           $implements,
-
+        array $implements,
         #[Option(shortcut: 'di', description: 'inject into __construct/__invoke')]
-        array           $inject,
-
+        array $inject,
         #[Option(name: 'dry-run', shortcut: 'dry', description: 'do not actually modify the class file')]
-        bool            $dryRun,
-
+        bool $dryRun,
         #[Option(description: 'show a diff of the changes')]
-        bool            $diff,
-
-    ): void
-    {
+        bool $diff,
+    ): void {
 
         // this is only valid is are no prompts.
         $input = $io->input();
-
-//        $inputStream = ($input instanceof StreamableInputInterface) ? $input->getStream() : null;
-////        $inputStream = $inputStream ?? STDIN;
-//        $methodPhp = $inputStream ? stream_get_contents($inputStream) : null;
-
         $inputStream = ($input instanceof StreamableInputInterface) ? $input->getStream() : null;
         $inputStream = $inputStream ?? STDIN;
         $methodPhp = stream_get_contents($inputStream);
 
         $reflectionClass = $makerService->getReflectionClass($className);
-
-//        // If nothing from input stream use STDIN instead.
-//        if ($inputSteam = $inputSteam ?? null) {
-//            $methodPhp = stream_get_contents($inputSteam);
-//        }
-
 
         // Ideally, we'd replace the function / function body use AST
         // https://tomasvotruba.com/blog/2017/11/06/how-to-change-php-code-with-abstract-syntax-tree/
@@ -83,7 +63,7 @@ final class ClassUpdateCommand extends InvokableServiceCommand
 
         if ($diff) {
             $differ = new Differ();
-            print $differ->diff($reflectionClass->getLocatedSource()->getSource(), $source);
+            $io->write($differ->diff($reflectionClass->getLocatedSource()->getSource(), $source));
         }
 
         if (!$dryRun) {
@@ -92,5 +72,4 @@ final class ClassUpdateCommand extends InvokableServiceCommand
 
         $io->success(sprintf('Class %s Updated ' . $reflectionClass->getFileName(), $dryRun ? 'not' : ''));
     }
-
 }

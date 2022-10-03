@@ -117,7 +117,6 @@ final class MakeWorkflow extends AbstractMaker implements MakerInterface
 
     public function configureDependencies(DependencyBuilder $dependencies)
     {
-        
     }
 
     public static function getCommandDescription(): string

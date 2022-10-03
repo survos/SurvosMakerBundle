@@ -38,7 +38,7 @@ final class MakeMethod extends AbstractMaker
     public function configureCommand(Command $command, InputConfiguration $inputConfig): void
     {
         $command
-            ->addOption('className', 'c',InputOption::VALUE_OPTIONAL, 'The name of the existing class (e.g. <fg=yellow>App/Service/MathService</> or FQCN)')
+            ->addOption('className', 'c', InputOption::VALUE_OPTIONAL, 'The name of the existing class (e.g. <fg=yellow>App/Service/MathService</> or FQCN)')
             ->addOption('methodName', 'm', InputOption::VALUE_OPTIONAL, 'The name of the method (e.g. <fg=yellow>calculateSum</>)')
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'overwrite this method if it already exists')
             ->addOption('body', 'b', InputOption::VALUE_REQUIRED, 'filename for the PHP body, requires --force')
@@ -52,9 +52,9 @@ final class MakeMethod extends AbstractMaker
         // parse out the input if it has a namespace or filename in the piped-in input, e.g.
             $inputSteam = ($input instanceof StreamableInputInterface) ? $input->getStream() : null;
             $content = $inputSteam ? stream_get_contents($inputSteam) : null;
-            if ($content) {
-                dd($content, file_get_contents($content));
-            }
+        if ($content) {
+            dd($content, file_get_contents($content));
+        }
 
             // if the first line of the body is a filename or a namespace, use it instead of the CLI options
 
@@ -66,15 +66,14 @@ final class MakeMethod extends AbstractMaker
         $reflectionClass = new \ReflectionClass($className = $input->getArgument('className'));
 
         // first, see if the method already exists.
-        if ($reflectionClass->hasMethod($methodName = $input->getArgument('name')))
-        {
+        if ($reflectionClass->hasMethod($methodName = $input->getArgument('name'))) {
             if (!$input->getOption('force')) {
                 $io->error("Method $methodName already exists in $className, use --force to overwrite it");
             } else {
                 $reflectionMethod = $reflectionClass->getMethod($methodName);
                 $source = file_get_contents($reflectionMethod->getDeclaringClass()->getFileName());
                 $sourceLines = explode("\n", $source);
-                $source = join("\n", array_splice($sourceLines, $reflectionMethod->getStartLine()-1, $reflectionMethod->getEndLine() - $reflectionMethod->getStartLine()));
+                $source = join("\n", array_splice($sourceLines, $reflectionMethod->getStartLine() - 1, $reflectionMethod->getEndLine() - $reflectionMethod->getStartLine()));
                 dd($source, $content);
             }
         }

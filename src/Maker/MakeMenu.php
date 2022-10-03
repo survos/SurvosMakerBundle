@@ -69,8 +69,6 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
             AbstractExtension::class,
             'twig'
         );
-
-
     }
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator)
@@ -113,9 +111,6 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
         $io->text([
             'Next: Open your new menu class and start customizing it.',
         ]);
-
-
-
     }
 
     public function __call(string $name, array $arguments)

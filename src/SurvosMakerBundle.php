@@ -35,6 +35,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
@@ -69,7 +70,6 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
         $container->get(MakeWorkflowListener::class)
             ->setArgument('registry', new Reference('workflow.registry'))
         ;
-
     }
 
 

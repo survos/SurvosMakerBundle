@@ -34,6 +34,7 @@ use Zenstruck\Console\InvokableServiceCommand;
 use Zenstruck\Console\IO;
 use Zenstruck\Console\RunsCommands;
 use Zenstruck\Console\RunsProcesses;
+
 use function Symfony\Component\String\u;
 
 final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
@@ -66,16 +67,16 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
             ->addOption('description', 'desc', InputOption::VALUE_OPTIONAL, sprintf('A brief description of what the command does'))
             ->addOption('force', null, InputOption::VALUE_NONE, 'Overwrite if it already exists.')
             ->addOption('prefix', null, InputOption::VALUE_OPTIONAL, 'Prefix the command name, but not the generated class, e.g. survos:make:user, app:do:something')
-            ->addOption('inject', null, InputOption::VALUE_IS_ARRAY|InputOption::VALUE_REQUIRED, 'Interfaces to inject, e.g. EntityManagerInterface', [])
-            ->addOption('option', null, InputOption::VALUE_IS_ARRAY|InputOption::VALUE_REQUIRED, 'string arguments')
+            ->addOption('inject', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Interfaces to inject, e.g. EntityManagerInterface', [])
+            ->addOption('option', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'string arguments')
 
-            ->addOption('arg', null, InputOption::VALUE_IS_ARRAY|InputOption::VALUE_REQUIRED, 'string arguments')
-            ->addOption('int-arg', null, InputOption::VALUE_IS_ARRAY|InputOption::VALUE_REQUIRED, 'int arguments')
-            ->addOption('bool-arg', null, InputOption::VALUE_IS_ARRAY|InputOption::VALUE_REQUIRED, 'bool arguments')
+            ->addOption('arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'string arguments')
+            ->addOption('int-arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'int arguments')
+            ->addOption('bool-arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'bool arguments')
 
-            ->addOption('oarg', null, InputOption::VALUE_IS_ARRAY|InputOption::VALUE_REQUIRED, 'optional string arguments')
-            ->addOption('oint-arg', null, InputOption::VALUE_IS_ARRAY|InputOption::VALUE_REQUIRED, 'optional int arguments')
-            ->addOption('obool-arg', null, InputOption::VALUE_IS_ARRAY|InputOption::VALUE_REQUIRED, 'optional bool arguments')
+            ->addOption('oarg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'optional string arguments')
+            ->addOption('oint-arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'optional int arguments')
+            ->addOption('obool-arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'optional bool arguments')
         ;
     }
 
@@ -98,8 +99,6 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
             RunsCommands::class,
             RunsProcesses::class
         );
-
-
     }
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator)
@@ -177,16 +176,14 @@ name[]: array $name
                 }
 
                 if ($default) {
-
                 }
                 $options[$argName] = [
                     'default' => $default,
                     'phpType' => $argType,
                     'shortCut' => $shortcut,
                     'description' => $description
-            ];
+                ];
             } else {
-
                 if (str_starts_with($argType, '?')) {
                     $hasOptional = true;
                     $optionalArgument = $argName;
@@ -244,9 +241,6 @@ name[]: array $name
         $io->text([
             sprintf('Next: Open %s and customize it', $generatedFilename)
         ]);
-
-
-
     }
 
     public function __call(string $name, array $arguments)

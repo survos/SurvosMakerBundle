@@ -27,7 +27,7 @@ final class MakeWorkflowListener extends AbstractMaker implements MakerInterface
     public function __construct(
         private DoctrineHelper $doctrineHelper,
         private Generator $generator,
-        private ?Registry $registry=null
+        private ?Registry $registry = null
     ) {
     }
 
@@ -54,7 +54,6 @@ final class MakeWorkflowListener extends AbstractMaker implements MakerInterface
 
     public function configureDependencies(DependencyBuilder $dependencies)
     {
-
     }
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator)
