@@ -7,12 +7,14 @@ jobs:
     name: "Coding Standards"
     runs-on: "ubuntu-20.04"
 
+
     strategy:
       matrix:
         php-version:
           - "8.1"
 
     steps:
+
       - name: "Checkout"
         uses: "actions/checkout@v2"
         with:
@@ -35,14 +37,15 @@ jobs:
       - name: "Install dependencies with Composer"
         run: "composer update --no-interaction --no-progress --prefer-dist --prefer-stable"
 
-      - name: "Install git-phpcs"
-        run: "wget https://github.com/diff-sniffer/git/releases/download/0.3.2/git-phpcs.phar"
-
+#      - name: "Install git-phpcs"
+#        run: "wget https://github.com/diff-sniffer/git/releases/download/0.3.2/git-phpcs.phar"
+#
       - name: "Fetch head branch"
         run: "git remote set-branches --add origin $GITHUB_BASE_REF && git fetch origin $GITHUB_BASE_REF"
 
-      - name: Easy Coding Standard Action
-        uses: zingimmick/ecs-action@0.0.6
-
 #      - name: "Run git-phpcs"
 #        run: "php git-phpcs.phar origin/$GITHUB_BASE_REF...$GITHUB_SHA --report=checkstyle | cs2pr"
+
+      - name: Easy Coding Standard Action
+        uses: zingimmick/ecs-action@0.0.4
+
