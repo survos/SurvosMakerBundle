@@ -136,6 +136,7 @@ name[]: array $name
 
         // walk through the different command line arguments/options, by type, to pass to the template
         $args = [];
+        $options = [];
 
         $commandArgs = $input->getArgument('args');
         dump($commandArgs);

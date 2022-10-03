@@ -51,6 +51,8 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
         $command
             ->addArgument('menuClassName', InputArgument::OPTIONAL, 'Menu Class Name', '')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Overwrite if it already exists.')
+            ->addOption('fake', null, InputOption::VALUE_NONE, 'Create fake links')
+            ->addOption('mode', null, InputOption::VALUE_REQUIRED, 'empty (no items), fake (a few example items)', 'fake')
         ;
     }
 
@@ -97,6 +99,7 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
             __DIR__ . '/../../templates/skeleton/Menu/MenuEventListener.tpl.twig',
             $v = [
                 'entity_full_class_name' => $classNameDetails->getFullName(),
+                'fake' => $input->getOption('fake'),
                 'use_statements' => $useStatements,
             ]
         );
