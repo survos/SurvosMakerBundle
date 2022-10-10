@@ -69,22 +69,22 @@
         }
     },
     "conflict": {
-        "survos/html-prettify-bundle": "<1.2.15",
-        "survos/barcode-bundle": "<1.2.15",
-        "survos/api-grid-bundle": "<1.2.15",
+        "survos/html-prettify-bundle": "<1.2.16",
+        "survos/barcode-bundle": "<1.2.16",
+        "survos/api-grid-bundle": "<1.2.16",
         "survos/second-package": "<1.2.7",
-        "survos/bootstrap-bundle": "<1.2.15",
-        "survos/inspection-bundle": "<1.2.15",
-        "survos/faker-bundle": "<1.2.15",
-        "survos/doc-bundle": "<1.2.15",
-        "survos/grid-bundle": "<1.2.15",
-        "survos/core-bundle": "<1.2.15",
-        "survos/tree-bundle": "<1.2.15",
+        "survos/bootstrap-bundle": "<1.2.16",
+        "survos/inspection-bundle": "<1.2.16",
+        "survos/faker-bundle": "<1.2.16",
+        "survos/doc-bundle": "<1.2.16",
+        "survos/grid-bundle": "<1.2.16",
+        "survos/core-bundle": "<1.2.16",
+        "survos/tree-bundle": "<1.2.16",
         "survos/first-package": "<1.2.7",
-        "survos/auth-bundle": "<1.2.15",
-        "survos/workflow-helper-bundle": "<1.2.15",
-        "survos/crawler-bundle": "<1.2.15",
-        "survos/location-bundle": "<1.2.15"
+        "survos/auth-bundle": "<1.2.16",
+        "survos/workflow-helper-bundle": "<1.2.16",
+        "survos/crawler-bundle": "<1.2.16",
+        "survos/location-bundle": "<1.2.16"
     },
     "suggest": {
         "symfony/workflow": "To generate a workflow from PHP constants"
