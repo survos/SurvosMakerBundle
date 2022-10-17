@@ -6,6 +6,7 @@
 
 namespace Survos\Bundle\MakerBundle;
 
+use Doctrine\Migrations\Configuration\Migration\JsonFile;
 use Survos\Bundle\MakerBundle\Command\ClassUpdateCommand;
 use Survos\Bundle\MakerBundle\DependencyInjection\Compiler\SurvosMakerCompilerPass;
 use Survos\Bundle\MakerBundle\Maker\MakeBundle;
@@ -19,14 +20,10 @@ use Survos\Bundle\MakerBundle\Maker\MakeService;
 use Survos\Bundle\MakerBundle\Maker\MakeWorkflow;
 use Survos\Bundle\MakerBundle\Maker\MakeWorkflowListener;
 use Survos\Bundle\MakerBundle\Renderer\ParamConverterRenderer;
-//use Symfony\Bundle\MakerBundle\DependencyInjection\CompilerPass\DoctrineAttributesCheckPass;
 use Survos\Bundle\MakerBundle\Service\MakerService;
-use Survos\DocBundle\Command\SurvosBuildDocsCommand;
 use Symfony\Bundle\MakerBundle\DependencyInjection\CompilerPass\MakeCommandRegistrationPass;
 use Symfony\Bundle\MakerBundle\DependencyInjection\CompilerPass\RemoveMissingParametersPass;
 use Symfony\Bundle\MakerBundle\DependencyInjection\CompilerPass\SetDoctrineAnnotatedPrefixesPass;
-//use Symfony\Bundle\MakerBundle\DependencyInjection\CompilerPass\SetDoctrineManagerRegistryClassPass;
-use Symfony\Bundle\MakerBundle\Generator;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -36,6 +33,8 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+use Symplify\ComposerJsonManipulator\ComposerJsonFactory;
+use Symplify\ComposerJsonManipulator\FileSystem\JsonFileManager;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
@@ -82,11 +81,11 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
         }
         $builder->autowire(MakeBundle::class)
             ->addTag(MakeCommandRegistrationPass::MAKER_TAG) // 'maker.command'
-            ->addArgument(new Reference('maker.generator'))
             ->addArgument($config['template_path'])
-            ->addArgument($config['vendor'])
-            ->addArgument($config['relative_bundle_path'])
+            ->addArgument($config['relative_bundle_path']) // /packages
             ->addArgument($config['bundle_name'])
+            ->setArgument('$jsonFileManager', new Reference(JsonFileManager::class))
+            ->setArgument('$composerJsonFactory', new Reference(ComposerJsonFactory::class))
         ;
 
         // we can likely combine these, or even move it to crud
@@ -152,7 +151,7 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
             ->scalarNode('template_path')->defaultValue(__DIR__ . '/../templates/skeleton/')->end()
             ->scalarNode('vendor')->defaultValue('Survos')->end()
             ->scalarNode('bundle_name')->defaultValue('FooBundle')->end()
-            ->scalarNode('relative_bundle_path')->defaultValue('lib/temp/src')->end()
+            ->scalarNode('relative_bundle_path')->defaultValue('packages')->end()
             ->end();
     }
 

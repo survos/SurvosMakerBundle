@@ -28,6 +28,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -35,6 +36,8 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\String\Inflector\EnglishInflector;
+use Symplify\ComposerJsonManipulator\ComposerJsonFactory;
+use Symplify\ComposerJsonManipulator\FileSystem\JsonFileManager;
 use Twig\Extension\AbstractExtension;
 
 use function Symfony\Component\String\u;
@@ -46,11 +49,11 @@ use function Symfony\Component\String\u;
 class MakeBundle extends AbstractMaker implements MakerInterface
 {
     public function __construct(
-        private Generator $generator,
         private string $templatePath,
-        private string $vendor,
         private string $bundlePath,
         private string $bundleName,
+        private JsonFileManager $jsonFileManager,
+        private ComposerJsonFactory $composerJsonFactory
     ) {
     }
 
@@ -61,7 +64,7 @@ class MakeBundle extends AbstractMaker implements MakerInterface
 
     public static function getCommandDescription(): string
     {
-        return "Makes a bundle class";
+        return "Create a simple Symfony bundle";
     }
 
     public function configureCommand(Command $command, InputConfiguration $inputConfig)
@@ -98,13 +101,69 @@ class MakeBundle extends AbstractMaker implements MakerInterface
         $name = $input->getArgument('name');
 
         // if the namespace doesn't exist, die and prompt user to reload the map
-        $json = json_decode(file_get_contents("composer.json"));  // object, not array (no second arg)
+//        $json = json_decode(file_get_contents($composerJsonFilepath = "composer.json"));  // object, not array (no second arg)
         $bundleNamespace = "$vendor\\$name\\";
-        $psr = $json->autoload->{'psr-4'};
-        if (!property_exists($psr, $bundleNamespace)) {
-            // @todo: use jq from cli instead
-            $json->{"autoload"}->{"psr-4"}->{$bundleNamespace} = $this->bundlePath;  // object properties, not array indexes
-            file_put_contents("composer.json", $newjson = json_encode($json, JSON_PRETTY_PRINT && JSON_UNESCAPED_SLASHES && JSON_UNESCAPED_UNICODE));
+        // ↓ instance of \Symplify\ComposerJsonManipulator\ValueObject\ComposerJson
+        $composerJson = $this->composerJsonFactory->createFromFilePath(getcwd() . '/composer.json');
+        $autoLoad = $composerJson->getAutoload();
+//        dump($composerJson->getPsr4AndClassmapDirectories(), $composerJson->getAutoload()['psr-4']);
+//        dd($composerJson->getFileInfo()->getRealPath());
+        // ...
+        $snake = u($name)->snake()->replace('_', '-');
+//            $snakeName = sprintf("%s/%s", u($vendor)->lower(), $snake);
+        $bundlePath = $this->bundlePath . '/' . $snake . '/src/';
+        $snakeName = strtolower($vendor) . '/' . $snake;
+
+        /*
+        *      // Full class names can also be passed. Imagine the user has an autoload
+        *      // rule where Cool\Stuff lives in a "lib/" directory
+        *      // Cool\Stuff\BalloonController
+        *      $gen->createClassNameDetails('Cool\\Stuff\\Balloon', 'Controller', 'Controller');
+        */
+        $details = $generator->createClassNameDetails('Cool\\Stuff\\Balloon', 'Controller', 'Controller');
+        dd($details->getFullName());
+
+        if (0)
+        if (! array_key_exists($bundleNamespace, $autoLoad['psr-4'])) {
+
+//            "Survos\\ApiGrid\\": "packages/api-grid-bundle/src/",
+//            $json->{"autoload"}->{"psr-4"}->{$bundleNamespace} = $bundlePath;
+//            $json["autoload"]["psr-4"][$bundleNamespace] = $bundlePath;
+
+            $autoLoad['psr-4'][$bundleNamespace] = $bundlePath;
+            $composerJson->setAutoload($autoLoad);
+
+            // @todo: use jq from cli instead.  https://github.com/symplify/composer-json-manipulator
+            dump($bundleNamespace, $this->bundlePath, $bundlePath);
+//            dd($autoLoad);
+
+//            $io->write("Add the following to composer.json, then run composer dump-autoload to continue");
+//            $io->write(<<< EOL
+//        "psr-4": {
+//            "$bundleNamespace\\": "$this->bundlePath",
+//            "Survos\\ApiGrid\\": "packages/api-grid-bundle/src/",
+//
+//EOL
+//);
+
+//            $json = json_decode(json_encode($json), true);
+//            $composerJson = $this->composerJsonFactory->createFromArray((array)$json);
+
+            $this->jsonFileManager->printComposerJsonToFilePath($composerJson, $composerJsonFilepath = $composerJson->getFileInfo()->getRealPath());
+            dd($composerJsonFilepath);
+
+            $message = sprintf(
+                '"%s" was updated to use %s, run composer dump to reload the class map ',
+                $composerJsonFilepath,
+                $this->bundleName
+            );
+            $io->note($message);
+
+//
+//            dd($composerJson->getAbsoluteAutoloadDirectories(), $composerJson->getPsr4AndClassmapDirectories());
+//
+//            dd($composerJson->getPsr4AndClassmapDirectories(), $composerJson->getAllClassmaps());
+//            file_put_contents("composer.json", $newjson = json_encode($json, JSON_PRETTY_PRINT && JSON_UNESCAPED_SLASHES && JSON_UNESCAPED_UNICODE));
             $io->write("Please run composer dump-autoload to create a bundle structure for $bundleNamespace\nTHEN add services, then run ");
             return;
         }
@@ -112,10 +171,16 @@ class MakeBundle extends AbstractMaker implements MakerInterface
         // after generation, remove this line and tell user to load bundle from new directory
 
         $extensionClassNameDetails = $generator->createClassNameDetails(
-            $input->getArgument('name'),
-            '\\',
+            $nameWithVendor = $vendor . '\\' . $name,
+'',
+//            $name,
+//            '\\' . $vendor,
+//            '',
             'Bundle'
         );
+//        assert($extensionClassNameDetails->getRelativeName())
+        dump($extensionClassNameDetails->getFullName(), $vendor, $name, $nameWithVendor, __LINE__, __FILE__);
+//        assert(false);
 
         $useStatements = new UseStatementGenerator([
             DefinitionConfigurator::class,
@@ -126,34 +191,38 @@ class MakeBundle extends AbstractMaker implements MakerInterface
         ]);
 
         $classPath = $generator->generateClass(
-            $extensionClassNameDetails->getFullName(),
+            $nameWithVendor, //
+//             $extensionClassNameDetails->getFullName(),
             $this->templatePath . 'bundle/src/Bundle.tpl.php',
             [
                 'use_statements' => $useStatements,
             ]
         );
-        $classDir = pathinfo($classPath, PATHINFO_DIRNAME);
-        // composer belongs above src
-        $snake = u($this->bundleName)->snake()->replace('_', '-');
 
+        // hack, because something is wrong with the classmap lookup
+        $classDir = str_replace('/.php', '', pathinfo($classPath, PATHINFO_DIRNAME));
+        // composer belongs above src
+//        dd($classDir, $extensionClassNameDetails->getFullName(), $vendor, $name, $nameWithVendor, __LINE__);
+//        dd($snakeName, $snake, __LINE__, $classDir, $extensionClassNameDetails);
         $generator->generateFile(
             $classDir . '/../composer.json',
             $this->templatePath . 'bundle/composer.tpl.json',
             $x = [
                 'vendor' => $vendor,
                 'bundleName' => $this->bundleName,
-                'name' => sprintf("%s/%s", u($vendor)->lower(), $snake),
+                'name' => $snakeName
             ]
         );
 
-        //        dd($x, $classDir, $generator->getRootDirectory(), $generator->getRootNamespace(), __FILE__, __LINE__);
+//                dd($x, $classDir, $generator->getRootDirectory(), $generator->getRootNamespace(), __FILE__, __LINE__);
 
         $generator->writeChanges();
 
         $this->writeSuccessMessage($io);
 
         $io->text([
-            'Next: Remove psr-4 autoload and add to bundle path to composer',
+            'Develop the bundle here, but to use in another application use monorepo-split',
+            'OR Remove psr-4 autoload and add to bundle path to composer, or composer req to get the recipes',
             'Find the documentation at <fg=yellow>https://github.com/survos/maker-bundle/doc/maker-bundle.md</>',
         ]);
     }
