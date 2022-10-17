@@ -79,13 +79,19 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
                 ->addArgument($config['template_path'])
             ;
         }
+
+        $builder->register( JsonFileManager::class, $serviceId = 'json_file_manager')
+            ->setAutowired(true)
+            ->setAutoconfigured(true);
+
         $builder->autowire(MakeBundle::class)
             ->addTag(MakeCommandRegistrationPass::MAKER_TAG) // 'maker.command'
             ->addArgument($config['template_path'])
             ->addArgument($config['relative_bundle_path']) // /packages
             ->addArgument($config['bundle_name'])
-            ->setArgument('$jsonFileManager', new Reference(JsonFileManager::class))
-            ->setArgument('$composerJsonFactory', new Reference(ComposerJsonFactory::class))
+//            ->setArgument('$jsonFileManager', $serviceId)
+//            ->setArgument('$jsonFileManager', new Reference(JsonFileManager::class))
+//            ->setArgument('$composerJsonFactory', new Reference(ComposerJsonFactory::class))
         ;
 
         // we can likely combine these, or even move it to crud

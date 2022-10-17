@@ -49,12 +49,14 @@ use function Symfony\Component\String\u;
 class MakeBundle extends AbstractMaker implements MakerInterface
 {
     public function __construct(
-        private string $templatePath,
-        private string $bundlePath,
-        private string $bundleName,
-        private JsonFileManager $jsonFileManager,
-        private ComposerJsonFactory $composerJsonFactory
-    ) {
+        private string              $templatePath,
+        private string              $bundlePath,
+        private string              $bundleName,
+//        private JsonFileManager     $jsonFileManager,
+//        private ComposerJsonFactory $composerJsonFactory
+    )
+    {
+
     }
 
     public static function getCommandName(): string
@@ -78,8 +80,7 @@ class MakeBundle extends AbstractMaker implements MakerInterface
 //            ->addArgument('directory', InputArgument::OPTIONAL, 'The directory (relative to the project root) where the bundle will be created', '..')
 //            ->addArgument('bundle-class', InputArgument::OPTIONAL, sprintf('The class name of the bundle to create (e.g. <fg=yellow>%sBundle</>)', Str::asClassName(Str::getRandomTerm())))
             ->addOption('twig', null, InputOption::VALUE_OPTIONAL, "Create and register a Twig Extension", 'TwigExtension')
-            ->setHelp(file_get_contents(__DIR__ . '/../../help/MakeBundle.txt'))
-        ;
+            ->setHelp(file_get_contents(__DIR__ . '/../../help/MakeBundle.txt'));
 
         $inputConfig->setArgumentAsNonInteractive('entity-class');
     }
@@ -93,6 +94,16 @@ class MakeBundle extends AbstractMaker implements MakerInterface
 
             $input->setArgument('name', $value);
         }
+    }
+
+    public function example()
+    {
+        $composerJson = $this->composerJsonFactory->createFromFilePath(getcwd() . '/composer.json');
+        $autoLoad = $composerJson->getAutoload();
+        $autoLoad['psr-4']['Cool\\Stuff\\'] = './lib/';
+        $composerJson->setAutoload($autoLoad);
+        $this->jsonFileManager->printComposerJsonToFilePath($composerJson, $composerJsonFilepath = $composerJson->getFileInfo()->getRealPath());
+        echo $composerJsonFilepath . ' has been updated';
     }
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
