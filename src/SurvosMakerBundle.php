@@ -35,6 +35,10 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 use Symplify\ComposerJsonManipulator\ComposerJsonFactory;
 use Symplify\ComposerJsonManipulator\FileSystem\JsonFileManager;
+use Symplify\ComposerJsonManipulator\Json\JsonCleaner;
+use Symplify\ComposerJsonManipulator\Json\JsonInliner;
+use Symplify\PackageBuilder\Parameter\ParameterProvider;
+use Symplify\SmartFileSystem\SmartFileSystem;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
@@ -79,20 +83,30 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
                 ->addArgument($config['template_path'])
             ;
         }
-
-        $builder->register( JsonFileManager::class, $serviceId = 'json_file_manager')
+        $builder->register(ParameterProvider::class)
+            ->setArgument('$container', new Reference('service_container'))
+            ->setPublic(true)
             ->setAutowired(true)
             ->setAutoconfigured(true);
+
+
+        foreach ([SmartFileSystem::class, JsonCleaner::class, JsonInliner::class, JsonFileManager::class, ComposerJsonFactory::class] as $symplifyClass) {
+            $builder->register($symplifyClass)
+                ->setPublic(true)
+                ->setAutowired(true)
+                ->setAutoconfigured(true);
+        }
+
 
         $builder->autowire(MakeBundle::class)
             ->addTag(MakeCommandRegistrationPass::MAKER_TAG) // 'maker.command'
             ->addArgument($config['template_path'])
             ->addArgument($config['relative_bundle_path']) // /packages
             ->addArgument($config['bundle_name'])
-//            ->setArgument('$jsonFileManager', $serviceId)
-//            ->setArgument('$jsonFileManager', new Reference(JsonFileManager::class))
-//            ->setArgument('$composerJsonFactory', new Reference(ComposerJsonFactory::class))
+            ->setArgument('$jsonFileManager', new Reference(JsonFileManager::class))
+            ->setArgument('$composerJsonFactory', new Reference(ComposerJsonFactory::class))
         ;
+//            ->setArgument('$jsonFileManager', $serviceId)
 
         // we can likely combine these, or even move it to crud
         $builder->register('maker.param_converter_renderer', ParamConverterRenderer::class)

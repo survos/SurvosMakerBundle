@@ -52,8 +52,8 @@ class MakeBundle extends AbstractMaker implements MakerInterface
         private string              $templatePath,
         private string              $bundlePath,
         private string              $bundleName,
-//        private JsonFileManager     $jsonFileManager,
-//        private ComposerJsonFactory $composerJsonFactory
+        private JsonFileManager     $jsonFileManager,
+        private ComposerJsonFactory $composerJsonFactory
     )
     {
 
@@ -131,10 +131,9 @@ class MakeBundle extends AbstractMaker implements MakerInterface
         *      // Cool\Stuff\BalloonController
         *      $gen->createClassNameDetails('Cool\\Stuff\\Balloon', 'Controller', 'Controller');
         */
-        $details = $generator->createClassNameDetails('Cool\\Stuff\\Balloon', 'Controller', 'Controller');
-        dd($details->getFullName());
+//        $details = $generator->createClassNameDetails('Cool\\Stuff\\Balloon', 'Controller', 'Controller');
+//        dd($details->getFullName());
 
-        if (0)
         if (! array_key_exists($bundleNamespace, $autoLoad['psr-4'])) {
 
 //            "Survos\\ApiGrid\\": "packages/api-grid-bundle/src/",
@@ -161,7 +160,6 @@ class MakeBundle extends AbstractMaker implements MakerInterface
 //            $composerJson = $this->composerJsonFactory->createFromArray((array)$json);
 
             $this->jsonFileManager->printComposerJsonToFilePath($composerJson, $composerJsonFilepath = $composerJson->getFileInfo()->getRealPath());
-            dd($composerJsonFilepath);
 
             $message = sprintf(
                 '"%s" was updated to use %s, run composer dump to reload the class map ',
@@ -190,7 +188,7 @@ class MakeBundle extends AbstractMaker implements MakerInterface
             'Bundle'
         );
 //        assert($extensionClassNameDetails->getRelativeName())
-        dump($extensionClassNameDetails->getFullName(), $vendor, $name, $nameWithVendor, __LINE__, __FILE__);
+//        dump($extensionClassNameDetails->getFullName(), $vendor, $name, $nameWithVendor, __LINE__, __FILE__);
 //        assert(false);
 
         $useStatements = new UseStatementGenerator([
@@ -202,7 +200,7 @@ class MakeBundle extends AbstractMaker implements MakerInterface
         ]);
 
         $classPath = $generator->generateClass(
-            $nameWithVendor, //
+            $nameWithVendor . '\\', //
 //             $extensionClassNameDetails->getFullName(),
             $this->templatePath . 'bundle/src/Bundle.tpl.php',
             [
@@ -212,6 +210,10 @@ class MakeBundle extends AbstractMaker implements MakerInterface
 
         // hack, because something is wrong with the classmap lookup
         $classDir = str_replace('/.php', '', pathinfo($classPath, PATHINFO_DIRNAME));
+        $actualFilename = str_replace('.php', str_replace('\\', '', $nameWithVendor) . '.php', $classPath);
+
+        dump($classPath, $classDir,  $nameWithVendor, $classDir, $extensionClassNameDetails->getFullName(), $actualFilename);
+
         // composer belongs above src
 //        dd($classDir, $extensionClassNameDetails->getFullName(), $vendor, $name, $nameWithVendor, __LINE__);
 //        dd($snakeName, $snake, __LINE__, $classDir, $extensionClassNameDetails);
@@ -225,13 +227,18 @@ class MakeBundle extends AbstractMaker implements MakerInterface
             ]
         );
 
+
 //                dd($x, $classDir, $generator->getRootDirectory(), $generator->getRootNamespace(), __FILE__, __LINE__);
 
         $generator->writeChanges();
 
+        // hack from the pit of hell
+        rename($classPath, $actualFilename);
+
         $this->writeSuccessMessage($io);
 
         $io->text([
+            "modify $actualFilename to inject dependencies",
             'Develop the bundle here, but to use in another application use monorepo-split',
             'OR Remove psr-4 autoload and add to bundle path to composer, or composer req to get the recipes',
             'Find the documentation at <fg=yellow>https://github.com/survos/maker-bundle/doc/maker-bundle.md</>',

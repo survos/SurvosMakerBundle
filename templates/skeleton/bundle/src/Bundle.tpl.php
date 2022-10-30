@@ -9,7 +9,7 @@ class <?= $class_name ?> extends AbstractBundle
 {
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        $builder->setParameter('survos_workflow.direction', $config['direction']);
+        // $builder->setParameter('survos_workflow.direction', $config['direction']);
 
         // twig classes
 
@@ -22,8 +22,6 @@ $definition->setArgument('$widthFactor', $config['widthFactor']);
 $definition->setArgument('$height', $config['height']);
 $definition->setArgument('$foregroundColor', $config['foregroundColor']);
 */
-
-<!--        $container->import('../config/services.xml');-->
 
     }
 

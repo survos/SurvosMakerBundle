@@ -11,6 +11,7 @@
         "symfony/console": "^6.1.0",
         "symfony/options-resolver": "^6.1.0",
         "symfony/string": "^6.1.0",
+        "symfony/workflow": "^6.1",
         "symplify/composer-json-manipulator": "^11.1",
         "twig/twig": "^3.4",
         "zenstruck/console-extra": "^1.1"
