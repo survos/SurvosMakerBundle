@@ -32,7 +32,7 @@ use function Symfony\Component\String\u;
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
  * @author Ryan Weaver <weaverryan@gmail.com>
  */
-final class MakeWorkflow extends AbstractMaker implements MakerInterface
+final class MakeWorkflowAttributes extends AbstractMaker implements MakerInterface
 {
     public function __construct(
         private DoctrineHelper $entityHelper,
