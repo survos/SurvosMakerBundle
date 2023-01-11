@@ -301,10 +301,10 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
             'security-csrf'
         );
 
-        $dependencies->addClassDependency(
-            ParamConverter::class,
-            'annotations'
-        );
+//        $dependencies->addClassDependency(
+//            ParamConverter::class,
+//            'annotations'
+//        );
     }
 
     private function pluralize(string $word): string

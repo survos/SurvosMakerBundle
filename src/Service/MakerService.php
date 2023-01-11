@@ -18,8 +18,6 @@ use function Symfony\Component\String\u;
 
 class MakerService
 {
-    private array $idMap = [];
-
     //    private PropertyAccessor $propertyAccessor;
     public function __construct(
         private Environment $twig,
@@ -28,12 +26,6 @@ class MakerService
         //        $this->propertyAccessor = new PropertyAccessor();
     }
 
-    public function setIdMap(array $idMap)
-    {
-        $this->idMap = $idMap;
-        assert($idMap['doctrine.orm.default_entity_manager'], "no value for doctrine.orm.default_entity_manager");
-        dd($idMap);
-    }
 
     /**
      * Get a list of classes that are not in the use section of the class
