@@ -66,7 +66,7 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-main": "1.3-dev"
+            "dev-main": "1.4-dev"
         },
         "symfony": {
             "require": "^6.1.0",
@@ -74,27 +74,27 @@
         }
     },
     "conflict": {
-        "survos/html-prettify-bundle": "<1.2.56",
-        "survos/barcode-bundle": "<1.2.56",
-        "survos/api-grid-bundle": "<1.2.56",
-        "survos/bootstrap-bundle": "<1.2.56",
-        "survos/inspection-bundle": "<1.2.56",
-        "survos/faker-bundle": "<1.2.56",
-        "survos/doc-bundle": "<1.2.56",
-        "survos/grid-bundle": "<1.2.56",
-        "survos/core-bundle": "<1.2.56",
-        "survos/tree-bundle": "<1.2.56",
-        "survos/auth-bundle": "<1.2.56",
-        "survos/workflow-helper-bundle": "<1.2.56",
-        "survos/crawler-bundle": "<1.2.56",
-        "survos/location-bundle": "<1.2.56",
-        "survos/command-bundle": "<1.2.56",
-        "survos/ruler-bundle": "<1.2.56",
-        "survos/providence-bundle": "<1.2.56",
-        "survos/stripe-product": "<1.2.56",
-        "survos/wiki-bundle": "<1.2.56",
-        "survos/import-bridge": "<1.2.56",
-        "survos/grid-group-bundle": "<1.2.56"
+        "survos/html-prettify-bundle": "<1.2.57",
+        "survos/barcode-bundle": "<1.2.57",
+        "survos/api-grid-bundle": "<1.2.57",
+        "survos/bootstrap-bundle": "<1.2.57",
+        "survos/inspection-bundle": "<1.2.57",
+        "survos/faker-bundle": "<1.2.57",
+        "survos/doc-bundle": "<1.2.57",
+        "survos/grid-bundle": "<1.2.57",
+        "survos/core-bundle": "<1.2.57",
+        "survos/tree-bundle": "<1.2.57",
+        "survos/auth-bundle": "<1.2.57",
+        "survos/workflow-helper-bundle": "<1.2.57",
+        "survos/crawler-bundle": "<1.2.57",
+        "survos/location-bundle": "<1.2.57",
+        "survos/command-bundle": "<1.2.57",
+        "survos/ruler-bundle": "<1.2.57",
+        "survos/providence-bundle": "<1.2.57",
+        "survos/stripe-product": "<1.2.57",
+        "survos/wiki-bundle": "<1.2.57",
+        "survos/import-bridge": "<1.2.57",
+        "survos/grid-group-bundle": "<1.2.57"
     },
     "suggest": {
         "symfony/workflow": "To generate a workflow from PHP constants"

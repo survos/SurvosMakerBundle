@@ -55,14 +55,12 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
         ;
     }
 
-    public function interact(InputInterface $input, ConsoleStyle $io, Command $command)
+    public function interact(InputInterface $input, ConsoleStyle $io, Command $command): void
     {
-        $io->success('Add compoent("menu") to a twig file to render.');
-
-        return Command::SUCCESS;
+        $io->success('Add component("menu") to a twig file to render.');
     }
 
-    public function configureDependencies(DependencyBuilder $dependencies)
+    public function configureDependencies(DependencyBuilder $dependencies): void
     {
         $dependencies->addClassDependency(
             AbstractExtension::class,

@@ -40,6 +40,7 @@ use Symplify\ComposerJsonManipulator\Json\JsonInliner;
 use Symplify\PackageBuilder\Parameter\ParameterProvider;
 use Symplify\SmartFileSystem\SmartFileSystem;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
 class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
 {
@@ -133,6 +134,7 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
             ->addTag('maker.command')
             ->addArgument(new Reference('maker.doctrine_helper'))
             ->addArgument(new Reference('maker.generator'))
+             ->setArgument('$workflows', tagged_iterator('workflow'));
         ;
 
         $builder->autowire(ClassUpdateCommand::class)

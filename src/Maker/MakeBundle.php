@@ -85,7 +85,7 @@ class MakeBundle extends AbstractMaker implements MakerInterface
         $inputConfig->setArgumentAsNonInteractive('entity-class');
     }
 
-    public function interact(InputInterface $input, ConsoleStyle $io, Command $command)
+    public function interact(InputInterface $input, ConsoleStyle $io, Command $command):  void
     {
         if (null === $input->getArgument('name')) {
             $argument = $command->getDefinition()->getArgument('name');
