@@ -70,9 +70,9 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
         }
         //        $reference = new Reference('workflow.registry');
 
-        $container->get(MakeWorkflowListener::class)
-            ->setArgument('registry', new Reference('workflow.registry'))
-        ;
+//        $container->get(MakeWorkflowListener::class)
+//            ->setArgument('registry', new Reference('workflow.registry'))
+//        ;
     }
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
