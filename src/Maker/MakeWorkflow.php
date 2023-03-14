@@ -56,7 +56,7 @@ final class MakeWorkflow extends AbstractMaker implements MakerInterface
         $inputConf->setArgumentAsNonInteractive('bound-class');
     }
 
-    public function interact(InputInterface $input, ConsoleStyle $io, Command $command)
+    public function interact(InputInterface $input, ConsoleStyle $io, Command $command): void
     {
         if (null === $input->getArgument('bound-class')) {
             $argument = $command->getDefinition()->getArgument('bound-class');
