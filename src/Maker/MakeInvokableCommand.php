@@ -59,14 +59,14 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
     {
         $command
             ->addArgument('name', InputArgument::REQUIRED, sprintf('Choose a command name (e.g. <fg=yellow>app:%s</>)', Str::asCommand(Str::getRandomTerm())))
-            ->addArgument('args', InputArgument::IS_ARRAY | InputArgument::OPTIONAL, 'space-delimited arguments')
+            ->addArgument('args', InputArgument::IS_ARRAY | InputArgument::OPTIONAL, 'single argument, e.g. int:limit=5')
 
 //            ->setHelp(file_get_contents(__DIR__.'/../Resources/help/MakeCommand.txt'))
             ->addOption('description', 'desc', InputOption::VALUE_OPTIONAL, sprintf('A brief description of what the command does'))
             ->addOption('force', null, InputOption::VALUE_NONE, 'Overwrite if it already exists.')
             ->addOption('prefix', null, InputOption::VALUE_OPTIONAL, 'Prefix the command name, but not the generated class, e.g. survos:make:user, app:do:something')
             ->addOption('inject', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Interfaces to inject, e.g. EntityManagerInterface', [])
-            ->addOption('option', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'string arguments')
+            ->addOption('option', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'e.g. bool:override=false')
 
             ->addOption('arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'string arguments')
             ->addOption('int-arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'int arguments')
