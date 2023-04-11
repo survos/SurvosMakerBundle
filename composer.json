@@ -2,7 +2,11 @@
     "name": "survos/maker-bundle",
     "description": "Tools to generate controllers and templates for the admin interface",
     "type": "symfony-bundle",
-    "keywords": ["generator", "symfony", "crud"],
+    "keywords": [
+        "generator",
+        "symfony",
+        "crud"
+    ],
     "require": {
         "php": "^8.1",
         "roave/better-reflection": "^6.0",
