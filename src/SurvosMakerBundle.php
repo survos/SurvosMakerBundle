@@ -7,7 +7,7 @@
 namespace Survos\Bundle\MakerBundle;
 
 use Doctrine\Migrations\Configuration\Migration\JsonFile;
-use Survos\Bundle\MakerBundle\Command\DumpTranslationsCommand;
+use Survos\Bundle\MakerBundle\Command\ClassUpdateCommand;
 use Survos\Bundle\MakerBundle\DependencyInjection\Compiler\SurvosMakerCompilerPass;
 use Survos\Bundle\MakerBundle\Maker\MakeBundle;
 use Survos\Bundle\MakerBundle\Maker\MakeCrud;
@@ -137,7 +137,7 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
              ->setArgument('$workflows', tagged_iterator('workflow'));
         ;
 
-        $builder->autowire(DumpTranslationsCommand::class)
+        $builder->autowire(ClassUpdateCommand::class)
             ->addTag('console.command')
             ->addTag('container.service_subscriber')
 //            ->setAutoconfigured(true)
