@@ -75,8 +75,8 @@ class MakeBundle extends AbstractMaker implements MakerInterface
             ->setDescription('Creates a Symfony 6.1 bundle in a new directory')
             // echo "maker: { root_namespace: Survos }" > config/packages/maker.yaml
 //            ->addArgument('action', InputArgument::REQUIRED, 'init or library or local-bundle or remote-bundle', null)
-            ->addArgument('name', InputArgument::OPTIONAL, 'The bundle name part of the namespace', 'SurvosFoo')
-            ->addArgument('vendor', InputArgument::OPTIONAL, 'The vendor part of the namespace', 'Survos')
+            ->addArgument('name', InputArgument::OPTIONAL, 'The bundle name part of the namespace')
+            ->addArgument('vendor', InputArgument::OPTIONAL, 'The vendor part of the namespace')
 //            ->addArgument('directory', InputArgument::OPTIONAL, 'The directory (relative to the project root) where the bundle will be created', '..')
 //            ->addArgument('bundle-class', InputArgument::OPTIONAL, sprintf('The class name of the bundle to create (e.g. <fg=yellow>%sBundle</>)', Str::asClassName(Str::getRandomTerm())))
             ->addOption('twig', null, InputOption::VALUE_OPTIONAL, "Create and register a Twig Extension", 'TwigExtension')
