@@ -1,11 +1,12 @@
 <?= "<?php\n" ?>
+/** generated from <?php echo $templateName ?> */
 
 namespace <?= $namespace ?>;
 
 <?= $use_statements; ?>
 
 
-class <?= $class_name ?> extends AbstractBundle
+class <?= $actualClassName ?> extends AbstractBundle
 {
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {

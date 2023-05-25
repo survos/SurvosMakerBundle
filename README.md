@@ -2,6 +2,15 @@
 
 Some cool things you can do.
 
+## Special note about survos:make:bundle
+
+Creating a bundle only works within survos.  In fact, it probably shouldn't even be in the maker-bundle because of this restriction, although in theory it should work anyway.
+
+from the survos/survos repository, run
+
+```bash
+bin/console survos:make:bundle foo-bundle
+```
 
 
 

@@ -99,6 +99,7 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
         }
 
 
+//        dd($config);
         $builder->autowire(MakeBundle::class)
             ->addTag(MakeCommandRegistrationPass::MAKER_TAG) // 'maker.command'
             ->addArgument($config['template_path'])
