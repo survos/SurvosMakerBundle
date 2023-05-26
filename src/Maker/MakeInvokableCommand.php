@@ -68,13 +68,13 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
             ->addOption('inject', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Interfaces to inject, e.g. EntityManagerInterface', [])
             ->addOption('option', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'e.g. bool:override=false')
 
-            ->addOption('arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'string arguments')
-            ->addOption('int-arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'int arguments')
-            ->addOption('bool-arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'bool arguments')
-
-            ->addOption('oarg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'optional string arguments')
-            ->addOption('oint-arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'optional int arguments')
-            ->addOption('obool-arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'optional bool arguments')
+//            ->addOption('arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'string arguments')
+//            ->addOption('int-arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'int arguments')
+//            ->addOption('bool-arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'bool arguments')
+//
+//            ->addOption('oarg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'optional string arguments')
+//            ->addOption('oint-arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'optional int arguments')
+//            ->addOption('obool-arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'optional bool arguments')
         ;
     }
 

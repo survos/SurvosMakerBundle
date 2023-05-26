@@ -178,7 +178,7 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
             ->end();
     }
 
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
