@@ -3,6 +3,7 @@
 namespace Survos\Bundle\MakerBundle\Maker;
 
 use Knp\Menu\ItemInterface;
+use LogicException;
 use Survos\BootstrapBundle\Event\KnpMenuEvent;
 use Survos\BootstrapBundle\Menu\MenuBuilder;
 use Survos\BootstrapBundle\Traits\KnpMenuHelperInterface;
@@ -15,6 +16,8 @@ use Symfony\Bundle\MakerBundle\Maker\AbstractMaker;
 use Symfony\Bundle\MakerBundle\MakerInterface;
 use Symfony\Bundle\MakerBundle\Str;
 use Symfony\Bundle\MakerBundle\Util\UseStatementGenerator;
+use Symfony\Bundle\MakerBundle\Validator;
+use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -35,6 +38,7 @@ use Zenstruck\Console\IO;
 use Zenstruck\Console\RunsCommands;
 use Zenstruck\Console\RunsProcesses;
 
+use function PHPUnit\Framework\isNull;
 use function Symfony\Component\String\u;
 
 final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
@@ -58,11 +62,8 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
     public function configureCommand(Command $command, InputConfiguration $inputConfig)
     {
         $command
+            //            ->setHelp(file_get_contents(__DIR__.'/../Resources/help/MakeCommand.txt'))
             ->addArgument('name', InputArgument::REQUIRED, sprintf('Choose a command name (e.g. <fg=yellow>app:%s</>)', Str::asCommand(Str::getRandomTerm())))
-            ->addArgument('args', InputArgument::IS_ARRAY | InputArgument::OPTIONAL, 'single argument, e.g. int:limit=5')
-
-//            ->setHelp(file_get_contents(__DIR__.'/../Resources/help/MakeCommand.txt'))
-            ->addOption('description', 'desc', InputOption::VALUE_OPTIONAL, sprintf('A brief description of what the command does'))
             ->addOption('force', null, InputOption::VALUE_NONE, 'Overwrite if it already exists.')
             ->addOption('prefix', null, InputOption::VALUE_OPTIONAL, 'Prefix the command name, but not the generated class, e.g. survos:make:user, app:do:something')
             ->addOption('inject', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Interfaces to inject, e.g. EntityManagerInterface', [])
@@ -76,17 +77,11 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
 //            ->addOption('oint-arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'optional int arguments')
 //            ->addOption('obool-arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'optional bool arguments')
         ;
+//            ->addOption('inject', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Interfaces to inject, e.g. EntityManagerInterface', []);
     }
 
     public function interact(InputInterface $input, ConsoleStyle $io, Command $command): void
     {
-        $commandName = $input->getArgument('name');
-        if ($prefix = $input->getOption('prefix')) {
-            $commandName = $prefix . ':' . $commandName;
-        }
-        $io->success('Run your command with ' . $commandName);
-
-        //        return Command::SUCCESS;
     }
 
     public function configureDependencies(DependencyBuilder $dependencies)
@@ -131,72 +126,34 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
         name[]: array $name
         */
 
+        $description = $io->ask('A brief description of what the command does (blank for none)', '');
+
         // walk through the different command line arguments/options, by type, to pass to the template
-        $args = [];
-        $options = [];
-
-        $commandArgs = $input->getArgument('args');
-        dump($commandArgs);
         $hasOptional = false;
-        foreach ($commandArgs as $argString) {
-            $description = null;
-            $default = null;
+        $isFirstField = true;
+        $fields = [];
+        $args = [];
+        while (true) {
+            [$argName, $argParams] = $this->askForNextArgument($io, $fields, $isFirstField);
+            $isFirstField = false;
 
-            $argTokens = explode(':', $argString);
-            $argTokenCount = count($argTokens);
-            if ($argTokenCount === 3) {
-                [$argType, $argName, $description] = $argTokens;
-            } elseif ($argTokenCount === 2) {
-                [$argType, $argName] = $argTokens;
+            if ($argName === null) {
+                break;
+            }
+
+            if (str_starts_with($argParams['phpType'], '?')) {
+                $hasOptional = true;
+                $optionalArgument = $argName;
             } else {
-                $argName = $argString;
-                if (str_starts_with($argName, '?')) {
-                    $argType = '?string';
-                    $argName = str_replace('?', '', $argName);
-                } else {
-                    $argType = 'string';
+                if ($hasOptional) {
+                    throw new LogicException("Required argument $argName cannot come after optional argument $optionalArgument");
                 }
             }
 
-            if (empty($description)) {
-                $description = "($argType)";
-            }
-
-            if (str_ends_with($argName, '?')) {
-                $argName = trim($argName, '?');
-
-                // shortcut is after the name, as a hypen
-                if (str_contains($argName, '-')) {
-                    [$argName, $shortcut] = explode('-', $argName, 2);
-                } else {
-                    $shortcut = null;
-                }
-
-                if ($default) {
-                }
-                $options[$argName] = [
-                    'default' => $default,
-                    'phpType' => $argType,
-                    'shortCut' => $shortcut,
-                    'description' => $description,
-                ];
-            } else {
-                if (str_starts_with($argType, '?')) {
-                    $hasOptional = true;
-                    $optionalArgument = $argName;
-                } else {
-                    if ($hasOptional) {
-                        throw new \LogicException("required argument $argName cannot come after optional argument $optionalArgument");
-                    }
-                }
-
-                $args[$argName] = [
-                    'phpType' => $argType,
-                    'default' => $default,
-                    'description' => $description,
-                ];
-            }
+            $args[$argName] = $argParams;
         }
+
+
         //        $args = [];
         //        foreach (['arg' => 'string', 'int-arg' => 'int', 'bool-arg' => 'bool'] as $argName=>$argType) {
         //            $commandArguments = $input->getOption($argName);
@@ -213,14 +170,25 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
         //            }
         //        }
 
+        $isFirstField = true;
+        $options = [];
+        while (true) {
+            [$optionName, $optionParams] = $this->askForNextOption($io, $fields, $isFirstField);
+            $isFirstField = false;
 
+            if ($optionName === null) {
+                break;
+            }
+
+            $options[$optionName] = $optionParams;
+        }
 
         $generatedFilename = $this->generator->generateClass(
             $classNameDetails->getFullName(),
             __DIR__ . '/../../templates/skeleton/Menu/InvokableCommand.tpl.twig',
             $v = [
                 'commandName' => $commandName,
-                'commandDescription' => $input->getOption('description'),
+                'commandDescription' => $description,
                 'args' => $args,
                 'options' => $options,
                 'entity_full_class_name' => $classNameDetails->getFullName(),
@@ -228,12 +196,18 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
             ]
         );
 
-        //        unlink($generatedFilename); // we need a --force flag
+        // --force flag
+        if ($input->getOption('force')) {
+            unlink($generatedFilename);
+        }
+
         $generator->writeChanges();
         print file_get_contents($generatedFilename);
         //        dump($v);
 
         $this->writeSuccessMessage($io);
+
+        $io->success('Run your command with ' . $commandName);
 
         $io->text([
             sprintf('Next: Open %s and customize it', $generatedFilename),
@@ -243,5 +217,93 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
     public function __call(string $name, array $arguments)
     {
         // TODO: Implement @method string getCommandDescription()
+    }
+
+    private function askForNextArgument(
+        ConsoleStyle $io,
+        array &$fields,
+        bool $isFirstField
+    ): array|null {
+        $io->writeln('');
+
+        if ($isFirstField) {
+            $questionText = 'New argument for the command (press <return> to stop adding arguments)';
+        } else {
+            $questionText = 'Add another argument? Enter the argument name (or press <return> to stop adding arguments)';
+        }
+
+        $fieldName = $io->ask($questionText, null, function ($name) use ($fields) {
+            // allow it to be empty
+            if (!$name) {
+                return $name;
+            }
+
+            if (\in_array($name, $fields)) {
+                throw new \InvalidArgumentException(sprintf('The "%s" argument already exists.', $name));
+            }
+
+            return $name;
+        });
+
+        if (!$fieldName) {
+            return null;
+        }
+
+        $fieldType = $io->ask('Enter argument type (eg. <fg=yellow>string</> by default)', 'string');
+        $default = $io->ask('Enter default value (blank for none)');
+        $description = $io->ask('Argument description (blank for none)');
+
+        $fields[] = $fieldName;
+
+        return [$fieldName, [
+            'phpType' => $fieldType,
+            'default' => $default,
+            'description' => $description ?? "($fieldType)",
+        ]];
+    }
+
+    private function askForNextOption(
+        ConsoleStyle $io,
+        array &$fields,
+        bool $isFirstField
+    ): array|null {
+        $io->writeln('');
+
+        if ($isFirstField) {
+            $questionText = 'New option for the command (press <return> to stop adding options)';
+        } else {
+            $questionText = 'Add another option? Enter the option name (or press <return> to stop adding options)';
+        }
+
+        $fieldName = $io->ask($questionText, null, function ($name) use ($fields) {
+            // allow it to be empty
+            if (!$name) {
+                return $name;
+            }
+
+            if (\in_array($name, $fields)) {
+                throw new \InvalidArgumentException(sprintf('The "%s" argument or option already exists.', $name));
+            }
+
+            return $name;
+        });
+
+        if (!$fieldName) {
+            return null;
+        }
+
+        $fieldType = $io->ask('Enter option type (eg. <fg=yellow>string</> by default)', 'string');
+        $default = $io->ask('Enter default value (blank for none)');
+        $shortCut = $io->ask('Enter shortcut for the option (blank for none)');
+        $description = $io->ask('Argument description (blank for none)');
+
+        $fields[] = $fieldName;
+
+        return [$fieldName, [
+            'phpType' => $fieldType,
+            'default' => $default,
+            'shortCut' => $shortCut,
+            'description' => $description ?? "($fieldType)",
+        ]];
     }
 }
