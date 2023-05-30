@@ -24,6 +24,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -43,6 +44,8 @@ use function Symfony\Component\String\u;
 
 final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
 {
+    private const TYPES = ['string', '?string', 'int', '?int', 'bool', '?bool', 'array', '?array'];
+
     public function __construct(
         private Generator $generator,
         private string $templatePath
@@ -153,23 +156,6 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
             $args[$argName] = $argParams;
         }
 
-
-        //        $args = [];
-        //        foreach (['arg' => 'string', 'int-arg' => 'int', 'bool-arg' => 'bool'] as $argName=>$argType) {
-        //            $commandArguments = $input->getOption($argName);
-        //            foreach ( $input->getOption($argName) as $commandArg) {
-        //                $args[$commandArg] = $argType;
-        //            }
-        //        }
-        //        dd($args, $options);
-        //        // optional arguments must come AFTER the requirement arguments
-        //        foreach (['oarg' => '?string', 'oint-arg' => '?int', 'obool-arg' => '?bool'] as $argName=>$argType) {
-        //            $commandArguments = $input->getOption($argName);
-        //            foreach ( $input->getOption($argName) as $commandArg) {
-        //                $args[$commandArg] = $argType;
-        //            }
-        //        }
-
         $isFirstField = true;
         $options = [];
         while (true) {
@@ -249,7 +235,7 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
             return null;
         }
 
-        $fieldType = $io->ask('Enter argument type (eg. <fg=yellow>string</> by default)', 'string');
+        $fieldType = $this->askType($io, 'Enter argument type (eg. <fg=yellow>string</> by default)');
         $default = $io->ask('Enter default value (blank for none)');
         $description = $io->ask('Argument description (blank for none)');
 
@@ -292,7 +278,7 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
             return null;
         }
 
-        $fieldType = $io->ask('Enter option type (eg. <fg=yellow>string</> by default)', 'string');
+        $fieldType = $this->askType($io, 'Enter option type (eg. <fg=yellow>string</> by default)');
         $default = $io->ask('Enter default value (blank for none)');
         $shortCut = $io->ask('Enter shortcut for the option (blank for none)');
         $description = $io->ask('Argument description (blank for none)');
@@ -305,5 +291,37 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
             'shortCut' => $shortCut,
             'description' => $description ?? "($fieldType)",
         ]];
+    }
+
+    /**
+     * Ask for valid existing type
+     *
+     * @param ConsoleStyle $io
+     * @param string $message
+     * @return string
+     */
+    public function askType(ConsoleStyle $io, string $message): string
+    {
+        $type = null;
+        while (null === $type) {
+            $question = new Question($message, 'string');
+            $question->setAutocompleterValues(self::TYPES);
+            $type = $io->askQuestion($question);
+
+            if ('?' === $type) {
+                $io->note('Allowed types: ' . implode(',', self::TYPES));
+                $io->writeln('');
+
+                $type = null;
+            } elseif (!\in_array($type, self::TYPES)) {
+                $io->note('Allowed types: ' . implode(',', self::TYPES));
+                $io->error(sprintf('Invalid type "%s".', $type));
+                $io->writeln('');
+
+                $type = null;
+            }
+        }
+
+        return $type;
     }
 }
