@@ -281,7 +281,7 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
         $fieldType = $this->askType($io, 'Enter option type (eg. <fg=yellow>string</> by default)');
         $default = $io->ask('Enter default value (blank for none)');
         $shortCut = $io->ask('Enter shortcut for the option (blank for none)');
-        $description = $io->ask('Argument description (blank for none)');
+        $description = $io->ask('Option description (blank for none)');
 
         $fields[] = $fieldName;
 
