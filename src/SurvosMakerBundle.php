@@ -14,6 +14,7 @@ use Survos\Bundle\MakerBundle\Maker\MakeCrud;
 use Survos\Bundle\MakerBundle\Maker\MakeInvokableCommand;
 use Survos\Bundle\MakerBundle\Maker\MakeMenu;
 //use Survos\Bundle\MakerBundle\Maker\MakeMethod;
+use Survos\Bundle\MakerBundle\Maker\MakeMethod;
 use Survos\Bundle\MakerBundle\Maker\MakeModel;
 use Survos\Bundle\MakerBundle\Maker\MakeParamConverter;
 use Survos\Bundle\MakerBundle\Maker\MakeService;
@@ -45,7 +46,7 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_it
 class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
 {
     // The compiler pass
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         //        $map = [];
         //        // get the map from serviceIds to classes, so we can inject things like router.default and serializer
@@ -77,9 +78,10 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        foreach ([MakeMenu::class, MakeService::class, MakeInvokableCommand::class, MakeModel::class] as $makerClass) {
+        foreach ([MakeMenu::class, MakeService::class, MakeMethod::class, MakeInvokableCommand::class, MakeModel::class] as $makerClass) {
             $builder->autowire($makerClass)
-                ->addTag(MakeCommandRegistrationPass::MAKER_TAG) // 'maker.command'
+                ->addTag('maker.command')
+//                ->addTag(MakeCommandRegistrationPass::MAKER_TAG) // 'maker.command'
                 ->addArgument(new Reference('maker.generator'))
                 ->addArgument($config['template_path'])
             ;
@@ -101,7 +103,8 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
 
 //        dd($config);
         $builder->autowire(MakeBundle::class)
-            ->addTag(MakeCommandRegistrationPass::MAKER_TAG) // 'maker.command'
+            ->addTag('maker.command')
+//            ->addTag(MakeCommandRegistrationPass::MAKER_TAG) // 'maker.command'
             ->addArgument($config['template_path'])
             ->addArgument($config['relative_bundle_path']) // /packages
             ->addArgument($config['bundle_name'])
@@ -184,7 +187,7 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
 
         $container->addCompilerPass($this, PassConfig::TYPE_BEFORE_OPTIMIZATION, -1000);
 
-        return;
+        return; // not sure why MakeCommandRegistrationPass isn't available anymore
 
         // add a priority so we run before the core command pass
         //        $container->addCompilerPass(new DoctrineAttributesCheckPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 11);

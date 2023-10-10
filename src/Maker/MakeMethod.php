@@ -27,12 +27,12 @@ final class MakeMethod extends AbstractMaker
 
     public static function getCommandName(): string
     {
-        return 'x:make:method';
+        return 'survos:make:method';
     }
 
     public static function getCommandDescription(): string
     {
-        return 'Creates a new method using a Maker (not command)';
+        return 'Creates a new class method ';
     }
 
     public function configureCommand(Command $command, InputConfiguration $inputConfig): void
