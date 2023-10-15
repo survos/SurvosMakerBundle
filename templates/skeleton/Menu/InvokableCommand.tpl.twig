@@ -11,20 +11,14 @@ use ConfigureWithAttributes, RunsCommands, RunsProcesses;
 
 public function __invoke(
 IO $io,
-
-// custom injections
-// UserRepository $repo,
-
-// expand the arguments and options
 <?php foreach ($args as $argName=>$arg) { ?>
-#[Argument(description: '<?= $arg['description'] ?>'{#<?= $arg['default'] ? sprintf(", default: '%s'", $arg['default']) : '' ?>#})]
-{# Cannot use $default when using Zenstruck\Console\Attribute\Argument as a parameter attribute #}
-<?= $arg['phpType'] ?> $<?= $argName ?><?= $arg['default'] ? sprintf(" = '%s'", $arg['default']) : '' ?>,
+#[Argument(description: '<?= $arg['description'] ?>')]
+<?= $arg['phpType'] ?> $<?= $argName ?><?= $arg['default'] ? sprintf(" = %s", $arg['default']) : '' ?>,
 <?php } ?>
 
 <?php foreach ($options as $optionName=>$option) { ?>
 #[Option(description:'<?= $option['description'] ?>'<?= $option['shortCut'] ? sprintf(", shortcut:'%s'", $option['shortCut']) : '' ?>)]
-<?= $option['phpType'] ?> $<?= $optionName ?><?= $option['default'] ? sprintf(" = '%s'", $option['default']) : '' ?>,
+<?= $option['phpType'] ?> $<?= $optionName ?><?= $option['default'] ? sprintf(" = %s", $option['default']) : '' ?>,
 <?php } ?>
 
 ): void {
