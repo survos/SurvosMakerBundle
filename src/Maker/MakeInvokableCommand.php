@@ -48,8 +48,7 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
     public function __construct(
         private Generator $generator,
         private string    $templatePath
-    )
-    {
+    ) {
     }
 
     public static function getCommandDescription(): string
@@ -81,7 +80,7 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
 //            ->addOption('oint-arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'optional int arguments')
 //            ->addOption('obool-arg', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'optional bool arguments')
         ;
-//            ->addOption('inject', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Interfaces to inject, e.g. EntityManagerInterface', []);
+        //            ->addOption('inject', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Interfaces to inject, e.g. EntityManagerInterface', []);
     }
 
     public function interact(InputInterface $input, ConsoleStyle $io, Command $command): void
@@ -213,8 +212,7 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
         ConsoleStyle $io,
         array        &$fields,
         bool         $isFirstField
-    ): array|null
-    {
+    ): array|null {
         $io->writeln('');
 
         if ($isFirstField) {
@@ -246,16 +244,17 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
 
         $fields[] = $fieldName;
 
-        $defaultValue =  $this->getDefault($fieldType, $default);
+        $defaultValue = $this->getDefault($fieldType, $default);
 
         return [$fieldName, [
             'phpType' => $fieldType,
             'default' => $defaultValue,
-            'description' => $description ?? "($fieldType)"
+            'description' => $description ?? "($fieldType)",
         ]];
     }
 
-    private function getDefault(string $fieldType, mixed $default) {
+    private function getDefault(string $fieldType, mixed $default)
+    {
         return match ($fieldType) {
             'string' => sprintf("'%s'", $default),
             'bool' => $default ? 'true' : 'false',
@@ -268,8 +267,7 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
         ConsoleStyle $io,
         array        &$fields,
         bool         $isFirstField
-    ): array|null
-    {
+    ): array|null {
         $io->writeln('');
 
         if ($isFirstField) {
@@ -312,10 +310,6 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
 
     /**
      * Ask for valid existing type
-     *
-     * @param ConsoleStyle $io
-     * @param string $message
-     * @return string
      */
     public function askType(ConsoleStyle $io, string $message): string
     {

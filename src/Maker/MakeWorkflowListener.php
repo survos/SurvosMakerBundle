@@ -24,9 +24,7 @@ use function Symfony\Component\String\u;
 
 final class MakeWorkflowListener extends AbstractMaker implements MakerInterface
 {
-
-
-    static public function getCommandDescription(): string
+    public static function getCommandDescription(): string
     {
         return "Create a workflow subscriber service to handle trannsitions";
     }
@@ -75,7 +73,7 @@ final class MakeWorkflowListener extends AbstractMaker implements MakerInterface
 
         $fullClassName = $listererClassDetails->getFullName();
         // to get the workflow name from the workflows
-//        $workflow = $this->registry->get(new ($entityClassDetails->getFullName())());
+        //        $workflow = $this->registry->get(new ($entityClassDetails->getFullName())());
         //        dd($workflow->getName());
         $workflowName = constant($entityClassDetails->getFullName() . '::WORKFLOW');
 

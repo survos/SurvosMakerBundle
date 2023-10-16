@@ -71,9 +71,9 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
         }
         //        $reference = new Reference('workflow.registry');
 
-//        $container->get(MakeWorkflowListener::class)
-//            ->setArgument('registry', new Reference('workflow.registry'))
-//        ;
+        //        $container->get(MakeWorkflowListener::class)
+        //            ->setArgument('registry', new Reference('workflow.registry'))
+        //        ;
     }
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
@@ -101,7 +101,7 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
         }
 
 
-//        dd($config);
+        //        dd($config);
         $builder->autowire(MakeBundle::class)
             ->addTag('maker.command')
 //            ->addTag(MakeCommandRegistrationPass::MAKER_TAG) // 'maker.command'
@@ -111,7 +111,7 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
             ->setArgument('$jsonFileManager', new Reference(JsonFileManager::class))
             ->setArgument('$composerJsonFactory', new Reference(ComposerJsonFactory::class))
         ;
-//            ->setArgument('$jsonFileManager', $serviceId)
+        //            ->setArgument('$jsonFileManager', $serviceId)
 
         // we can likely combine these, or even move it to crud
         $builder->register('maker.param_converter_renderer', ParamConverterRenderer::class)
