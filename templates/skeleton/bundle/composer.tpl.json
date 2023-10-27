@@ -23,7 +23,6 @@
     "symfony/framework-bundle": "^6.1.0",
     "symfony/phpunit-bridge": "^6.1.0",
     "symfony/twig-bundle": "^6.1.0",
-    "symfony/var-dumper": "^6.1.0",
-    "symfony/webpack-encore-bundle": "^1.11"
+    "symfony/var-dumper": "^6.1.0"
   }
 }
