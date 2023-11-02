@@ -89,7 +89,10 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator)
     {
         $entityClassDetails = $generator->createClassNameDetails(
-            Validator::entityExists($input->getArgument('entity-class'), $this->doctrineHelper->getEntitiesForAutocomplete()),
+            Validator::entityExists(
+                $input->getArgument('entity-class'),
+                $this->doctrineHelper->getEntitiesForAutocomplete()
+            ),
             'Entity\\'
         );
         //        if (!$entityClassDetails->getFullName() instanceof BaseEntityInterface) {
@@ -157,8 +160,7 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
 
         // otherwise, it uses the ones from symfony, because generator looks for __DIR__
         $templateRoot = __DIR__ . '/../../templates/skeleton/';
-        foreach (
-            [
+        foreach ([
                 'Controller' => $controllerClassDetails,
                 'CollectionController' => $entityControllerClassDetails,
             ] as $name => $cClassDetails

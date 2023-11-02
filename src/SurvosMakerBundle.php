@@ -100,14 +100,13 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
                 ->setAutoconfigured(true);
         }
 
-
         //        dd($config);
         $builder->autowire(MakeBundle::class)
             ->addTag('maker.command')
 //            ->addTag(MakeCommandRegistrationPass::MAKER_TAG) // 'maker.command'
             ->addArgument($config['template_path'])
             ->addArgument($config['relative_bundle_path']) // /packages
-            ->addArgument($config['bundle_name'])
+//            ->addArgument($config['bundle_name'])
             ->setArgument('$jsonFileManager', new Reference(JsonFileManager::class))
             ->setArgument('$composerJsonFactory', new Reference(ComposerJsonFactory::class))
         ;
@@ -176,7 +175,7 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
             ->children()
             ->scalarNode('template_path')->defaultValue(__DIR__ . '/../templates/skeleton/')->end()
             ->scalarNode('vendor')->defaultValue('Survos')->end()
-            ->scalarNode('bundle_name')->defaultValue('FooBundle')->end()
+//            ->scalarNode('bundle_name')->defaultValue('FooBundle')->end()
             ->scalarNode('relative_bundle_path')->defaultValue('packages')->end()
             ->end();
     }

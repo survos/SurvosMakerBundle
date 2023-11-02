@@ -9,7 +9,6 @@ namespace Survos\Bundle\MakerBundle\Maker;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Doctrine\Inflector\InflectorFactory;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
 use Symfony\Bundle\MakerBundle\DependencyBuilder;
 use Symfony\Bundle\MakerBundle\Doctrine\DoctrineHelper;
@@ -36,6 +35,9 @@ use Symfony\Component\String\Inflector\EnglishInflector;
 use Symplify\ComposerJsonManipulator\ComposerJsonFactory;
 use Symplify\ComposerJsonManipulator\FileSystem\JsonFileManager;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
+
 
 use function Symfony\Component\String\u;
 
@@ -44,13 +46,15 @@ use function Symfony\Component\String\u;
  */
 class MakeBundle extends AbstractMaker implements MakerInterface
 {
+    private string $bundleName;
+
     public function __construct(
         private string              $templatePath,
         private string              $bundlePath,
-        private string              $bundleName,
         private JsonFileManager     $jsonFileManager,
         private ComposerJsonFactory $composerJsonFactory
-    ) {
+    )
+    {
     }
 
     public static function getCommandName(): string
@@ -66,7 +70,7 @@ class MakeBundle extends AbstractMaker implements MakerInterface
     public function configureCommand(Command $command, InputConfiguration $inputConfig)
     {
         $command
-            ->setDescription('Creates a Symfony 6.1} bundle in a new directory')
+            ->setDescription('Creates a Symfony 6.1+} bundle in a new directory')
             // echo "maker: { root_namespace: Survos }" > config/packages/maker.yaml
 //            ->addArgument('action', InputArgument::REQUIRED, 'init or library or local-bundle or remote-bundle', null)
             ->addArgument('name', InputArgument::OPTIONAL, 'The bundle name part of the namespace')
@@ -76,7 +80,7 @@ class MakeBundle extends AbstractMaker implements MakerInterface
             ->addOption('twig', null, InputOption::VALUE_OPTIONAL, "Create and register a Twig Extension", 'TwigExtension')
             ->setHelp(file_get_contents(__DIR__ . '/../../help/MakeBundle.txt'));
 
-        $inputConfig->setArgumentAsNonInteractive('entity-class');
+//        $inputConfig->setArgumentAsNonInteractive('entity-class'); //??
     }
 
     public function interact(InputInterface $input, ConsoleStyle $io, Command $command): void
@@ -88,6 +92,7 @@ class MakeBundle extends AbstractMaker implements MakerInterface
 
             $input->setArgument('name', $value);
         }
+        $this->bundleName = $input->getArgument('name');
     }
 
     public function example()
@@ -172,15 +177,39 @@ class MakeBundle extends AbstractMaker implements MakerInterface
         }
 
         // after generation, remove this line and tell user to load bundle from new directory
+        $nameWithVendor = $vendor . '\\' . $name;
+
+        $templateName = realpath($this->templatePath . 'twig/Extension.tpl.php');
+
+        $useStatements = new UseStatementGenerator([
+            AbstractExtension::class,
+            TwigFilter::class,
+            TwigFunction::class,
+        ]);
+
+//        dd($nameWithVendor, $this->bundleName, $templateName);
+        $classPath = $generator->generateClass(
+            $nameWithVendor . '\\',
+            $templateName,
+            variables: [
+                'templateName' => $templateName,
+                //                'class_name' => $className,
+//                'actualClassName' => $className,
+                'use_statements' => $useStatements,
+            ]
+        );
+        //        dd($vars);
+        $generator->writeChanges();
 
         $extensionClassNameDetails = $generator->createClassNameDetails(
-            $nameWithVendor = $vendor . '\\' . $name,
+            $nameWithVendor,
             '',
             //            $name,
             //            '\\' . $vendor,
             //            '',
-            'Bundle'
+            'Extension'
         );
+        dd($extensionClassNameDetails, $classPath);
         //        assert($extensionClassNameDetails->getRelativeName())
         //        dump($extensionClassNameDetails->getFullName(), $vendor, $name, $nameWithVendor, __LINE__, __FILE__);
         //        assert(false);
@@ -194,10 +223,12 @@ class MakeBundle extends AbstractMaker implements MakerInterface
         $className = str_replace('\\', '', $nameWithVendor);
         //        dd($useStatements, $className, $nameWithVendor, Str::getShortClassName($className));
 
+        $templateName = realpath($this->templatePath . 'bundle/src/Bundle.tpl.php');
+//        dd($nameWithVendor, $this->bundleName, $templateName);
         $classPath = $generator->generateClass(
-            $nameWithVendor . '\\', //
-            $templateName = realpath($this->templatePath . 'bundle/src/Bundle.tpl.php'),
-            variables: $vars = [
+            $nameWithVendor . '\\',
+            $templateName,
+            variables: [
                 'templateName' => $templateName,
                 //                'class_name' => $className,
                 'actualClassName' => $className,
