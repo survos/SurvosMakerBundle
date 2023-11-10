@@ -4,9 +4,10 @@ namespace <?= $namespace ?>;
 
 <?= $use_statements; ?>
 
+#[AsEventListener(event: KnpMenuEvent::NAVBAR_MENU_EVENT, method: 'navbarMenu')]
 #[AsEventListener(event: KnpMenuEvent::SIDEBAR_MENU_EVENT, method: 'sidebarMenu')]
 #[AsEventListener(event: KnpMenuEvent::PAGE_MENU_EVENT, method: 'pageMenu')]
-#[AsEventListener(event: KnpMenuEvent::NAVBAR_MENU_EVENT, method: 'navbarMenu')]
+#[AsEventListener(event: KnpMenuEvent::FOOTER_MENU_EVENT, method: 'footerMenu')]
 
 final class <?= $class_name ?> implements KnpMenuHelperInterface<?= "\n" ?>
 {
@@ -17,28 +18,42 @@ final class <?= $class_name ?> implements KnpMenuHelperInterface<?= "\n" ?>
     {
     }
 
-    public function sidebarMenu(KnpMenuEvent $event): void
+public function navbarMenu(KnpMenuEvent $event): void
+{
+$menu = $event->getMenu();
+$options = $event->getOptions();
+
+//        $this->add($menu, 'app_homepage');
+// for nested menus, don't add a route, just a label, then use it for the argument to addMenuItem
+
+$nestedMenu = $this->addSubmenu($menu, 'Credits');
+foreach (['bundles', 'javascript'] as $type) {
+// $this->addMenuItem($nestedMenu, ['route' => 'survos_base_credits', 'rp' => ['type' => $type], 'label' => ucfirst($type)]);
+$this->addMenuItem($nestedMenu, ['uri' => "#$type" , 'label' => ucfirst($type)]);
+}
+
+}
+
+
+
+public function sidebarMenu(KnpMenuEvent $event): void
     {
         $menu = $event->getMenu();
         $options = $event->getOptions();
-
-//        $this->add($menu, 'app_homepage');
-        // for nested menus, don't add a route, just a label, then use it for the argument to addMenuItem
-
-        $nestedMenu = $this->addSubmenu($menu, 'Credits');
-        foreach (['bundles', 'javascript'] as $type) {
-            // $this->addMenuItem($nestedMenu, ['route' => 'survos_base_credits', 'rp' => ['type' => $type], 'label' => ucfirst($type)]);
-            $this->addMenuItem($nestedMenu, ['uri' => "#$type" , 'label' => ucfirst($type)]);
-        }
     }
 
-public function pageMenu(KnpMenuEvent $event): void
+public function footerMenu(KnpMenuEvent $event): void
 {
+$menu = $event->getMenu();
+$options = $event->getOptions();
+$this->add($menu, uri: 'https://github.com');
 }
 
-public function navbarMenu(KnpMenuEvent $event): void
+// this could also be called the content menu, as it's below the navbar, e.g. a menu for an entity, like show, edit
+public function pageMenu(KnpMenuEvent $event): void
 {
-
+$menu = $event->getMenu();
+$options = $event->getOptions();
 }
 
 }
