@@ -173,13 +173,12 @@ class MakeBundle extends AbstractMaker implements MakerInterface
             //            dd($composerJson->getPsr4AndClassmapDirectories(), $composerJson->getAllClassmaps());
             //            file_put_contents("composer.json", $newjson = json_encode($json, JSON_PRETTY_PRINT && JSON_UNESCAPED_SLASHES && JSON_UNESCAPED_UNICODE));
             $io->write("Please run composer dump-autoload to create a bundle structure for $bundleNamespace\nTHEN add services, then run ");
+
             return;
         }
 
         // after generation, remove this line and tell user to load bundle from new directory
         $nameWithVendor = $vendor . '\\' . $name;
-
-        $templateName = realpath($this->templatePath . 'twig/Extension.tpl.php');
 
         $useStatements = new UseStatementGenerator([
             AbstractExtension::class,
@@ -189,27 +188,23 @@ class MakeBundle extends AbstractMaker implements MakerInterface
 
 //        dd($nameWithVendor, $this->bundleName, $templateName);
         $classPath = $generator->generateClass(
-            $nameWithVendor . '\\',
-            $templateName,
+            $nameWithVendor . '\\Twig\\TwigExtension',
+            realpath($this->templatePath . 'twig/Extension.tpl.php'),
             variables: [
-                'templateName' => $templateName,
                 //                'class_name' => $className,
 //                'actualClassName' => $className,
                 'use_statements' => $useStatements,
             ]
         );
-        //        dd($vars);
         $generator->writeChanges();
 
         $extensionClassNameDetails = $generator->createClassNameDetails(
             $nameWithVendor,
-            '',
             //            $name,
             //            '\\' . $vendor,
             //            '',
             'Extension'
         );
-        dd($extensionClassNameDetails, $classPath);
         //        assert($extensionClassNameDetails->getRelativeName())
         //        dump($extensionClassNameDetails->getFullName(), $vendor, $name, $nameWithVendor, __LINE__, __FILE__);
         //        assert(false);
@@ -226,23 +221,19 @@ class MakeBundle extends AbstractMaker implements MakerInterface
         $templateName = realpath($this->templatePath . 'bundle/src/Bundle.tpl.php');
 //        dd($nameWithVendor, $this->bundleName, $templateName);
         $classPath = $generator->generateClass(
-            $nameWithVendor . '\\',
+            $nameWithVendor . '\\' . $nameWithVendor,
             $templateName,
-            variables: [
+            variables: $vars=[
                 'templateName' => $templateName,
                 //                'class_name' => $className,
                 'actualClassName' => $className,
                 'use_statements' => $useStatements,
             ]
         );
-        //        dd($vars);
         $generator->writeChanges();
 
         // hack, because something is wrong with the classmap lookup
         $classDir = str_replace('/.php', '', pathinfo($classPath, PATHINFO_DIRNAME));
-        $actualFilename = str_replace('.php', str_replace('\\', '', $nameWithVendor) . '.php', $classPath);
-
-        dump($classPath, $classDir, $nameWithVendor, $classDir, $extensionClassNameDetails->getFullName(), $actualFilename);
 
         // composer belongs above src
         //        dd($classDir, $extensionClassNameDetails->getFullName(), $vendor, $name, $nameWithVendor, __LINE__);
@@ -257,19 +248,18 @@ class MakeBundle extends AbstractMaker implements MakerInterface
             ]
         );
 
-
         //                dd($x, $classDir, $generator->getRootDirectory(), $generator->getRootNamespace(), __FILE__, __LINE__);
 
         $generator->writeChanges();
 
         // hack from the pit of hell
-        rename($classPath, $actualFilename);
+//        rename($classPath, $actualFilename);
 
         $this->writeSuccessMessage($io);
 
         $io->text([
             sprintf('vendor/bin/phpstan analyze packages/%s/', $this->bundleName),
-            "modify $actualFilename to inject dependencies",
+            "modify $classPath to inject dependencies",
             'Develop the bundle here, but to use in another application use monorepo-split',
             'OR Remove psr-4 autoload and add to bundle path to composer, or composer req to get the recipes',
             'Find the documentation at <fg=yellow>https://github.com/survos/maker-bundle/doc/maker-bundle.md</>',

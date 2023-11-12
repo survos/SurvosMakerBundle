@@ -150,7 +150,9 @@ class MakerService
 
             //            $reflectionClass = (new BetterReflection())->reflector()->reflectClass()
             $method = $reflectionClass->getMethod($methodName);
-            $originalBody = $method->getBodyCode();
+            assert($method, "$methodName is missing");
+//            dd($method);
+//            $originalBody = $method->getBodyCode();
             $methodSource = $this->getMethodSource($reflectionClass, $methodName);
 
             // too complicated...
@@ -159,6 +161,7 @@ class MakerService
                 'methodName' => $methodName,
                 'returnType' => $method->getReturnType(),
             ]);
+//            dd($methodSource, $newMethodSource);
 
             // hack
             if ($php) {
