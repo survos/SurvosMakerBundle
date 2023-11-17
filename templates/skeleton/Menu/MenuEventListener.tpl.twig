@@ -4,10 +4,10 @@ namespace <?= $namespace ?>;
 
 <?= $use_statements; ?>
 
-#[AsEventListener(event: KnpMenuEvent::NAVBAR_MENU_EVENT, method: 'navbarMenu')]
-#[AsEventListener(event: KnpMenuEvent::SIDEBAR_MENU_EVENT, method: 'sidebarMenu')]
-#[AsEventListener(event: KnpMenuEvent::PAGE_MENU_EVENT, method: 'pageMenu')]
-#[AsEventListener(event: KnpMenuEvent::FOOTER_MENU_EVENT, method: 'footerMenu')]
+#[AsEventListener(event: KnpMenuEvent::NAVBAR_MENU, method: 'navbarMenu')]
+#[AsEventListener(event: KnpMenuEvent::SIDEBAR_MENU, method: 'sidebarMenu')]
+#[AsEventListener(event: KnpMenuEvent::PAGE_MENU, method: 'pageMenu')]
+#[AsEventListener(event: KnpMenuEvent::FOOTER_MENU, method: 'footerMenu')]
 
 final class <?= $class_name ?> implements KnpMenuHelperInterface<?= "\n" ?>
 {
