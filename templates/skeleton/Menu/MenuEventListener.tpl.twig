@@ -5,6 +5,7 @@ namespace <?= $namespace ?>;
 <?= $use_statements; ?>
 
 #[AsEventListener(event: KnpMenuEvent::NAVBAR_MENU, method: 'navbarMenu')]
+// #[AsEventListener(event: KnpMenuEvent::NAVBAR_MENU2, method: 'navbarMenu')]
 #[AsEventListener(event: KnpMenuEvent::SIDEBAR_MENU, method: 'sidebarMenu')]
 #[AsEventListener(event: KnpMenuEvent::PAGE_MENU, method: 'pageMenu')]
 #[AsEventListener(event: KnpMenuEvent::FOOTER_MENU, method: 'footerMenu')]
@@ -13,10 +14,14 @@ final class <?= $class_name ?> implements KnpMenuHelperInterface<?= "\n" ?>
 {
     use KnpMenuHelperTrait;
 
-    // this should be optional, not sure we really need it here.
-    public function __construct(private ?AuthorizationCheckerInterface $security=null)
-    {
-    }
+public function __construct(
+#[Autowire('%kernel.environment%')] private string $env,
+private Security $security,
+private ?AuthorizationCheckerInterface $authorizationChecker=null
+)
+{
+}
+
 
 public function navbarMenu(KnpMenuEvent $event): void
 {

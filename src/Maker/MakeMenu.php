@@ -14,6 +14,8 @@ use Symfony\Bundle\MakerBundle\InputConfiguration;
 use Symfony\Bundle\MakerBundle\Maker\AbstractMaker;
 use Symfony\Bundle\MakerBundle\MakerInterface;
 use Symfony\Bundle\MakerBundle\Str;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Bundle\MakerBundle\Util\UseStatementGenerator;
 use Symfony\Component\Console\Command\Command;
@@ -85,7 +87,9 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
             ItemInterface::class,
             MenuBuilder::class,
             KnpMenuEvent::class,
+            Autowire::class,
             AsEventListener::class,
+            Security::class,
             KnpMenuHelperInterface::class,
             OptionsResolver::class,
             AuthorizationCheckerInterface::class,
