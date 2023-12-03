@@ -97,7 +97,6 @@
     "suggest": {
         "symfony/workflow": "To generate a workflow from PHP constants",
         "symplify/easy-coding-standard": "cleanup generated files"
-
     },
     "prefer-stable": true
 }
