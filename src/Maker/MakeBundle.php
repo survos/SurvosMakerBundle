@@ -51,8 +51,8 @@ class MakeBundle extends AbstractMaker implements MakerInterface
     public function __construct(
         private string              $templatePath,
         private string              $bundlePath,
-        private JsonFileManager     $jsonFileManager,
-        private ComposerJsonFactory $composerJsonFactory
+//        private JsonFileManager     $jsonFileManager,
+//        private ComposerJsonFactory $composerJsonFactory
     )
     {
     }

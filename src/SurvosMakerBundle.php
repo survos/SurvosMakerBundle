@@ -34,12 +34,12 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-use Symplify\ComposerJsonManipulator\ComposerJsonFactory;
+//use Symplify\ComposerJsonManipulator\ComposerJsonFactory;
 use Symplify\ComposerJsonManipulator\FileSystem\JsonFileManager;
 use Symplify\ComposerJsonManipulator\Json\JsonCleaner;
 use Symplify\ComposerJsonManipulator\Json\JsonInliner;
-use Symplify\PackageBuilder\Parameter\ParameterProvider;
-use Symplify\SmartFileSystem\SmartFileSystem;
+//use Symplify\PackageBuilder\Parameter\ParameterProvider;
+//use Symplify\SmartFileSystem\SmartFileSystem;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
@@ -89,19 +89,19 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
                 $definition->setArgument('$router', new Reference('router'));
             }
         }
-        $builder->register(ParameterProvider::class)
-            ->setArgument('$container', new Reference('service_container'))
-            ->setPublic(true)
-            ->setAutowired(true)
-            ->setAutoconfigured(true);
-
-
-        foreach ([SmartFileSystem::class, JsonCleaner::class, JsonInliner::class, JsonFileManager::class, ComposerJsonFactory::class] as $symplifyClass) {
-            $builder->register($symplifyClass)
-                ->setPublic(true)
-                ->setAutowired(true)
-                ->setAutoconfigured(true);
-        }
+//        $builder->register(ParameterProvider::class)
+//            ->setArgument('$container', new Reference('service_container'))
+//            ->setPublic(true)
+//            ->setAutowired(true)
+//            ->setAutoconfigured(true);
+//
+//        SmartFileSystem::class, JsonCleaner::class, JsonInliner::class, JsonFileManager::class,
+//        foreach ([ComposerJsonFactory::class] as $symplifyClass) {
+//            $builder->register($symplifyClass)
+//                ->setPublic(true)
+//                ->setAutowired(true)
+//                ->setAutoconfigured(true);
+//        }
 
         //        dd($config);
         $builder->autowire(MakeBundle::class)
@@ -110,8 +110,8 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
             ->addArgument($config['template_path'])
             ->addArgument($config['relative_bundle_path']) // /packages
 //            ->addArgument($config['bundle_name'])
-            ->setArgument('$jsonFileManager', new Reference(JsonFileManager::class))
-            ->setArgument('$composerJsonFactory', new Reference(ComposerJsonFactory::class))
+//            ->setArgument('$jsonFileManager', new Reference(JsonFileManager::class))
+//            ->setArgument('$composerJsonFactory', new Reference(ComposerJsonFactory::class))
         ;
         //            ->setArgument('$jsonFileManager', $serviceId)
 
