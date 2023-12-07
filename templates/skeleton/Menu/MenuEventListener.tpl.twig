@@ -9,6 +9,8 @@ namespace <?= $namespace ?>;
 #[AsEventListener(event: KnpMenuEvent::SIDEBAR_MENU, method: 'sidebarMenu')]
 #[AsEventListener(event: KnpMenuEvent::PAGE_MENU, method: 'pageMenu')]
 #[AsEventListener(event: KnpMenuEvent::FOOTER_MENU, method: 'footerMenu')]
+#[AsEventListener(event: KnpMenuEvent::AUTH_MENU, method: 'appAuthMenu')]
+
 
 final class <?= $class_name ?> implements KnpMenuHelperInterface<?= "\n" ?>
 {
@@ -16,10 +18,18 @@ final class <?= $class_name ?> implements KnpMenuHelperInterface<?= "\n" ?>
 
 public function __construct(
 #[Autowire('%kernel.environment%')] private string $env,
+private MenuService $menuService,
 private Security $security,
 private ?AuthorizationCheckerInterface $authorizationChecker=null
+
 )
 {
+}
+
+public function appAuthMenu(KnpMenuEvent $event): void
+{
+$menu = $event->getMenu();
+$this->menuService->addAuthMenu($menu);
 }
 
 

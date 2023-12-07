@@ -5,6 +5,7 @@ namespace Survos\Bundle\MakerBundle\Maker;
 use Knp\Menu\ItemInterface;
 use Survos\BootstrapBundle\Event\KnpMenuEvent;
 use Survos\BootstrapBundle\Menu\MenuBuilder;
+use Survos\BootstrapBundle\Service\MenuService;
 use Survos\BootstrapBundle\Traits\KnpMenuHelperInterface;
 use Survos\BootstrapBundle\Traits\KnpMenuHelperTrait;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
@@ -90,6 +91,7 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
             Autowire::class,
             AsEventListener::class,
             Security::class,
+            MenuService::class,
             KnpMenuHelperInterface::class,
             OptionsResolver::class,
             AuthorizationCheckerInterface::class,
