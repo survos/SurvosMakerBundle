@@ -35,11 +35,9 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 //use Symplify\ComposerJsonManipulator\ComposerJsonFactory;
-use Symplify\ComposerJsonManipulator\FileSystem\JsonFileManager;
-use Symplify\ComposerJsonManipulator\Json\JsonCleaner;
-use Symplify\ComposerJsonManipulator\Json\JsonInliner;
-//use Symplify\PackageBuilder\Parameter\ParameterProvider;
-//use Symplify\SmartFileSystem\SmartFileSystem;
+//use Symplify\ComposerJsonManipulator\FileSystem\JsonFileManager;
+//use Symplify\ComposerJsonManipulator\Json\JsonCleaner;
+//use Symplify\ComposerJsonManipulator\Json\JsonInliner;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 

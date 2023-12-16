@@ -1,15 +1,15 @@
 {
   "name": "<?= $name ?>",
   "type": "symfony-bundle",
-  "description": "",
+  "description": "<?= $name ?> Bundle",
   "keywords": ["symfony-ux", "symfony6"],
 
   "license": "MIT",
   "require": {
     "php": "^8.1",
-    "symfony/config": "^6.3 || ^7.0",
-    "symfony/dependency-injection": "^6.3 || ^7.0",
-    "symfony/http-kernel": "^6.3 || ^7.0",
+    "symfony/config": "^6.4 || ^7.0",
+    "symfony/dependency-injection": "^6.4 || ^7.0",
+    "symfony/http-kernel": "^6.4 || ^7.0",
     "twig/twig": "^3.4"
   },
   "autoload": {
@@ -18,11 +18,11 @@
     }
   },
   "require-dev": {
-    "phpstan/phpstan": "^1.7",
-    "symfony/browser-kit": "^6.3 || ^7.0",
-    "symfony/framework-bundle": "^6.3 || ^7.0",
-    "symfony/phpunit-bridge": "^6.3 || ^7.0",
-    "symfony/twig-bundle": "^6.3 || ^7.0",
-    "symfony/var-dumper": "^6.3 || ^7.0"
+    "phpstan/phpstan": "^1.10",
+    "symfony/browser-kit": "^6.4 || ^7.0",
+    "symfony/framework-bundle": "^6.4 || ^7.0",
+    "symfony/phpunit-bridge": "^6.4 || ^7.0",
+    "symfony/twig-bundle": "^6.4 || ^7.0",
+    "symfony/var-dumper": "^6.4 || ^7.0"
   }
 }
