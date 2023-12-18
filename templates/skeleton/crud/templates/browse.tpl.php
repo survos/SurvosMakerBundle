@@ -3,23 +3,18 @@
 {% block title %}{{  class }}{% endblock %}
 
 {% block body %}
+<h1>{{ class }} {{ _self }}</h1>
 
-{% import "@SurvosBase/macros/cards.html.twig" as card_widget %}
+<twig:api_grid
+        facets="false"
+        :class="class"
+        :apiGetCollectionUrl="apiCall"
+        :caller="_self"
+        :columns="columns"
+>
 
-{% set _controller = 'videos' %}
-
-<h3>Youtube Videos</h3>
-<div {{ stimulus_controller(_controller, {
-     class: class,
-     api_call: api_route(class),
-     sortableFields: sortable_fields(class),
-     filter: filter,
-     }) }}>
-
-    {{ card_widget.entityTable({
-    stimulusController: _controller
-    }) }}
-</div>
-
-
+    <twig:block name="id">
+        ID: {{ row.id }}
+    </twig:block>
+</twig:api_grid>
 {% endblock %}

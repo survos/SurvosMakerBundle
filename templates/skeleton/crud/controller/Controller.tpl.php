@@ -26,6 +26,7 @@ public function __construct(private EntityManagerInterface $entityManager) {
 
 }
 
+// there must be a way to do this within the bundle, a separate route!
 #[Route(path: '/transition/{transition}', name: '<?= $entity_var_singular?>_transition')]
 public function transition(Request $request, WorkflowInterface $<?= $entity_var_singular ?>StateMachine, string $transition, <?= $entity_class_name ?> $<?= $entity_var_singular ?>): Response
 {
