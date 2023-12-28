@@ -140,7 +140,8 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
                 'Type'
             );
             ++$iter;
-        } while (class_exists($formClassDetails->getFullName()));
+            dump($formClassDetails->getFullName());
+        } while (class_exists($formClassDetails->getFullName(), false));
 
         $entityVarPlural = lcfirst($this->pluralize($entityClassDetails->getShortName()));
         $entityVarSingular = lcfirst($this->singularize($entityClassDetails->getShortName()));
