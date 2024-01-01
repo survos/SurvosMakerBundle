@@ -200,8 +200,7 @@ class MakeBundle extends AbstractMaker implements MakerInterface
             ]
         );
         $generator->writeChanges();
-
-        dd($this->bundlePath, $name, bundleSrcPath: $this->getBundleSrcPath($this->getSnakename($name, $vendor)));
+//        dd($this->bundlePath, $name, bundleSrcPath: $this->getBundleSrcPath($this->getSnakename($name, $vendor)));
         $this->createComposer($bundleSrcPath . '..', $generator, $vendor, $name);
 
         $extensionClassNameDetails = $generator->createClassNameDetails(
