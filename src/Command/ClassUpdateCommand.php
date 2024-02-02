@@ -47,6 +47,8 @@ final class ClassUpdateCommand extends InvokableServiceCommand
         #[Option(description: 'show a diff of the changes')]
         bool $diff,
     ): void {
+
+
         // this is only valid is are no prompts.
         $input = $io->input();
         $inputStream = ($input instanceof StreamableInputInterface) ? $input->getStream() : null;

@@ -12,7 +12,44 @@ from the survos/survos repository, run
 bin/console survos:make:bundle foo-bundle
 ```
 
+# nette generator bug
+```php
+symfony new bug --webapp && cd bug
+composer require nette/php-generator
+cat > src/Controller/AppController.php << 'END'
+<?php
 
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Nette\PhpGenerator\ClassType;
+class AppController extends AbstractController
+{
+    #[Route('/', name: 'app_generate_class')]
+    public function generateClass(): Response
+    {
+      $class = new ClassType('DemoController');
+      
+      $class
+          ->setFinal()
+          	->setExtends(AbstractController::class)
+//      	->addImplement(Countable::class)
+          ->addComment("Class description.\nSecond line\n")
+          ->addComment('@property-read Nette\Forms\Form $form');
+
+// generate code simply by typecasting to string or using echo:
+        return new Response($class, 200, ['Content-Type' => 'text/plain']);
+    }
+}
+
+END
+
+symfony server:start -d
+symfony open:local
+
+```
 
 ```bash
 symfony new --webapp maker-demo && cd maker-demo

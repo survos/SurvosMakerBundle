@@ -5,6 +5,11 @@
  */
 namespace Survos\Bundle\MakerBundle\Maker;
 
+use Nette\PhpGenerator\ClassType;
+use Nette\PhpGenerator\PhpNamespace;
+use Survos\CoreBundle\Entity\RouteParametersInterface;
+use Survos\CoreBundle\Entity\RouteParametersTrait;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
 use Symfony\Bundle\MakerBundle\DependencyBuilder;
 use Symfony\Bundle\MakerBundle\Generator;
@@ -16,6 +21,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\StreamableInputInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HttpFoundation\Response;
 
 final class MakeMethod extends AbstractMaker
 {
@@ -46,8 +53,44 @@ final class MakeMethod extends AbstractMaker
         ;
     }
 
+
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
     {
+        $path = $this->namespaceToPath('App\\Controller\\XYZ');
+        dd($path);
+
+        $composerJson = json_decode(
+            file_get_contents($monorepoComposerJsonFilepath = getcwd() . '/composer.json'),
+            true
+        );
+        dd($composerJson);
+        $autoLoad = $composerJson['autoload'];
+        $bundleNamespace = "$vendor\\$name\\";
+
+
+
+// or use the PsrPrinter for output in accordance with PSR-2 / PSR-12 / PER
+// echo (new Nette\PhpGenerator\PsrPrinter)->printNamespace($namespace);
+        $class = new ClassType($className = 'DemoController', new PhpNamespace($ns = 'App\\Controller'));
+        assert($class->getNamespace()->getName() == $ns);
+        $class
+            ->setFinal()
+            ->setExtends(AbstractController::class)
+//            ->addImplement(Countable::class)
+            ->addComment("Class description.\nSecond line\n")
+            ->addComment('@property-read Nette\Forms\Form $form');
+
+        $printer = new \Nette\PhpGenerator\Printer;
+        $content =   $printer->printClass($class);
+        dd($content);
+
+        file_put_contents($fn = "src/Controller/$className.php", '<?php' . "\n\n" . $class);
+        dd((string)$class, $fn);
+
+// generate code simply by typecasting to string or using echo:
+        echo $class;
+
+
         // parse out the input if it has a namespace or filename in the piped-in input, e.g.
         $inputSteam = ($input instanceof StreamableInputInterface) ? $input->getStream() : null;
         $content = $inputSteam ? stream_get_contents($inputSteam) : null;
