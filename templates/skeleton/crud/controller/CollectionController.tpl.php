@@ -49,7 +49,7 @@ $apiCall = $useMeili
 context: $context??[])
 ;
 
-$this->apiGridComponent->class = $class;
+$this->apiGridComponent->setClass($class);
 $c = $this->apiGridComponent->getDefaultColumns();
 $columns = array_values($c);
 $useMeili = '<?= $route_name ?>_browse' == $request->get('_route');
