@@ -8,6 +8,7 @@ namespace Survos\Bundle\MakerBundle;
 
 use Doctrine\Migrations\Configuration\Migration\JsonFile;
 use Survos\Bundle\MakerBundle\Command\ClassUpdateCommand;
+use Survos\Bundle\MakerBundle\Command\GenerateControllerCommand;
 use Survos\Bundle\MakerBundle\DependencyInjection\Compiler\SurvosMakerCompilerPass;
 use Survos\Bundle\MakerBundle\Maker\MakeBundle;
 use Survos\Bundle\MakerBundle\Maker\MakeCrud;
@@ -125,8 +126,13 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
             ->addArgument(new Reference('maker.param_converter_renderer'))
             ->addArgument($config['template_path'])
             ->addArgument(new Reference('parameter_bag'))
-
         ;
+
+        $builder->autowire(GenerateControllerCommand::class)
+            ->addTag('console.command')
+            ->addTag('container.service_subscriber')
+        ;
+
 
         $builder->autowire(MakeCrud::class)
             ->addTag('maker.command')
