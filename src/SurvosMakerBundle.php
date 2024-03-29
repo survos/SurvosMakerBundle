@@ -22,6 +22,7 @@ use Survos\Bundle\MakerBundle\Maker\MakeService;
 use Survos\Bundle\MakerBundle\Maker\MakeWorkflow;
 use Survos\Bundle\MakerBundle\Maker\MakeWorkflowListener;
 use Survos\Bundle\MakerBundle\Renderer\ParamConverterRenderer;
+use Survos\Bundle\MakerBundle\Service\GeneratorService;
 use Survos\Bundle\MakerBundle\Service\MakerService;
 use Symfony\Bundle\MakerBundle\DependencyInjection\CompilerPass\MakeCommandRegistrationPass;
 use Symfony\Bundle\MakerBundle\DependencyInjection\CompilerPass\RemoveMissingParametersPass;
@@ -77,7 +78,8 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        foreach ([MakeMenu::class, MakeService::class, MakeMethod::class, MakeInvokableCommand::class, MakeModel::class] as $makerClass) {
+        foreach ([MakeMenu::class, MakeService::class,
+                     MakeMethod::class, MakeInvokableCommand::class, MakeModel::class] as $makerClass) {
             $definition = $builder->autowire($makerClass)
                 ->addTag('maker.command')
 //                ->addTag(MakeCommandRegistrationPass::MAKER_TAG) // 'maker.command'
@@ -128,7 +130,21 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
             ->addArgument(new Reference('parameter_bag'))
         ;
 
+//        $builder->register('maker.generator_service', GeneratorService::class)
+//            ->setArgument('$projectDir', '%kernel.project_dir%')
+//            ->addArgument($config['template_path']);
+
+//        $builder->autowire(GeneratorService::class)
+//            ;
+
+        $builder->autowire(GeneratorService::class)
+            ->setArgument('$bag', new Reference('parameter_bag'))
+        ;
+
+
+
         $builder->autowire(GenerateControllerCommand::class)
+            ->addArgument(new Reference(GeneratorService::class))
             ->addTag('console.command')
             ->addTag('container.service_subscriber')
         ;
@@ -163,8 +179,9 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
         //            // there must be a better way to only wire this if it exists.
         //        }
 
-
         $builder->autowire(MakerService::class)
+            ->setArgument('$projectDir', '%kernel.project_dir%')
+
             ->setArgument('$propertyAccessor', new Reference('property_accessor'))
             ->setArgument('$twig', new Reference('twig'))
         ;

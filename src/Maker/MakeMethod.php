@@ -7,6 +7,7 @@ namespace Survos\Bundle\MakerBundle\Maker;
 
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\PhpNamespace;
+use Survos\Bundle\MakerBundle\Service\MakerService;
 use Survos\CoreBundle\Entity\RouteParametersInterface;
 use Survos\CoreBundle\Entity\RouteParametersTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -56,7 +57,7 @@ final class MakeMethod extends AbstractMaker
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
     {
-        $path = $this->namespaceToPath('App\\Controller\\XYZ');
+        $path = MakerService::namespaceToPath('App\\Controller\\XYZ');
         dd($path);
 
         $composerJson = json_decode(

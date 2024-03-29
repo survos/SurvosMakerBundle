@@ -21,6 +21,7 @@ class MakerService
     //    private PropertyAccessor $propertyAccessor;
     public function __construct(
         private Environment $twig,
+        private string $projectDir,
         private PropertyAccessorInterface $propertyAccessor
     ) {
         //        $this->propertyAccessor = new PropertyAccessor();
@@ -61,24 +62,6 @@ class MakerService
             ->reflectClass($fqcn);
     }
 
-    public static function namespaceToPath(string $namespace): ?string
-    {
-        $x = include "vendor/composer/autoload_psr4.php";
-        $result = null;
-        $parts = explode('\\', $namespace);
-        $paths = [];
-        do {
-            $namespace = join('\\', $parts);
-            $query = $namespace . '\\';
-            if (array_key_exists($query, $x)) {
-                array_unshift($paths, $x[$query][0]);
-                return join('/', $paths);
-            } else {
-                array_unshift($paths, array_pop($parts));
-            }
-        } while (!$result && count($parts));
-        return null;
-    }
 
 
     public function modifyClass(
