@@ -48,7 +48,7 @@ final class GenerateControllerCommand extends InvokableServiceCommand
         IO     $io,
         #[Argument(description: 'Controller class name, e.g. App')]
         string $name,
-        #[Argument(description: 'controller method name')]
+        #[Argument('route', description: 'controller method name')]
         string $routeName,
         #[Option('method', 'm', null, 'method name, default to routeName')]
         string $method = null,

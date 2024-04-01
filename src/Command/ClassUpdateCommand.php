@@ -21,7 +21,6 @@ use Zenstruck\Console\RunsProcesses;
 #[AsCommand('survos:class:update', 'insert or update a method in an existing class')]
 final class ClassUpdateCommand extends InvokableServiceCommand
 {
-    use ConfigureWithAttributes;
     use RunsCommands;
     use RunsProcesses;
 
@@ -30,7 +29,7 @@ final class ClassUpdateCommand extends InvokableServiceCommand
         MakerService $makerService,
         #[Argument(description: 'name of the class (path or FQCN)')]
         string $className,
-        #[Option(shortcut: 'm', description: 'name of the method (to check for existence)')]
+        #[Option('method', shortcut: 'm', description: 'name of the method (to check for existence)')]
         ?string $methodName,
         #[Option(description: 'overwrite if exists')]
         ?bool $force,
