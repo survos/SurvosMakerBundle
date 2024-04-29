@@ -235,7 +235,7 @@ bin/console make:user User --is-entity --identity-property-name=email --with-pas
 sed -i "s|# MAILER_DSN|MAILER_DSN|" .env
 
 
-echo "1,AppAuthenticator,SecurityController,/logout," | sed "s/,/\n/g"  | bin/console make:auth
+echo "1,AppAuthenticator,SecurityController,/logout," | sed "s/,/\n/g"  | bin/console make:security
 sed -i "s|// For example.*;|return new RedirectResponse(\$this->urlGenerator->generate('app_homepage'));|" src/Security/AppAuthenticator.php 
 sed -i "s|throw new \\Exception\('TODO\: provide a valid redirect inside '\.__FILE__\);||" src/Security/AppAuthenticator.php 
 
