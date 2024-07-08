@@ -18,9 +18,13 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Workflow\WorkflowInterface;
 
+// if Workflow Bundle active
+// use Survos\WorkflowBundle\Traits\HandleTransitionsTrait;
+
 #[Route('<?= $route_path ?>/{<?= $entity_identifier ?>}')]
 class <?= $class_name ?> extends AbstractController <?= "\n" ?>
 {
+// use HandleTransitionsTrait;
 
 public function __construct(private EntityManagerInterface $entityManager) {
 
@@ -28,7 +32,9 @@ public function __construct(private EntityManagerInterface $entityManager) {
 
 // there must be a way to do this within the bundle, a separate route!
 #[Route(path: '/transition/{transition}', name: '<?= $entity_var_singular?>_transition')]
-public function transition(Request $request, WorkflowInterface $<?= $entity_var_singular ?>StateMachine, string $transition, <?= $entity_class_name ?> $<?= $entity_var_singular ?>): Response
+public function transition(Request $request,
+   #[Target('<?= $entity_class_name ?>Workflow)] WorkflowInterface $workflow,
+string $transition, <?= $entity_class_name ?> $<?= $entity_var_singular ?>): Response
 {
 if ($transition === '_') {
 $transition = $request->request->get('transition'); // the _ is a hack to display the form, @todo: cleanup

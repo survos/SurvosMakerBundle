@@ -8,8 +8,6 @@ use Roave\BetterReflection\Reflector\DefaultReflector;
 use Roave\BetterReflection\SourceLocator\Type\StringSourceLocator;
 use Survos\Bundle\MakerBundle\Service\GeneratorService;
 use Survos\Bundle\MakerBundle\Service\MakerService;
-use Survos\CoreBundle\Entity\RouteParametersInterface;
-use Survos\CoreBundle\Entity\RouteParametersTrait;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -26,7 +24,6 @@ use Zenstruck\Console\IO;
 use Zenstruck\Console\RunsCommands;
 use Zenstruck\Console\RunsProcesses;
 use function Symfony\Component\String\u;
-use const _PHPStan_6b522806f\__;
 
 #[AsCommand('survos:make:controller-class', 'Generate a controller class OR a method')]
 // class must exist before the method.
@@ -48,8 +45,8 @@ final class GenerateControllerCommand extends InvokableServiceCommand
         IO     $io,
         #[Argument(description: 'Controller class name, e.g. App')]
         string $name,
-        #[Argument('route', description: 'controller method name')]
-        string $routeName,
+        #[Option('routeName', description: 'controller route name (e.g. admin_do_something')]
+        ?string $routeName = null,
         #[Option('method', 'm', null, 'method name, default to routeName')]
         string $method = null,
 
@@ -61,7 +58,7 @@ final class GenerateControllerCommand extends InvokableServiceCommand
         string $security = '',
         #[Option(null, 'c', null, 'cache')]
         string $cache = '',
-        #[Option('route', 'r', null, 'route, defaults to /[route-name]')]
+        #[Option('route', 'r', null, 'route, defaults to /[route]')]
         string $route = '',
         #[Option('class-route', 'cr', null, 'class route')]
         string $classRoute = '',
@@ -76,11 +73,19 @@ final class GenerateControllerCommand extends InvokableServiceCommand
         if (empty($namespace)) {
             $namespace = 'App\\Controller';
         }
+        if (!u($name)->endsWith('Controller')) {
+            $name .= 'Controller';
+        }
 
+        // for twig stuff, see https://github.com/zenstruck/twig-service-bundle
+        // @todo: instead of generating the controller, read it and append/replace the new method
         $ns = $this->generatorService->generateController($name, $namespace, $routeName, $route, $security, $cache, $templateName, $classRoute);
 
         $class = $ns->getClasses()[array_key_first($ns->getClasses())];
-        $this->generatorService->addMethod($class, 'mymethod');
+        if ($routeName) {
+            $this->generatorService->addMethod($class, $routeName);
+            $this->createTemplate($name, $routeName, $templateName, $force);
+        }
 
         $path = $this->generatorService->namespaceToPath($namespace, $this->projectDir);
         $filename = $path . '/';
@@ -95,17 +100,16 @@ final class GenerateControllerCommand extends InvokableServiceCommand
             throw new \Exception("$filename already exists");
         }
 
-//        if (!u($name)->endsWith('Controller')) {
-//            $name .= 'Controller';
-//        }
-//        if (empty($route)) {
-//            $route = "/$routeName";
-//        }
-//        if (empty($method)) {
-//            $method = u($route)->snake()->toString();
-//        }
+        $io->success(sprintf('controller %s generated.', $filename));
+    }
+
+    private function createTemplate(string $controllerName,
+                                    string $routeName,
+                                    string $templateName=null,
+                                    bool $force = false)
+    {
         if (empty($templateName)) {
-            $templatePrefix = u($name)->replace('Controller', '')->lower();
+            $templatePrefix = u($controllerName)->replace('Controller', '')->lower();
             $templateName = "$templatePrefix/$routeName";
         }
         if (!u($templateName)->endsWith('.html.twig')) {
@@ -122,22 +126,10 @@ final class GenerateControllerCommand extends InvokableServiceCommand
             $fn = __DIR__ . '/../../twig/symfony.html.twig';
             assert(file_exists($fn), $fn);
             $templateCode = file_get_contents($fn);
-            dd($templateCode, $templatePath);
 
             file_put_contents(getcwd() . '/' . $templatePath, $templateCode);
         }
 
-
-        // first, generate the controller class if it doesn't exist
-
-
-//        $astLocator = (new BetterReflection())->astLocator();
-//        $reflector = new DefaultReflector(new StringSourceLocator($phpCode, $astLocator));
-//        $reflectionClass = $reflector->reflectClass($namespace . '\\' . $name);
-////        dd($reflectionClass);
-
-        $io->success(sprintf('controller %s generated.', $filename));
     }
-
 
 }

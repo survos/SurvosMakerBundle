@@ -10,6 +10,7 @@ use Roave\BetterReflection\Reflection\ReflectionParameter;
 use Roave\BetterReflection\Reflector\DefaultReflector;
 use Roave\BetterReflection\SourceLocator\Type\StringSourceLocator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Twig\Environment;
@@ -25,6 +26,11 @@ class MakerService
         private PropertyAccessorInterface $propertyAccessor
     ) {
         //        $this->propertyAccessor = new PropertyAccessor();
+    }
+
+    public function getProjectDir(): string
+    {
+        return $this->projectDir;
     }
 
 

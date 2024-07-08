@@ -1,1 +1,7 @@
-{{ _self }}
+{% extends "base.html.twig" %}
+
+{% block body %}
+    This is {{ _self }}
+
+    {{ app.request.get('_route') }}
+{% endblock %}

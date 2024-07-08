@@ -6,22 +6,14 @@ namespace Survos\Bundle\MakerBundle\Service;
 
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\PhpNamespace;
-use Roave\BetterReflection\BetterReflection;
-use Roave\BetterReflection\Reflection\ReflectionClass;
-use Roave\BetterReflection\Reflection\ReflectionParameter;
-use Roave\BetterReflection\Reflector\DefaultReflector;
-use Roave\BetterReflection\SourceLocator\Type\StringSourceLocator;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Twig\Environment;
 
 use function Symfony\Component\String\u;
 
@@ -29,11 +21,9 @@ class GeneratorService
 {
     //    private PropertyAccessor $propertyAccessor;
     public function __construct(
-        private ParameterBagInterface $bag,
         private MakerService $makerService,
     )
     {
-        //        $this->propertyAccessor = new PropertyAccessor();
     }
 
     public static function namespaceToPath(string $namespace, string $projectDir): ?string
@@ -64,21 +54,18 @@ class GeneratorService
 
     public function generateController(
         string $controllerName,
-        string $namespaceName='App\\Controller',
-                                        string $routeName=null,
-                                        string $route=null,
-                                        string $security=null,
-                                        string $cache=null,
-                                        string $templateName=null,
-                                        string $classRoute=null
+        string $namespaceName = 'App\\Controller',
+        string $routeName = null,
+        string $route = null,
+        string $security = null,
+        string $cache = null,
+        string $templateName = null,
+        string $classRoute = null
 
     ): PhpNamespace
     {
 
 
-        if (!u($controllerName)->endsWith('Controller')) {
-            $controllerName .= 'Controller';
-        }
         if (empty($namespace)) {
             $namespace = 'App\\Controller';
         }
@@ -111,17 +98,20 @@ class GeneratorService
     }
 
 
-    public function addMethod(ClassType $class, string $routeName, string $templateName=null,
-        $route = null,
-        string $methodName=null,
-        bool $security = false
+    public function addMethod(ClassType $class,
+                              string    $routeName, // 'app_do_something'
+                              string    $templateName = null,
+                              ?string   $route = null, // '/do-something'
+                              string    $methodName = null, // function doSomething()
+                              bool      $security = false // IsGranted('ROLE_ADMIN')
     )
     {
+        if (empty($methodName)) {
+            $methodName = u($routeName)->snake()->toString();
+        }
+
         if (empty($route)) {
             $route = "/$routeName";
-        }
-        if (empty($methodName)) {
-            $methodName = u($route)->snake()->toString();
         }
 
         if (empty($templateName)) {

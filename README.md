@@ -1,6 +1,23 @@
-# Quickstart
+# Survos Maker Bundle
 
-Some cool things you can do.
+Some alternatives to the Symfony maker commands.
+
+## survos:make:controller
+
+The Symfony make:controller command is very limited.  It creates a file and template, but doesn't give the option to set the route or method name, just app_app and index.html.twig.
+
+The survos:make:controller command allows creating a Controller class and individual controller methods.  
+
+```bash
+bin/console survos:make:controller-class Admin \
+  --inject "App\\Repository\\UserRepository"
+  --route="admin_list_users"
+  --method="listUsers"
+  --security="IsGranted('ROLE_ADMIN')"
+```
+
+
+
 
 ## Special note about survos:make:bundle
 

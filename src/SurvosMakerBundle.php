@@ -138,7 +138,7 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
 //            ;
 
         $builder->autowire(GeneratorService::class)
-            ->setArgument('$bag', new Reference('parameter_bag'))
+            ->setAutoconfigured(true)
         ;
 
 
