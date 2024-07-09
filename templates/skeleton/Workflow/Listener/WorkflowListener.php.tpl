@@ -3,7 +3,7 @@
 <?php use function Symfony\Component\String\u; ?>
 
 
-namespace App\Workflow\Listener;
+namespace App\Workflow;
 
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Event\GuardEvent;

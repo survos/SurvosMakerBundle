@@ -4,13 +4,15 @@ namespace <?= $namespace ?>;
 
 <?= $use_statements; ?>
 
-#[AsEventListener(event: KnpMenuEvent::NAVBAR_MENU, method: 'navbarMenu')]
-// #[AsEventListener(event: KnpMenuEvent::NAVBAR_MENU2, method: 'navbarMenu')]
+
+// events are
+/*
+// #[AsEventListener(event: KnpMenuEvent::NAVBAR_MENU2)]
 #[AsEventListener(event: KnpMenuEvent::SIDEBAR_MENU, method: 'sidebarMenu')]
 #[AsEventListener(event: KnpMenuEvent::PAGE_MENU, method: 'pageMenu')]
 #[AsEventListener(event: KnpMenuEvent::FOOTER_MENU, method: 'footerMenu')]
 #[AsEventListener(event: KnpMenuEvent::AUTH_MENU, method: 'appAuthMenu')]
-
+*/
 
 final class <?= $class_name ?> implements KnpMenuHelperInterface<?= "\n" ?>
 {
@@ -33,6 +35,7 @@ $this->menuService->addAuthMenu($menu);
 }
 
 
+#[AsEventListener(event: KnpMenuEvent::NAVBAR_MENU)]
 public function navbarMenu(KnpMenuEvent $event): void
 {
 $menu = $event->getMenu();
@@ -47,28 +50,6 @@ foreach (['bundles', 'javascript'] as $type) {
 $this->addMenuItem($nestedMenu, ['uri' => "#$type" , 'label' => ucfirst($type)]);
 }
 
-}
-
-
-
-public function sidebarMenu(KnpMenuEvent $event): void
-    {
-        $menu = $event->getMenu();
-        $options = $event->getOptions();
-    }
-
-public function footerMenu(KnpMenuEvent $event): void
-{
-$menu = $event->getMenu();
-$options = $event->getOptions();
-$this->add($menu, uri: 'https://github.com');
-}
-
-// this could also be called the content menu, as it's below the navbar, e.g. a menu for an entity, like show, edit
-public function pageMenu(KnpMenuEvent $event): void
-{
-$menu = $event->getMenu();
-$options = $event->getOptions();
 }
 
 }

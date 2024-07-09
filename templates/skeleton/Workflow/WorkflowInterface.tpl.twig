@@ -1,0 +1,32 @@
+<?= "<?php\n" ?>
+
+namespace <?= $namespace ?>;
+
+<?= $use_statements; ?>
+
+
+// See events at https://symfony.com/doc/current/workflow.html#using-events
+
+interface <?= $class_name ?>
+{
+
+// This name is used for injecting the workflow into a service
+// #[Target(<?= $class_name ?>::WORKFLOW_NAME)] private WorkflowInterface $workflow
+const WORKFLOW_NAME = '<?= $class_name ?>';
+
+
+<?php foreach ($places as $p) {
+$p = strtoupper($p);
+?>
+const PLACE_<?= $p ?>='<?= $p ?>';
+<?php } ?>
+
+<?php foreach ($transitions as $idx=>$p) {
+$t = strtoupper($p);
+$place = 'self::PLACE_' . strtoupper($places[$idx])
+?>
+#[Transition([<?= $place ?>], <?= $place ?>)]
+const TRANSITION_<?= $t ?>='<?= $t ?>';
+<?php } ?>
+
+}

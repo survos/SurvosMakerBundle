@@ -78,8 +78,8 @@ final class MakeMenu extends AbstractMaker implements MakerInterface
         $shortName = $input->getArgument('menuClassName');
         $classNameDetails = $generator->createClassNameDetails(
             $shortName,
-            'EventListener\\',
-            'MenuEventListener'
+            'Menu\\',
+            suffix: 'Menu'
         );
 
         $useStatements = new UseStatementGenerator([

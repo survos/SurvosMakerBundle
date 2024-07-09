@@ -20,6 +20,7 @@ use Survos\Bundle\MakerBundle\Maker\MakeModel;
 use Survos\Bundle\MakerBundle\Maker\MakeParamConverter;
 use Survos\Bundle\MakerBundle\Maker\MakeService;
 use Survos\Bundle\MakerBundle\Maker\MakeWorkflow;
+use Survos\Bundle\MakerBundle\Maker\MakeWorkflowFromEntity;
 use Survos\Bundle\MakerBundle\Maker\MakeWorkflowListener;
 use Survos\Bundle\MakerBundle\Renderer\ParamConverterRenderer;
 use Survos\Bundle\MakerBundle\Service\GeneratorService;
@@ -79,6 +80,7 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
         foreach ([MakeMenu::class, MakeService::class,
+                     MakeWorkflow::class,
                      MakeMethod::class, MakeInvokableCommand::class, MakeModel::class] as $makerClass) {
             $definition = $builder->autowire($makerClass)
                 ->addTag('maker.command')
@@ -186,7 +188,7 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
             ->setArgument('$twig', new Reference('twig'))
         ;
 
-        $builder->autowire(MakeWorkflow::class)
+        $builder->autowire(MakeWorkflowFromEntity::class)
             ->addTag('maker.command')
             ->addArgument(new Reference('maker.doctrine_helper'))
             ->addArgument($config['template_path'])
