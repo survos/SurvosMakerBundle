@@ -60,9 +60,9 @@ final class MakeWorkflow extends AbstractMaker implements MakerInterface
     public function configureCommand(Command $command, InputConfiguration $inputConfig)
     {
         $command
-            ->addArgument('className', InputArgument::OPTIONAL, 'Workflow Class Name', '')
-            ->addOption('places', 'p', InputOption::VALUE_OPTIONAL, 'comma-separated list of places', 'new,approved,rejected')
-            ->addOption('transitions', 't', InputOption::VALUE_OPTIONAL, 'comma-separated list of transitions', 'approve,reject')
+            ->addArgument('className', InputArgument::REQUIRED, 'Workflow Class Name')
+            ->addArgument('places', InputArgument::REQUIRED, 'comma-separated list of places (e.g. new,approved,rejected)')
+            ->addArgument('transitions', InputArgument::REQUIRED, 'comma-separated list of transitions, (approve,reject)')
             ->addOption('entityClassName', 'c', InputOption::VALUE_OPTIONAL, 'entity class supported by this workflow')
         ;
     }
@@ -99,8 +99,8 @@ final class MakeWorkflow extends AbstractMaker implements MakerInterface
             __DIR__ . '/../../templates/skeleton/Workflow/WorkflowInterface.tpl.twig',
             $v = [
                 'entity_full_class_name' => $classNameDetails->getFullName(),
-                'places' => explode(",", $input->getOption('places')),
-                'transitions' => explode(",", $input->getOption('transitions')),
+                'places' => explode(",", $input->getArgument('places')),
+                'transitions' => explode(",", $input->getArgument('transitions')),
                 'use_statements' => $useStatements,
             ]
         );
@@ -134,6 +134,7 @@ final class MakeWorkflow extends AbstractMaker implements MakerInterface
             $v = [
                 'entity_full_class_name' => $entityClass,
                 'workflow_class_name' => $classNameDetails->getFullName(),
+                'transitions' => explode(",", $input->getArgument('transitions')),
                 'use_statements' => $useStatements,
             ]
         );

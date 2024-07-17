@@ -16,9 +16,9 @@ const WORKFLOW_NAME = '<?= $class_name ?>';
 
 
 <?php foreach ($places as $p) {
-$p = strtoupper($p);
+$pUp = strtoupper($p);
 ?>
-const PLACE_<?= $p ?>='<?= $p ?>';
+const PLACE_<?= $pUp ?>='<?= $p ?>';
 <?php } ?>
 
 <?php foreach ($transitions as $idx=>$p) {
@@ -26,7 +26,7 @@ $t = strtoupper($p);
 $place = 'self::PLACE_' . strtoupper($places[$idx])
 ?>
 #[Transition([<?= $place ?>], <?= $place ?>)]
-const TRANSITION_<?= $t ?>='<?= $t ?>';
+const TRANSITION_<?= $t ?>='<?= $p ?>';
 <?php } ?>
 
 }

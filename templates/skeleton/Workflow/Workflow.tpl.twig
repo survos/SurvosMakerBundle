@@ -8,11 +8,12 @@ namespace <?= $namespace ?>;
 // See events at https://symfony.com/doc/current/workflow.html#using-events
 
 // @todo: add the entity class to attach this to.
-#[Workflow(supports: [\<?= $entity_full_class_name ?>::class], name: self::WORKFLOW_NAME)]
+#[Workflow(supports: ['stdClass', /* \<?= $entity_full_class_name ?>::class*/], name: self::WORKFLOW_NAME)]
 final class <?= $class_name ?> implements <?= $class_name?>Interface<?= "\n" ?>
 {
 
 public function __construct(
+    // add services
 )
 {
 }
@@ -24,17 +25,15 @@ public function onGuard(GuardEvent $event): void
 }
 #[AsTransitionListener(self::WORKFLOW_NAME)]
 public function onTransition(TransitionEvent $event): void
-{
-switch ($event->getTransition()->getName()) {
-case self::TRANSITION_APPROVE:
-
-break;
-case self::TRANSITION_REJECT:
-
-break;
-}
-//        dd($event, $event->getTransition(), $event->getSubject());
-// ...
+    {
+    switch ($event->getTransition()->getName()) {
+    <?php foreach ($transitions as $idx=>$t) {
+        $t = strtoupper($t);
+    ?>
+         case self::TRANSITION_<?= $t ?>:
+         break;
+    <?php } ?>
+    }
 }
 
 }
