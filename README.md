@@ -18,6 +18,10 @@ bin/console survos:make:controller-class Admin \
 
 
 
+Sigh.  Most of this is outdated and needs to be cleaned up.  Sorry.
+
+
+
 
 ## Special note about survos:make:bundle
 
@@ -384,21 +388,8 @@ See [docs/recommended_bundles]
 
 Install the bundle, then go through the setup to add and configure the tools.
 
-    composer req survos/base-bundle
+    composer req survos/bootstrap-bundle
     
-    yarn install 
-    
-    xterm -e "yarn run encore dev-server" &
-    
-    composer req "kevinpapst/adminlte-bundle"
-    composer require knplabs/knp-menu-bundle
-    bin/console make:subscriber KnpMenuSubscriber "Survos\BootstrapBundle\Event\KnpMenuEvent"
-    
-    bin/console survos:init
-    
-    
-
-    bin/console survos:config --no-interaction
     bin/console doctrine:schema:update --force
     
 #### survos:init
@@ -408,9 +399,6 @@ Also _modifies_ some yaml files, and creates the first menu.
 
 ```yaml
 # config/packages/admin_lte.yaml
-admin_lte:
-    knp_menu:
-        enable: true
 
     routes:
         adminlte_welcome: app_homepage
