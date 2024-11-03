@@ -7,7 +7,7 @@ namespace <?= $namespace ?>;
 #[AsCommand('<?= $commandName ?>', '<?= $commandDescription ?>')]
 final class <?= $class_name ?> extends InvokableServiceCommand<?= "\n" ?>
 {
-use ConfigureWithAttributes, RunsCommands, RunsProcesses;
+use RunsCommands, RunsProcesses;
 
 public function __invoke(
 IO $io,

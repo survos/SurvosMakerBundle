@@ -33,7 +33,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Extension\AbstractExtension;
 use Zenstruck\Console\Attribute\Argument;
 use Zenstruck\Console\Attribute\Option;
-use Zenstruck\Console\ConfigureWithAttributes;
 use Zenstruck\Console\InvokableServiceCommand;
 use Zenstruck\Console\IO;
 use Zenstruck\Console\RunsCommands;
@@ -91,7 +90,6 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
     {
         $dependencies->addClassDependency(
             InvokableServiceCommand::class,
-            ConfigureWithAttributes::class,
             RunsCommands::class,
             RunsProcesses::class
         );
