@@ -23,7 +23,7 @@ IO $io,
 
 ): void {
 
-$io->success('<?= $commandName ?> success.');
+$io->success($this->getName() . ' success.');
 }
 
 }
