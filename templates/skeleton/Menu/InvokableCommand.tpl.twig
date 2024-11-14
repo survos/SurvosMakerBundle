@@ -21,9 +21,10 @@ IO $io,
 <?= $option['phpType'] ?> $<?= $optionName ?><?= $option['default'] ? sprintf(" = %s", $option['default']) : '' ?>,
 <?php } ?>
 
-): void {
+): int {
 
 $io->success($this->getName() . ' success.');
+return self::SUCCESS;
 }
 
 }

@@ -3,9 +3,6 @@
 namespace Survos\Bundle\MakerBundle\Command;
 
 use Nette\PhpGenerator\PhpNamespace;
-use Roave\BetterReflection\BetterReflection;
-use Roave\BetterReflection\Reflector\DefaultReflector;
-use Roave\BetterReflection\SourceLocator\Type\StringSourceLocator;
 use Survos\Bundle\MakerBundle\Service\GeneratorService;
 use Survos\Bundle\MakerBundle\Service\MakerService;
 use Symfony\Bridge\Twig\Attribute\Template;

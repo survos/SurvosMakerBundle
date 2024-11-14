@@ -2,7 +2,6 @@
 
 namespace Survos\Bundle\MakerBundle\Command;
 
-use Roave\BetterReflection\Reflection\Adapter\ReflectionClass;
 use SebastianBergmann\Diff\Differ;
 use Survos\Bundle\MakerBundle\Service\MakerService;
 use Symfony\Component\Console\Attribute\AsCommand;
