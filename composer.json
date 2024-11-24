@@ -1,60 +1,11 @@
 {
     "name": "survos/maker-bundle",
     "description": "Tools to generate controllers and templates for the admin interface",
-    "type": "symfony-bundle",
     "keywords": [
         "generator",
         "symfony",
         "crud"
     ],
-    "require": {
-        "php": "^8.2",
-        "nette/php-generator": "^3.5||^4.1",
-        "roave/better-reflection": "*",
-        "sebastian/diff": "^4.0||^5.0||^6.0.1",
-        "symfony/config": "^6.4 | ^7.0",
-        "symfony/console": "^6.4 | ^7.0",
-        "symfony/options-resolver": "^6.4 | ^7.0",
-        "symfony/security-http": "^7.1",
-        "symfony/string": "^6.4 | ^7.0",
-        "twig/twig": "^3.4",
-        "zenstruck/console-extra": "^1.1"
-    },
-    "require-dev": {
-        "doctrine/doctrine-bundle": "^2.7|^3.0",
-        "doctrine/orm": "^2.12 || ^3.0",
-        "haydenpierce/class-finder": "^0.4.3",
-        "phpstan/phpstan": "^1.8",
-        "squizlabs/php_codesniffer": "^3.7",
-        "symfony/form": "^6.4 | ^7.0",
-        "symfony/http-client": "^6.4 | ^7.0",
-        "symfony/maker-bundle": "^1.38",
-        "symfony/phpunit-bridge": "^6.4 | ^7.0",
-        "symfony/polyfill-php80": "^1.16.0",
-        "symfony/process": "^6.4 | ^7.0",
-        "symfony/security-core": "^6.4 | ^7.0",
-        "symfony/security-csrf": "^6.4 | ^7.0",
-        "symfony/twig-bundle": "^6.4 | ^7.0",
-        "symfony/validator": "^6.4 | ^7.0",
-        "symfony/yaml": "^6.4 | ^7.0"
-    },
-    "scripts": {
-        "test": "vendor/bin/phpunit",
-        "test-ci": "vendor/bin/phpunit --coverage-text --coverage-clover=build/coverage.xml coverage",
-        "test-coverage": "php -d xdebug.mode=coverage vendor/bin/phpunit --coverage-html build/coverage",
-        "test-phpstan": "vendor/bin/phpstan analyse"
-    },
-    "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
-        }
-    },
-    "autoload": {
-        "psr-4": {
-            "Survos\\Bundle\\MakerBundle\\": "src/"
-        }
-    },
     "license": "MIT",
     "authors": [
         {
@@ -62,6 +13,43 @@
             "email": "tacman@gmail.com"
         }
     ],
+    "type": "symfony-bundle",
+    "require": {
+        "php": "^8.3",
+        "nette/php-generator": "^3.5||^4.1",
+        "roave/better-reflection": "^6.0",
+        "sebastian/diff": "^4.0||^5.0||^6.0.1",
+        "symfony/config": "^6.4 || ^7.1",
+        "symfony/console": "^6.4 || ^7.1",
+        "symfony/options-resolver": "^6.4 || ^7.1",
+        "symfony/security-http": "^6.4 || ^7.1",
+        "symfony/string": "^6.4 || ^7.1",
+        "twig/twig": "^3.4",
+        "zenstruck/console-extra": "^1.4"
+    },
+    "require-dev": {
+        "doctrine/doctrine-bundle": "^2.7",
+        "doctrine/orm": "^2.12",
+        "haydenpierce/class-finder": "^0.4.3",
+        "phpstan/phpstan": "^2.0",
+        "squizlabs/php_codesniffer": "^3.7",
+        "symfony/form": "^6.4 || ^7.1",
+        "symfony/http-client": "^6.4 || ^7.1",
+        "symfony/maker-bundle": "^1.5",
+        "symfony/phpunit-bridge": "^6.4 || ^7.1",
+        "symfony/polyfill-php80": "^1.16.0",
+        "symfony/process": "^6.4 || ^7.1",
+        "symfony/security-core": "^6.4 || ^7.1",
+        "symfony/security-csrf": "^6.4 || ^7.1",
+        "symfony/twig-bundle": "^6.4 || ^7.1",
+        "symfony/validator": "^6.4 || ^7.1",
+        "symfony/yaml": "^6.4 || ^7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Survos\\Bundle\\MakerBundle\\": "src/"
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-main": "1.6-dev"
@@ -69,6 +57,22 @@
         "symfony": {
             "require": "^6.4 | ^7.0",
             "allow-contrib": "true"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-ci": "vendor/bin/phpunit --coverage-text --coverage-clover=build/coverage.xml coverage",
+        "test-coverage": "php -d xdebug.mode=coverage vendor/bin/phpunit --coverage-html build/coverage",
+        "test-phpstan": "vendor/bin/phpstan analyse"
+    },
+    "suggest": {
+        "symfony/workflow": "To generate a workflow from PHP constants",
+        "symplify/easy-coding-standard": "cleanup generated files"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     },
     "conflict": {
@@ -93,10 +97,6 @@
         "survos/wiki-bundle": "<1.2.57",
         "survos/import-bridge": "<1.2.57",
         "survos/grid-group-bundle": "<1.2.57"
-    },
-    "suggest": {
-        "symfony/workflow": "To generate a workflow from PHP constants",
-        "symplify/easy-coding-standard": "cleanup generated files"
     },
     "prefer-stable": true
 }
