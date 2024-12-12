@@ -55,12 +55,12 @@ class GeneratorService
     public function generateController(
         string $controllerName,
         string $namespaceName = 'App\\Controller',
-        string $routeName = null,
-        string $route = null,
-        string $security = null,
-        string $cache = null,
-        string $templateName = null,
-        string $classRoute = null
+        ?string $routeName = null,
+        ?string $route = null,
+        ?string $security = null,
+        ?string $cache = null,
+        ?string $templateName = null,
+        ?string $classRoute = null
 
     ): PhpNamespace
     {
@@ -100,9 +100,9 @@ class GeneratorService
 
     public function addMethod(ClassType $class,
                               string    $routeName, // 'app_do_something'
-                              string    $templateName = null,
+                              ?string    $templateName = null,
                               ?string   $route = null, // '/do-something'
-                              string    $methodName = null, // function doSomething()
+                              ?string    $methodName = null, // function doSomething()
                               bool      $security = false // IsGranted('ROLE_ADMIN')
     )
     {
