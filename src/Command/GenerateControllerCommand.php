@@ -44,7 +44,7 @@ final class GenerateControllerCommand extends InvokableServiceCommand
         #[Option('routeName', description: 'controller route name (e.g. admin_do_something')]
         ?string $routeName = null,
         #[Option('method', 'm', null, 'method name, default to routeName')]
-        string $method = null,
+        ?string $method = null,
 
         #[Option('invokable', 'i', null, 'make an invokable controller')]
         bool   $invokable = true,
@@ -101,7 +101,7 @@ final class GenerateControllerCommand extends InvokableServiceCommand
 
     private function createTemplate(string $controllerName,
                                     string $routeName,
-                                    string $templateName=null,
+                                    ?string $templateName=null,
                                     bool $force = false)
     {
         if (empty($templateName)) {

@@ -31,7 +31,7 @@ class ParamConverterRenderer
     public function render(
         ClassNameDetails $formClassDetails,
         array $formFields,
-        ClassNameDetails $boundClassDetails = null,
+        ?ClassNameDetails $boundClassDetails = null,
         array $constraintClasses = [],
         array $extraUseClasses = []
     ) {

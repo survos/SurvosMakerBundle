@@ -76,8 +76,8 @@ class MakerService
         array $uses = [],
         array $implements = [],
         array $injects = [],
-        string $methodName = null,
-        string $php = null,
+        ?string $methodName = null,
+        ?string $php = null,
     ): string {
         $source = $reflectionClass->getLocatedSource()->getSource();
         // go through inject to separate typehint and parameter
