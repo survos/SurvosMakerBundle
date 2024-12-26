@@ -358,8 +358,6 @@ OR
     # introspection, creates menus, looks for entities, easyadmin, etc.
     bin/console survos:configure
      
-    # symfony run -d yarn encore dev --watch
-
 ### Integrating Facebook and other OAuth
 
 Go to https://github.com/knpuniversity/oauth2-client-bundle#step-1-download-the-client-library
