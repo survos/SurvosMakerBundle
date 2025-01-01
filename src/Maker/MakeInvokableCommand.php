@@ -2,6 +2,7 @@
 
 namespace Survos\Bundle\MakerBundle\Maker;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Menu\ItemInterface;
 use LogicException;
 use Survos\BootstrapBundle\Event\KnpMenuEvent;
@@ -90,6 +91,7 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
     {
         $dependencies->addClassDependency(
             InvokableServiceCommand::class,
+            EntityManagerInterface::class,
             RunsCommands::class,
             RunsProcesses::class
         );
