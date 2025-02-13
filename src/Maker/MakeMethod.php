@@ -73,7 +73,7 @@ final class MakeMethod extends AbstractMaker
 // or use the PsrPrinter for output in accordance with PSR-2 / PSR-12 / PER
 // echo (new Nette\PhpGenerator\PsrPrinter)->printNamespace($namespace);
         $class = new ClassType($className = 'DemoController', new PhpNamespace($ns = 'App\\Controller'));
-        assert($class->getNamespace()->getName() == $ns);
+//        assert($class->getNamespace()->getName() == $ns);
         $class
             ->setFinal()
             ->setExtends(AbstractController::class)

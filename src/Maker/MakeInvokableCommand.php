@@ -111,7 +111,6 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
         $useStatements = new UseStatementGenerator([
             AsCommand::class,
             InvokableServiceCommand::class,
-            ConfigureWithAttributes::class,
             RunsCommands::class,
             RunsProcesses::class,
             Argument::class,
