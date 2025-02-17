@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Survos\ApiGrid\Components\ApiGridComponent;
+use Survos\WorkflowBundle\Traits\HandleTransitionsTrait;
 
 #[Route('<?= $route_path ?>')]
 class <?= $class_name ?> extends AbstractController<?= "\n" ?>

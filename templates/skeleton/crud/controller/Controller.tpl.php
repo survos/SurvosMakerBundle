@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Workflow\WorkflowInterface;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 
 // if Workflow Bundle active
 // use Survos\WorkflowBundle\Traits\HandleTransitionsTrait;
@@ -33,7 +34,7 @@ public function __construct(private EntityManagerInterface $entityManager) {
 // there must be a way to do this within the bundle, a separate route!
 #[Route(path: '/transition/{transition}', name: '<?= $entity_var_singular?>_transition')]
 public function transition(Request $request,
-   #[Target('<?= $entity_class_name ?>Workflow)] WorkflowInterface $workflow,
+   #[Target(<?= $entity_class_name ?>::WORKFLOW_NAME)] WorkflowInterface $workflow,
 string $transition, <?= $entity_class_name ?> $<?= $entity_var_singular ?>): Response
 {
 if ($transition === '_') {

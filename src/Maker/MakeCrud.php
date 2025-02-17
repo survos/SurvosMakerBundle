@@ -322,6 +322,6 @@ final class MakeCrud extends AbstractMaker implements MakerInterface
 
     public static function getCommandDescription(): string
     {
-        return "Makes crud using ParamConverter?";
+        return "Makes crud include RouteParametersInterface and api-grid";
     }
 }
