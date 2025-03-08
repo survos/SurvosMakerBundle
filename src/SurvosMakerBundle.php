@@ -19,9 +19,6 @@ use Survos\Bundle\MakerBundle\Maker\MakeMethod;
 use Survos\Bundle\MakerBundle\Maker\MakeModel;
 use Survos\Bundle\MakerBundle\Maker\MakeParamConverter;
 use Survos\Bundle\MakerBundle\Maker\MakeService;
-use Survos\Bundle\MakerBundle\Maker\MakeWorkflow;
-use Survos\Bundle\MakerBundle\Maker\MakeWorkflowFromEntity;
-use Survos\Bundle\MakerBundle\Maker\MakeWorkflowListener;
 use Survos\Bundle\MakerBundle\Renderer\ParamConverterRenderer;
 use Survos\Bundle\MakerBundle\Service\GeneratorService;
 use Survos\Bundle\MakerBundle\Service\MakerService;
@@ -80,8 +77,9 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
         foreach ([MakeMenu::class, MakeService::class,
-                     MakeWorkflow::class,
-                     MakeMethod::class, MakeInvokableCommand::class, MakeModel::class] as $makerClass) {
+                     MakeMethod::class,
+                     MakeInvokableCommand::class,
+                     MakeModel::class] as $makerClass) {
             $definition = $builder->autowire($makerClass)
                 ->addTag('maker.command')
 //                ->addTag(MakeCommandRegistrationPass::MAKER_TAG) // 'maker.command'
@@ -158,12 +156,12 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
             ->addArgument(new Reference('maker.renderer.form_type_renderer'))
         ;
 
-        $definition = $builder->autowire(MakeWorkflowListener::class)
-            ->addTag('maker.command')
-            ->addArgument(new Reference('maker.doctrine_helper'))
-            ->addArgument(new Reference('maker.generator'))
-             ->setArgument('$workflows', tagged_iterator('workflow'));
-        ;
+    //        $definition = $builder->autowire(MakewoListener::class)
+    //            ->addTag('maker.command')
+    //            ->addArgument(new Reference('maker.doctrine_helper'))
+    //            ->addArgument(new Reference('maker.generator'))
+    //             ->setArgument('$workflows', tagged_iterator('workflow'));
+    //        ;
 
         $builder->autowire(ClassUpdateCommand::class)
             ->addTag('console.command')
@@ -188,11 +186,6 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
             ->setArgument('$twig', new Reference('twig'))
         ;
 
-        $builder->autowire(MakeWorkflowFromEntity::class)
-            ->addTag('maker.command')
-            ->addArgument(new Reference('maker.doctrine_helper'))
-            ->addArgument($config['template_path'])
-        ;
     }
 
     public function configure(DefinitionConfigurator $definition): void

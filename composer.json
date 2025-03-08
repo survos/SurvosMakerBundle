@@ -19,7 +19,6 @@
         "php": "^8.3",
         "nette/php-generator": "^3.5||^4.1",
         "roave/better-reflection": "^6.0",
-        "sebastian/diff": "^5.0||^6.0||^7.0",
         "symfony/config": "^6.4 || ^7.1",
         "symfony/console": "^6.4 || ^7.1",
         "symfony/options-resolver": "^6.4 || ^7.1",
@@ -29,9 +28,10 @@
         "zenstruck/console-extra": "^1.4"
     },
     "require-dev": {
+        "sebastian/diff": "^5.0||^6.0||^7.0",
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/orm": "^2.12 || ^3.3",
-        "haydenpierce/class-finder": "^0.4.3",
+        "haydenpierce/class-finder": "^0.5.3",
         "phpstan/phpstan": "^2.0",
         "squizlabs/php_codesniffer": "^3.7",
         "survos/core-bundle": "^1.5",
