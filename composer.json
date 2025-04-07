@@ -28,7 +28,7 @@
         "zenstruck/console-extra": "^1.4"
     },
     "require-dev": {
-        "sebastian/diff": "^5.0||^6.0||^7.0",
+        "sebastian/diff": "^4.0||^5.0||^6.0||^7.0",
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/orm": "^2.12 || ^3.3",
         "haydenpierce/class-finder": "^0.5.3",
