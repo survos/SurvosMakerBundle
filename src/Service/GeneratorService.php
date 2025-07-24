@@ -6,6 +6,7 @@ namespace Survos\Bundle\MakerBundle\Service;
 
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\PhpNamespace;
+use Nette\PhpGenerator\Type;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -64,8 +65,6 @@ class GeneratorService
 
     ): PhpNamespace
     {
-
-
         if (empty($namespace)) {
             $namespace = 'App\\Controller';
         }
@@ -90,6 +89,7 @@ class GeneratorService
         if ($classRoute) {
             $class->addAttribute(Route::class, [$classRoute]);
         }
+        // this is for entities only
 //            ->addImplement(RouteParametersInterface::class) // will be simplified to A
 //            ->addTrait(RouteParametersTrait::class); // will be simplified to AliasedClass
 
@@ -148,7 +148,7 @@ class GeneratorService
         }
         $method
             ->addAttribute(Route::class, ['path' => $route, 'name' => $routeName])
-            ->setReturnType('array');
+            ->setReturnType(Type::union(Type::Array, Response::class));
         if ($security)
             $method->addAttribute(IsGranted::class, [$security]);
 //        $method->addComment('@return ' . $namespace->simplifyType('Foo\D')); // we manually simplify in comments

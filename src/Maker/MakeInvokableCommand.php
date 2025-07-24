@@ -53,12 +53,12 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
 
     public static function getCommandDescription(): string
     {
-        return 'Generate an invokable command';
+        return 'Generate an invokable command (zenstruck/console-extra)';
     }
 
     public static function getCommandName(): string
     {
-        return 'survos:make:command';
+        return 'survos:make:invokable-command';
     }
 
     public function configureCommand(Command $command, InputConfiguration $inputConfig)
@@ -66,7 +66,7 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
         $command
             //            ->setHelp(file_get_contents(__DIR__.'/../Resources/help/MakeCommand.txt'))
             ->addArgument('name', InputArgument::REQUIRED, sprintf('Choose a command name (e.g. <fg=yellow>app:%s</>)', Str::asCommand(Str::getRandomTerm())))
-            ->addArgument('description', InputArgument::REQUIRED, sprintf('Desceription (e.g. <fg=yellow>list something from the database</>)', Str::asCommand(Str::getRandomTerm())))
+            ->addArgument('description', InputArgument::REQUIRED, sprintf('description (e.g. <fg=yellow>list something from the database</>)', Str::asCommand(Str::getRandomTerm())))
             ->addOption('force', null, InputOption::VALUE_NONE, 'Overwrite if it already exists.')
             ->addOption('prefix', null, InputOption::VALUE_OPTIONAL, 'Prefix the command name, but not the generated class, e.g. survos:make:user, app:do:something')
             ->addOption('inject', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Interfaces to inject, e.g. EntityManagerInterface', [])
@@ -258,7 +258,7 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
             'string' => sprintf("'%s'", $default),
             'bool' => $default ? 'true' : 'false',
             'int' => $default,
-            default => dd($fieldType)
+            default => str_starts_with('?', $fieldType) ? null: dd($fieldType)
         };
     }
 
