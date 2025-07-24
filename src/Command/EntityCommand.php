@@ -12,14 +12,12 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\When;
 use Symfony\Component\DependencyInjection\Attribute\WhenNot;
 use Twig\Environment;
-use Zenstruck\Console\Attribute\Argument;
-use Zenstruck\Console\Attribute\Option;
-use Zenstruck\Console\InvokableServiceCommand;
-use Zenstruck\Console\IO;
-use Zenstruck\Console\RunsCommands;
-use Zenstruck\Console\RunsProcesses;
 use Survos\WorkflowBundle\Attribute\Transition;
 use Survos\WorkflowBundle\Attribute\Workflow;
+use Symfony\Component\Console\Attribute\Argument;
+use Symfony\Component\Console\Attribute\Option;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Workflow\Attribute\AsGuardListener;
 use Symfony\Component\Workflow\Attribute\AsTransitionListener;
 use Symfony\Component\Workflow\Event\GuardEvent;
@@ -27,10 +25,8 @@ use Symfony\Component\Workflow\Event\TransitionEvent;
 
 #[AsCommand('survos:generate:entity', 'Generate a translatable entity')]
 #[WhenNot('prod')]
-final class EntityCommand extends InvokableServiceCommand
+final class EntityCommand extends Command
 {
-    use RunsCommands;
-    use RunsProcesses;
 
     public function __construct(
         #[Autowire('%kernel.project_dir%/src/Entity')] private string $dir,
@@ -41,7 +37,7 @@ final class EntityCommand extends InvokableServiceCommand
 
 
     public function __invoke(
-        IO $io,
+        SymfonyStyle $io,
         #[Argument(name: 'class-name', description: 'entity class name')] string $entityClassName,
         #[Argument(name: 'field', description: 'translatable fields, e.g. label,description*')] string $fieldName = 'label,description*',
         #[Option(description: 'namespace')] string $ns = "App\\Entity"

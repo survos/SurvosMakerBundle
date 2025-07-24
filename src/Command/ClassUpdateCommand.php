@@ -4,27 +4,22 @@ namespace Survos\Bundle\MakerBundle\Command;
 
 use SebastianBergmann\Diff\Differ;
 use Survos\Bundle\MakerBundle\Service\MakerService;
+use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Attribute\Option;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\StreamableInputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Twig\Environment;
-use Zenstruck\Console\Attribute\Argument;
-use Zenstruck\Console\Attribute\Option;
-use Zenstruck\Console\ConfigureWithAttributes;
-use Zenstruck\Console\InvokableServiceCommand;
-use Zenstruck\Console\IO;
-use Zenstruck\Console\RunsCommands;
-use Zenstruck\Console\RunsProcesses;
 
 #[AsCommand('survos:class:update', 'insert or update a method in an existing class')]
-final class ClassUpdateCommand extends InvokableServiceCommand
+final class ClassUpdateCommand extends Command
 {
-    use RunsCommands;
-    use RunsProcesses;
 
     public function __invoke(
-        IO $io,
+        SymfonyStyle $io,
         MakerService $makerService,
         #[Argument(description: 'name of the class (path or FQCN)')]
         string $className,
