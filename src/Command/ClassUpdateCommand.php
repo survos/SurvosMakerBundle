@@ -23,7 +23,7 @@ final class ClassUpdateCommand extends Command
         MakerService $makerService,
         #[Argument(description: 'name of the class (path or FQCN)')]
         string $className,
-        #[Option('method', shortcut: 'm', description: 'name of the method (to check for existence)')]
+        #[Option(name: 'method', shortcut: 'm', description: 'name of the method (to check for existence)')]
         ?string $methodName,
         #[Option(description: 'overwrite if exists')]
         ?bool $force,

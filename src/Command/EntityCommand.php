@@ -56,7 +56,8 @@ final class EntityCommand extends Command
         }
 
 
-        $workflowClass = $shortName . "Workflow";
+        //$workflowClass = $shortName . "Workflow";
+        $workflowClass = $entityClassName . "Workflow";
         foreach ([Place::class, Transition::class] as $use) {
             $namespace->addUse($use);
         }

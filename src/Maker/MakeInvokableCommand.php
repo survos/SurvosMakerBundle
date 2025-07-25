@@ -65,8 +65,8 @@ final class MakeInvokableCommand extends AbstractMaker implements MakerInterface
     {
         $command
             //            ->setHelp(file_get_contents(__DIR__.'/../Resources/help/MakeCommand.txt'))
-            ->addArgument('name', InputArgument::REQUIRED, sprintf('Choose a command name (e.g. <fg=yellow>app:%s</>)', Str::asCommand(Str::getRandomTerm())))
-            ->addArgument('description', InputArgument::REQUIRED, sprintf('description (e.g. <fg=yellow>list something from the database</>)', Str::asCommand(Str::getRandomTerm())))
+            ->addArgument('name', InputArgument::REQUIRED, sprintf('Choose a command name (e.g. <fg=yellow>app:%s</>)', Str::asCommand(Str::getRandomTerm() )))
+            ->addArgument('description', InputArgument::REQUIRED, sprintf('description (e.g. <fg=yellow>list something from the database %s</>', Str::asCommand(Str::getRandomTerm())))
             ->addOption('force', null, InputOption::VALUE_NONE, 'Overwrite if it already exists.')
             ->addOption('prefix', null, InputOption::VALUE_OPTIONAL, 'Prefix the command name, but not the generated class, e.g. survos:make:user, app:do:something')
             ->addOption('inject', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Interfaces to inject, e.g. EntityManagerInterface', [])

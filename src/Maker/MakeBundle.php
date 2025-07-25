@@ -120,7 +120,7 @@ class MakeBundle extends AbstractMaker implements MakerInterface
     private function getSnakenameWithVendor(string $name, string $vendor): string
     {
         //            $snakeName = sprintf("%s/%s", u($vendor)->lower(), $snake);
-        $snakeName = strtolower($vendor) . '/' . $snake;
+        $snakeName = strtolower($vendor) ;//. '/' . $snake;
         return $snakeName;
     }
 
