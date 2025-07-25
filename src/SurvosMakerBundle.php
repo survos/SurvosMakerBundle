@@ -167,7 +167,7 @@ class SurvosMakerBundle extends AbstractBundle implements CompilerPassInterface
 
         $builder->autowire(ClassUpdateCommand::class)
             ->addTag('console.command')
-            ->addTag('container.service_subscriber')
+//            ->addTag('container.service_subscriber')
 //            ->setAutoconfigured(true)
 //            ->addMethodCall('setInvokeContainer', [new Reference('service_container')])
         ;
