@@ -3,13 +3,11 @@ parameters:
     inferPrivatePropertyTypeFromConstructor: true
     paths:
         - ./src/
-        - ./vendor
 
     excludePaths:
 #      - 'src/Resources/skeleton'
 #      - */cache/*
        analyse:
-                  - ./vendor
 
     ignoreErrors:
 # Class Survos\BootstrapBundle\Traits\KnpMenuHelperTrait not found.
