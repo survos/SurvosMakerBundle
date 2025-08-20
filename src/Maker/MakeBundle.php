@@ -68,7 +68,7 @@ class MakeBundle extends AbstractMaker implements MakerInterface
     public function configureCommand(Command $command, InputConfiguration $inputConfig)
     {
         $command
-            ->setDescription('Creates a Symfony 6.1+} bundle in a new directory')
+            ->setDescription('Creates a Symfony 7.3 bundle in a new directory')
             // echo "maker: { root_namespace: Survos }" > config/packages/maker.yaml
 //            ->addArgument('action', InputArgument::REQUIRED, 'init or library or local-bundle or remote-bundle', null)
             ->addArgument('name', InputArgument::OPTIONAL, 'The bundle name part of the namespace, FooBundle')
